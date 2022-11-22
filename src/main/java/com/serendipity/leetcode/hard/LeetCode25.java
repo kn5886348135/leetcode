@@ -1,8 +1,11 @@
 package com.serendipity.leetcode.hard;
 
+/**
+ * 给你链表的头节点 head ，每 k 个节点一组进行翻转，请你返回修改后的链表。
+ * k 是一个正整数，它的值小于或等于链表的长度。如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。
+ */
 public class LeetCode25 {
     public static void main(String[] args) {
-
         ListNode listNode = new ListNode(0);
         int n = 13;
         int k = 1;
@@ -26,7 +29,6 @@ public class LeetCode25 {
             System.out.println(tmp);
             tmp = tmp.next;
         }
-
     }
 
     public static ListNode reverseKGroup(ListNode head, int k) {
