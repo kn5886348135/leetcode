@@ -1,4 +1,4 @@
-package com.serendipity.leetcode.easy;
+package com.serendipity.leetcode.middle;
 
 import java.util.LinkedList;
 import java.util.List;

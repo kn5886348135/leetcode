@@ -1,4 +1,4 @@
-package com.serendipity.leetcode.middle;
+package com.serendipity.leetcode.hard;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
