@@ -50,7 +50,8 @@ public class BinarySearch {
         int index = -1;
         int middle;
         while (left <= right) {
-            middle = (left + right) >> 1;
+            // 减法避免溢出
+            middle = left + ((right - left) >> 1);
             if (arr[middle] == target) {
                 index = middle;
                 return index;
@@ -74,7 +75,7 @@ public class BinarySearch {
         int index = -1;
         int middle;
         while (left <= right) {
-            middle = (left + right) >> 1;
+            middle = left + ((right - left) >> 1);
             if (arr[middle] >= target) {
                 index = middle;
                 right = middle - 1;
@@ -96,7 +97,7 @@ public class BinarySearch {
         int index = -1;
         int middle;
         while (left <= right) {
-            middle = (left + right) >> 1;
+            middle = left + ((right - left) >> 1);
             if (arr[middle] <= target) {
                 index = middle;
                 left = middle + 1;
@@ -143,7 +144,7 @@ public class BinarySearch {
         int index = -1;
         int middle;
         while (left <= right) {
-            middle = (left + right) >> 1;
+            middle = left + ((right - left) >> 1);
             if (nums[middle] == target) {
                 index = middle;
                 return index;
@@ -172,7 +173,7 @@ public class BinarySearch {
         int index = -1;
         int middle;
         while (left < right - 1) {
-            middle = (left + right) >> 1;
+            middle = left + ((right - left) >> 1);
             if (arr[middle - 1] < arr[middle]) {
                 right = middle - 1;
             } else if (arr[middle + 1] < arr[middle]) {
