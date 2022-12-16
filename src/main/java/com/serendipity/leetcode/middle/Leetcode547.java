@@ -13,11 +13,9 @@ package com.serendipity.leetcode.middle;
  */
 public class Leetcode547 {
     public static void main(String[] args) {
-        int[][] arr = {{1, 2, 3, 4, 5, 6, 7, 8, 9}, {1, 2, 3, 4, 5, 6, 7, 8, 9}};
-        System.out.println(arr.length);
     }
 
-    public int findCircleNum(int[][] isConnected) {
+    public static int findCircleNum(int[][] isConnected) {
         int num = isConnected.length;
         UnionFind unionFind = new UnionFind(num);
         for (int i = 0; i < num; i++) {
@@ -31,7 +29,7 @@ public class Leetcode547 {
     }
 
     private static class UnionFind {
-        // parent[i] = k 表示i的父亲是k
+        // parent[i] = k 表示i的父亲是k，k仅表示代表节点，并没有实际含义
         private int[] parent;
         // size[i] = k 如果i是代表节点，size[i]表示i所在集合的大小
         private int[] size;
@@ -72,6 +70,7 @@ public class Leetcode547 {
             if (f1 != f2) {
                 if (size[f1] >= size[f2]) {
                     size[f1] += size[f2];
+                    // 修改代表节点，组成逻辑上的集合
                     parent[f2] = f1;
                 } else {
                     size[f2] += size[f1];
@@ -81,7 +80,7 @@ public class Leetcode547 {
             }
         }
 
-        public int sets(){
+        public int sets() {
             return sets;
         }
     }
