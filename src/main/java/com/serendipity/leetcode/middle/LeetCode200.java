@@ -102,7 +102,7 @@ public class LeetCode200 {
         int row = grid.length;
         int col = grid[0].length;
         Dot[][] dots = new Dot[row][col];
-        List<Dot> dotList = new ArrayList<Dot>();
+        List<Dot> dotList = new ArrayList<>();
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 if (grid[i][j] == '1') {
@@ -143,7 +143,7 @@ public class LeetCode200 {
         return unionFind1.sets();
     }
 
-    private static class Dot{
+    private static class Dot {
 
     }
 
@@ -212,7 +212,7 @@ public class LeetCode200 {
                 unionFind2.union(0, j - 1, 0, j);
             }
         }
-        for (int i = 1; i < col; i++) {
+        for (int i = 1; i < row; i++) {
             if (grid[i - 1][0] == '1' && grid[i][0] == '1') {
                 unionFind2.union(i - 1, 0, i, 0);
             }
@@ -223,7 +223,7 @@ public class LeetCode200 {
                     if (grid[i][j - 1] == '1') {
                         unionFind2.union(i, j - 1, i, j);
                     }
-                    if (grid[i-1][j] == '1') {
+                    if (grid[i - 1][j] == '1') {
                         unionFind2.union(i - 1, j, i, j);
                     }
                 }
@@ -283,7 +283,7 @@ public class LeetCode200 {
             int f1 = find(index1);
             int f2 = find(index2);
             if (f1 != f2) {
-                if (size[f1]>=size[f2]) {
+                if (size[f1] >= size[f2]) {
                     size[f1] += size[f2];
                     parent[f2] = f1;
                 } else {
