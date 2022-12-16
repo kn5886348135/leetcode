@@ -9,6 +9,7 @@ import java.util.Stack;
  * @author jack
  * @version 1.0
  * @description 并查集，使用map实现，也可以用数组实现并查集，并且数组的常数项时间复杂度更好
+ * LeetCode547、LeetCode200、LeetCode305(付费)
  * @date 2022/12/16/15:04
  */
 public class UnionFind<V> {
