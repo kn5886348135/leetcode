@@ -36,7 +36,7 @@ public class LeetCode305 {
         public UnionFind1(int m, int n) {
             this.row = m;
             this.col = n;
-            sets = 0;
+            this.sets = 0;
             int len = row * col;
             parent = new int[len];
             size = new int[len];
@@ -65,7 +65,7 @@ public class LeetCode305 {
             }
             int index1 = index(row1, col1);
             int index2 = index(row2, col2);
-            if (size[index1]==0||size[index2]==0) {
+            if (size[index1] == 0 || size[index2] == 0) {
                 return;
             }
             int f1 = find(index1);
@@ -82,7 +82,7 @@ public class LeetCode305 {
             }
         }
 
-        public int connect(int row ,int col) {
+        public int connect(int row, int col) {
             int index = index(row, col);
             if (size[index] == 0) {
                 parent[index] = index;
@@ -97,7 +97,7 @@ public class LeetCode305 {
         }
     }
 
-    // 当m*n比较大，会经理很重的初始化，k比较小时的优化方法，使用下划线连接row和col
+    // 当m*n比较大，会经历很重的初始化，k比较小时的优化方法，使用下划线连接row和col
     public static List<Integer> numIslands22(int m, int n, int[][] positions) {
         UnionFind2 unionFind2 = new UnionFind2();
         List<Integer> ans = new ArrayList<>();
@@ -128,6 +128,7 @@ public class LeetCode305 {
             for (String str : help) {
                 parent.put(str, cur);
             }
+            help.clear();
             return cur;
         }
 
