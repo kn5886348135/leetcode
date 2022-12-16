@@ -8,10 +8,11 @@ import java.util.Stack;
 /**
  * @author jack
  * @version 1.0
- * @description 并查集
+ * @description 并查集，使用map实现，也可以用数组实现并查集，并且数组的常数项时间复杂度更好
  * @date 2022/12/16/15:04
  */
 public class UnionFind<V> {
+
     // list节点和Node<V>的映射
     public Map<V, Node<V>> nodes;
 
@@ -61,7 +62,7 @@ public class UnionFind<V> {
         if (aHead != bHead) {
             int aSetSize = sizeMap.get(aHead);
             int bSetSize = sizeMap.get(bHead);
-            Node<V> big = aSetSize > bSetSize ? aHead : bHead;
+            Node<V> big = aSetSize >= bSetSize ? aHead : bHead;
             Node<V> small = big == aHead ? bHead : aHead;
             // 将小的代表节点映射到大的代表节点上，主要是减少路径压缩
             parents.put(small, big);
@@ -74,13 +75,12 @@ public class UnionFind<V> {
         return sizeMap.size();
     }
 
-    private static class Node<V>{
+    public static class Node<V> {
         V value;
 
         public Node(V value) {
             this.value = value;
         }
     }
-
 
 }
