@@ -25,14 +25,14 @@ public class DFS {
         while (!stack.isEmpty()) {
             Node cur = stack.pop();
             for (Node next : cur.nexts) {
-               if (!set.contains(next)) {
-                   stack.push(cur);
-                   stack.push(next);
-                   set.add(next);
-                   System.out.println(next.value);
-                   // 只压栈一个相邻节点，所以终止循环
-                   break;
-               }
+                if (!set.contains(next)) {
+                    stack.push(cur);
+                    stack.push(next);
+                    set.add(next);
+                    System.out.println(next.value);
+                    // 只压栈一个相邻节点，所以终止循环
+                    break;
+                }
             }
         }
     }
