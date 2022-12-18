@@ -1,6 +1,7 @@
 package com.serendipity.graph;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.Stack;
  * @date 2022/12/18/18:16
  */
 public class Kruskal {
-    public static class UnionFind{
+    public static class UnionFind {
         private Map<Node, Node> fatherMap;
         private Map<Node, Integer> sizeMap;
 
@@ -74,7 +75,7 @@ public class Kruskal {
     public static Set<Edge> kruskalMST(Graph graph) {
         UnionFind unionFind = new UnionFind();
         unionFind.makeSets(graph.nodes.values());
-        PriorityQueue<Edge> priorityQueue = new PriorityQueue<>((edge1, edge2) -> edge1.weight - edge2.weight);
+        PriorityQueue<Edge> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(edge -> edge.weight));
         for (Edge edge : graph.edges) {
             priorityQueue.add(edge);
         }
