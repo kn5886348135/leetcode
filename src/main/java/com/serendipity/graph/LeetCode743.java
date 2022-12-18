@@ -134,7 +134,7 @@ public class LeetCode743 {
         }
 
         private void heapify(int i) {
-            int l = (i - 1) >> 1;
+            int l = (i * 2) + 1;
             while (l < size) {
                 int smallest = l + 1 < size && heap[l + 1][1] < heap[l][1] ? (l + 1) : l;
                 smallest = heap[smallest][1] < heap[i][1] ? smallest : i;
@@ -143,7 +143,7 @@ public class LeetCode743 {
                 }
                 swap(smallest, i);
                 i = smallest;
-                l = (i - 1) >> 1;
+                l = (i * 2) + 1;
             }
         }
 
