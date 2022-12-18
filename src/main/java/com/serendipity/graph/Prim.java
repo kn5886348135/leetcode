@@ -24,16 +24,18 @@ public class Prim {
         for (Node node : graph.nodes.values()) {
             // 未解锁的点
             if (!nodeSet.contains(node)) {
-                 nodeSet.add(node);
-                 // 解锁相邻的边
+                nodeSet.add(node);
+                // 解锁相邻的边
                 for (Edge edge : node.edges) {
                     priorityQueue.add(edge);
                 }
                 while (!priorityQueue.isEmpty()) {
                     Edge edge = priorityQueue.poll();
+                    // 弹出解锁的边中，最小的边
                     Node toNode = edge.to;
                     // 跳过已经解锁的点
                     if (!nodeSet.contains(toNode)) {
+                        // 不含有的时候，就是新的点
                         nodeSet.add(toNode);
                         result.add(edge);
                         for (Edge edgeNext : toNode.edges) {
@@ -43,7 +45,7 @@ public class Prim {
                 }
             }
             // 如果确定不是一个森林，可以使用break跳过
-            break;
+            // break;
         }
         return result;
     }
@@ -51,15 +53,16 @@ public class Prim {
     // graph是连通图
     // graph[i][j]表示i点到j点的距离，无穷大表示无法到达
     // 返回值是最小连通图的路径之和
-    public static int prim(int[][] graph){
+    public static int prim(int[][] graph) {
         int size = graph.length;
         int[] distances = new int[size];
         boolean[] visit = new boolean[size];
+        visit[0] = true;
         for (int i = 0; i < size; i++) {
             distances[i] = graph[0][i];
         }
         int sum = 0;
-        for (int i = 0; i < size; i++) {
+        for (int i = 1; i < size; i++) {
             int minPath = Integer.MAX_VALUE;
             int minIndex = -1;
             for (int j = 0; j < size; j++) {
