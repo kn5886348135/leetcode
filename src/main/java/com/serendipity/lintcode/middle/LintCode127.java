@@ -20,7 +20,7 @@ import java.util.Queue;
  */
 public class LintCode127 {
 
-    // 拓扑排序要求有向无环图DAG，graph的出度都不为0
+    // 拓扑排序要求有向无环图DAG，graph为图中所有节点集合
     public static List<DirectedGraphNode> topoSort(List<DirectedGraphNode> graph) {
         // 将图中所有节点的入度初始化为0
         Map<DirectedGraphNode, Integer> indegreeMap = new HashMap<>();
