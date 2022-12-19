@@ -66,7 +66,7 @@ public class PrintAllPermutations {
                 // 递归index + 1
                 generate1(chs, index + 1, result);
                 // 还原
-                swap(chs, i, index);
+                swap(chs, index, i);
             }
         }
     }
@@ -93,8 +93,8 @@ public class PrintAllPermutations {
                 if (!visited[chs[i]]) {
                     visited[chs[i]] = true;
                     swap(chs, index, i);
-                    generate1(chs, index + 1, result);
-                    swap(chs, i, index);
+                    generate2(chs, index + 1, result);
+                    swap(chs, index, i);
                 }
             }
         }

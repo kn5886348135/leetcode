@@ -36,7 +36,7 @@ public class PrintAllSubsquences {
     }
 
     // set去重
-    public static List<String> subsNoRepeat(String str) {
+    private static List<String> subsNoRepeat(String str) {
         char[] chs = str.toCharArray();
         String path = "";
         Set<String> set = new HashSet<>();
@@ -59,10 +59,10 @@ public class PrintAllSubsquences {
         String test = "acccc";
         List<String> result1 = subs(test);
         List<String> result2 = subsNoRepeat(test);
-        String str1 = result1.stream().collect(Collectors.joining(" "));
+        String str1 = result1.stream().collect(Collectors.joining(""));
         System.out.println(str1);
         System.out.println("=================");
-        String str2 = result2.stream().collect(Collectors.joining(" "));
+        String str2 = result2.stream().collect(Collectors.joining(""));
         System.out.println(str2);
     }
 }
