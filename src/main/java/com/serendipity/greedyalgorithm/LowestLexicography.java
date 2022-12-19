@@ -11,6 +11,7 @@ import java.util.TreeSet;
  * @date 2022/12/17/20:10
  */
 public class LowestLexicography {
+
     public static String lowestString1(String[] strs) {
         if (strs == null || strs.length == 0) {
             return "";
@@ -45,7 +46,7 @@ public class LowestLexicography {
         String[] result = new String[length - 1];
         int idx = 0;
         for (int i = 0; i < length; i++) {
-            if (idx != index) {
+            if (i != index) {
                 result[idx++] = strs[i];
             }
         }
@@ -76,8 +77,8 @@ public class LowestLexicography {
         return String.valueOf(result);
     }
 
-    private static String[] generateRandomStringArray(int arrlen, int strLen) {
-        String[] result = new String[(int) (Math.random() * arrlen) + 1];
+    private static String[] generateRandomStringArray(int arrLen, int strLen) {
+        String[] result = new String[(int) (Math.random() * arrLen) + 1];
         for (int i = 0; i < result.length; i++) {
             result[i] = generateRandomString(strLen);
         }
@@ -96,13 +97,13 @@ public class LowestLexicography {
         int arrLen = 6;
         int strLen = 5;
         int testTimes = 10000;
-        System.out.println("-----------start------------");
+        System.out.println("--------------------------start---------------------------------------");
         for (int i = 0; i < testTimes; i++) {
             String[] arr1 = generateRandomStringArray(arrLen, strLen);
             String[] arr2 = copyStringArray(arr1);
             if (!lowestString1(arr1).equals(lowestString2(arr2))) {
                 for (String str : arr1) {
-                    System.out.println(str + " , ");
+                    System.out.print(str + ",");
                 }
                 System.out.println();
                 System.out.println("failed");
