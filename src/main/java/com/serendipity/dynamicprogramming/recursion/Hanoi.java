@@ -14,9 +14,11 @@ import java.util.Stack;
  */
 public class Hanoi {
 
+    private static final String TEMPLATE = "Move {} from {} to {}";
     // A、B、C，3层汉诺塔
     // 1-C、2-B、1-B、3-C，3移动到C柱，12在B柱并且整个过程没有出现大盘在小盘上面
     // 1-A、2-C、1-C，完成要求
+    // 时间复杂度O(2的n次方-1)
     public static void hanoi1(int n) {
         leftToRight(n);
     }
@@ -28,11 +30,11 @@ public class Hanoi {
             return;
         }
         // 1到n-1移动到B
-        leftToMid(n-1);
+        leftToMid(n - 1);
         // n移动到C
         System.out.println("Move " + n + " from left to right");
         // 1到n-1移动到C
-        midToRight(n-1);
+        midToRight(n - 1);
     }
 
     private static void midToRight(int n) {
@@ -41,11 +43,11 @@ public class Hanoi {
             return;
         }
         // 1到n-1移动到A
-        midToLeft(n-1);
+        midToLeft(n - 1);
         // n移动到C
         System.out.println("Move " + n + " from mid to right");
         // 1到n-1移动到C
-        leftToRight(n-1);
+        leftToRight(n - 1);
     }
 
     private static void midToLeft(int n) {
@@ -54,11 +56,11 @@ public class Hanoi {
             return;
         }
         // 1到n-1移动到C
-        midToRight(n-1);
+        midToRight(n - 1);
         // n移动到A
         System.out.println("Move " + n + " from mid to left");
         // 1到n-1移动到A
-        rightToLeft(n-1);
+        rightToLeft(n - 1);
     }
 
     private static void rightToLeft(int n) {
@@ -80,11 +82,11 @@ public class Hanoi {
             return;
         }
         // 1到n-1移动到A
-        rightToLeft(n-1);
+        rightToLeft(n - 1);
         // n移动到B
         System.out.println("Move " + n + " from right to mid");
         // 1到n-1移动到B
-        leftToMid(n-1);
+        leftToMid(n - 1);
     }
 
     private static void leftToMid(int n) {
@@ -93,11 +95,11 @@ public class Hanoi {
             return;
         }
         // 1到n-1移动到C
-        leftToRight(n-1);
+        leftToRight(n - 1);
         // n移动到B
         System.out.println("Move " + n + " from left to mid");
         // 1到n-1移动到B
-        rightToMid(n-1);
+        rightToMid(n - 1);
     }
 
     public static void hanoi2(int n) {
@@ -125,7 +127,7 @@ public class Hanoi {
         public String other;
 
         public Record(boolean finish1, int base, String from, String to, String other) {
-            this.finish1 = finish1;
+            this.finish1 = false;
             this.base = base;
             this.from = from;
             this.to = to;
@@ -161,7 +163,7 @@ public class Hanoi {
     }
 
     public static void main(String[] args) {
-        int n=3;
+        int n = 3;
         hanoi1(n);
         System.out.println("=================");
         hanoi2(n);
