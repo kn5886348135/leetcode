@@ -39,6 +39,7 @@ public class BestArrange {
             return done;
         }
         int max = done;
+        // 当前安排的会议是什么会，每一个都枚举
         for (int i = 0; i < programs.length; i++) {
             // 会议开始时间在当前时间以后则可以安排
             if (programs[i].start >= timeLine) {
@@ -60,6 +61,7 @@ public class BestArrange {
         return ans;
     }
 
+    // 会议的开始时间和结束时间，都是数值，不会 < 0
     public static int bestArrange2(Program[] programs) {
         Arrays.sort(programs, Comparator.comparingInt(pro -> pro.end));
         int timeLine = 0;

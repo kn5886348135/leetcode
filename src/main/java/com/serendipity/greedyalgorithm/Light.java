@@ -71,7 +71,7 @@ public class Light {
                 }
             }
         }
-       return light;
+        return light;
     }
 
     // 两个X之间的.数量除以3向上取整
@@ -102,14 +102,14 @@ public class Light {
 
     public static void main(String[] args) {
         int length = 20;
-        int count = 10000;
+        int count = 100000;
         for (int i = 0; i < count; i++) {
             String str = randomString(length);
             int ans1 = minLight1(str);
             int ans2 = minLight2(str);
             int ans3 = minLight3(str);
             if (ans1 != ans2 || ans1 != ans3) {
-                System.out.println("failef");
+                System.out.println("failed");
             }
         }
         System.out.println("success");
