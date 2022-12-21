@@ -25,7 +25,7 @@ public class PaperFolding {
             return;
         }
         process(i + 1, n, true);
-        System.out.println(down ? "凹" : "凸");
+        System.out.print(down ? "凹 " : "凸 ");
         process(i + 1, n, false);
     }
 
