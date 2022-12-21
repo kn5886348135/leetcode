@@ -1,4 +1,4 @@
-package com.serendipity.leetcode.middle;
+package com.serendipity.binarytree;
 
 import java.util.ArrayList;
 import java.util.List;

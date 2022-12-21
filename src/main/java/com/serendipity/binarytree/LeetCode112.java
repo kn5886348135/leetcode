@@ -1,4 +1,4 @@
-package com.serendipity.leetcode.easy;
+package com.serendipity.binarytree;
 
 /**
  * 路径总和
