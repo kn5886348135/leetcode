@@ -77,7 +77,7 @@ public class EncodeNaryTreeToBinaryTree {
             while (root != null) {
                 Node cur = new Node(root.value, de(root.left));
                 children.add(cur);
-                root = root.left;
+                root = root.right;
             }
             return children;
         }
