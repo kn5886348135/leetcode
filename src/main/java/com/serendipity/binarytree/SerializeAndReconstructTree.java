@@ -46,7 +46,7 @@ public class SerializeAndReconstructTree {
         return ans;
     }
 
-    public static void pres(Node head,Queue<String> ans) {
+    public static void pres(Node head, Queue<String> ans) {
         if (head == null) {
             ans.add(null);
         } else {
@@ -63,7 +63,7 @@ public class SerializeAndReconstructTree {
         return ans;
     }
 
-    public static void ins(Node head,Queue<String> ans) {
+    public static void ins(Node head, Queue<String> ans) {
         if (head == null) {
             ans.add(null);
         } else {
@@ -112,6 +112,7 @@ public class SerializeAndReconstructTree {
         if (poslist == null || poslist.size() == 0) {
             return null;
         }
+        // 左右中  ->  stack(中右左)
         Stack<String> stack = new Stack<>();
         while (!poslist.isEmpty()) {
             stack.push(poslist.poll());
@@ -125,8 +126,8 @@ public class SerializeAndReconstructTree {
             return null;
         }
         Node head = new Node(Integer.valueOf(value));
-        head.left = posb(posstack);
         head.right = posb(posstack);
+        head.left = posb(posstack);
         return head;
     }
 
