@@ -25,29 +25,36 @@ public class LowestAncestor {
         }
     }
 
-    // ???
+    // map保存所有节点的父节点
+    // set保存node1的所有父节点
+    // 遍历node2的父节点
     public static Node lowestAncestor(Node head, Node node1, Node node2) {
         if (head == null) {
             return null;
         }
-
+        // key    node
+        // value  node的父节点
         Map<Node, Node> parentMap = new HashMap<>();
         parentMap.put(head, null);
         fillParentMap(head, parentMap);
         Set<Node> set = new HashSet<>();
         Node cur = node1;
         set.add(cur);
+        // 将node1的所有父节点加入set
         while (parentMap.get(cur) != null) {
             cur = parentMap.get(cur);
             set.add(cur);
         }
         cur = node2;
+        // 从下往上寻找node2的父节点
+        // node1、node2必然有公共祖先，不会发生死循环
         while (!set.contains(cur)) {
             cur = parentMap.get(cur);
         }
         return cur;
     }
 
+    // 记录所有节点的父节点
     public static void fillParentMap(Node head, Map<Node, Node> parentMap) {
         if (head.left != null) {
             parentMap.put(head.left, head);
@@ -65,8 +72,11 @@ public class LowestAncestor {
     }
 
     public static class Info {
+        // 发现node1
         public boolean findA;
+        // 发现node2
         public boolean findB;
+        // 结果
         public Node ans;
 
         public Info(boolean findA, boolean findB, Node ans) {
@@ -76,12 +86,16 @@ public class LowestAncestor {
         }
     }
 
+    // 递归套路
     public static Info process(Node head, Node node1, Node node2) {
+        // 递归终止条件
         if (head == null) {
             return new Info(false, false, null);
         }
+        // 左树递归遍历信息
         Info leftInfo = process(head.left, node1, node2);
-        Info rightInfo = process(head.left, node1, node2);
+        // 右树递归遍历信息
+        Info rightInfo = process(head.right, node1, node2);
         boolean findA = (head == node1) || leftInfo.findA || rightInfo.findA;
         boolean findB = (head == node2) || leftInfo.findB || rightInfo.findB;
 
@@ -95,6 +109,7 @@ public class LowestAncestor {
                 ans = head;
             }
         }
+        // 返回地柜结果
         return new Info(findA, findB, ans);
     }
 
@@ -122,7 +137,7 @@ public class LowestAncestor {
         return arr.get(randomIndex);
     }
 
-    public static void fillPreList(Node head,List<Node> arr) {
+    public static void fillPreList(Node head, List<Node> arr) {
         if (head == null) {
             return;
         }
@@ -132,8 +147,8 @@ public class LowestAncestor {
     }
 
     public static void main(String[] args) {
-        int maxLevel =4;
-        int maxValue =  100;
+        int maxLevel = 4;
+        int maxValue = 100;
         int count = 1000000;
         for (int i = 0; i < count; i++) {
             Node head = generateRandomBST(maxLevel, maxValue);
