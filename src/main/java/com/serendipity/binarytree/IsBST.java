@@ -26,7 +26,7 @@ public class IsBST {
         }
         ArrayList<Node> arr = new ArrayList<>();
         in(head, arr);
-        for (int i = 0; i < arr.size(); i++) {
+        for (int i = 1; i < arr.size(); i++) {
             if (arr.get(i).value <= arr.get(i - 1).value) {
                 return false;
             }
@@ -34,7 +34,7 @@ public class IsBST {
         return true;
     }
 
-    public static void in(Node head,ArrayList<Node> arr) {
+    public static void in(Node head, ArrayList<Node> arr) {
         if (head == null) {
             return;
         }

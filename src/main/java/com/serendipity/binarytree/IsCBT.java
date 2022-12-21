@@ -57,9 +57,14 @@ public class IsCBT {
     }
 
     public static boolean isCBT2(Node head) {
+        if (head == null) {
+            return true;
+        }
+        // return process1(head).isCBT;
         return process(head).isCBT;
     }
 
+    // 对每一棵子树，是否是满二叉树、是否是完全二叉树、高度
     public static class Info {
         public boolean isFull;
         public boolean isCBT;
@@ -91,6 +96,33 @@ public class IsCBT {
             isCBT = true;
         } else if (leftInfo.isFull && rightInfo.isCBT && leftInfo.height == rightInfo.height) {
             isCBT = true;
+        }
+        return new Info(isFull, isCBT, height);
+    }
+
+    public static Info process1(Node head) {
+        if (head == null) {
+            return new Info(true, true, 0);
+        }
+        Info leftInfo = process(head.left);
+        Info rightInfo = process(head.right);
+        int height = Math.max(leftInfo.height, rightInfo.height) + 1;
+        boolean isFull = leftInfo.isFull && rightInfo.isFull && leftInfo.height == rightInfo.height;
+        boolean isCBT = false;
+        if (isFull) {
+            isCBT = true;
+        } else { // 以x为头整棵树，不满
+            if (leftInfo.isCBT && rightInfo.isCBT) {
+                if (leftInfo.isCBT && rightInfo.isFull && leftInfo.height == rightInfo.height + 1) {
+                    isCBT = true;
+                }
+                if (leftInfo.isFull && rightInfo.isFull && leftInfo.height == rightInfo.height + 1) {
+                    isCBT = true;
+                }
+                if (leftInfo.isFull && rightInfo.isCBT && leftInfo.height == rightInfo.height) {
+                    isCBT = true;
+                }
+            }
         }
         return new Info(isFull, isCBT, height);
     }
