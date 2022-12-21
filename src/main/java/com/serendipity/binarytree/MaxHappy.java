@@ -33,8 +33,8 @@ public class MaxHappy {
 
     // 当前来到的节点cur
     // up表示cur的上级是否要来
-    // 如果up为true，表示在cur的上级确定来，cur整颗树能提供的最大快乐值
-    // 如果up为false，表示在cur的上级确定不来，cur整颗树能提供的最大快乐值
+    // 如果up为true，表示在cur的上级确定来，cur整棵树能提供的最大快乐值
+    // 如果up为false，表示在cur的上级确定不来，cur整棵树能提供的最大快乐值
     public static int process1(Employee cur, boolean up) {
         // 如果cur的上级来的话，cur不来，但是cur的下级是可以来的
         if (up) {

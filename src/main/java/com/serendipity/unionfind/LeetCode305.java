@@ -1,4 +1,4 @@
-package com.serendipity.leetcode.hard;
+package com.serendipity.unionfind;
 
 import java.util.ArrayList;
 import java.util.HashMap;
