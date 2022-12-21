@@ -38,7 +38,7 @@ public class IsBalanced {
     }
 
     public static boolean isBalanced2(Node head) {
-       return process(head).isBalanced;
+        return process(head).isBalanced;
     }
 
     public static class Info {
@@ -98,5 +98,4 @@ public class IsBalanced {
         }
         System.out.println("success");
     }
-
 }
