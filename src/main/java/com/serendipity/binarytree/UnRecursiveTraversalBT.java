@@ -21,23 +21,26 @@ public class UnRecursiveTraversalBT {
     }
 
     public static void pre(Node head) {
-        System.out.println("pre-order");
+        System.out.print("pre-order ");
         if (head != null) {
             Stack<Node> stack = new Stack<>();
             stack.add(head);
-            System.out.print(head.value + " ");
-            if (head.right != null) {
-                stack.push(head.right);
-            }
-            if (head.left != null) {
-                stack.push(head.left);
+            while (!stack.isEmpty()) {
+                head = stack.pop();
+                System.out.print(head.value + " ");
+                if (head.right != null) {
+                    stack.push(head.right);
+                }
+                if (head.left != null) {
+                    stack.push(head.left);
+                }
             }
         }
         System.out.println();
     }
 
     public static void in(Node head) {
-        System.out.println("in-order");
+        System.out.print("in-order ");
         if (head != null) {
             Stack<Node> stack = new Stack<>();
             while (!stack.isEmpty() || head != null) {
@@ -46,7 +49,7 @@ public class UnRecursiveTraversalBT {
                     head = head.left;
                 } else {
                     head = stack.pop();
-                    System.out.println(head.value + " ");
+                    System.out.print(head.value + " ");
                     head = head.right;
                 }
             }
@@ -55,12 +58,13 @@ public class UnRecursiveTraversalBT {
     }
 
     public static void pos1(Node head) {
-        System.out.println("pos-order");
+        System.out.print("pos-order ");
         if (head != null) {
             Stack<Node> stack1 = new Stack<>();
             Stack<Node> stack2 = new Stack<>();
             stack1.push(head);
             while (!stack1.isEmpty()) {
+                // 头 右 左
                 head = stack1.pop();
                 stack2.push(head);
                 if (head.left != null) {
@@ -70,15 +74,16 @@ public class UnRecursiveTraversalBT {
                     stack1.push(head.right);
                 }
             }
+            // 左 右 头
             while (!stack2.isEmpty()) {
-                System.out.println(stack2.pop().value + " ");
+                System.out.print(stack2.pop().value + " ");
             }
         }
         System.out.println();
     }
 
     public static void pos2(Node head) {
-        System.out.println("pos-order");
+        System.out.print("pos-order ");
         if (head != null) {
             Stack<Node> stack = new Stack<>();
             stack.push(head);
@@ -88,9 +93,9 @@ public class UnRecursiveTraversalBT {
                 if (node.left != null && head != node.left && head != node.right) {
                     stack.push(node.left);
                 } else if (node.right != null && head != node.right) {
-                    stack.push(node.left);
+                    stack.push(node.right);
                 } else {
-                    System.out.println(stack.pop().value + " ");
+                    System.out.print(stack.pop().value + " ");
                     head = node;
                 }
             }
