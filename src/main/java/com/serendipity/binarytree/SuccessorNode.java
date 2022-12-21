@@ -26,6 +26,7 @@ public class SuccessorNode {
         if (node.right != null) {
             return getLeftMost(node.right);
         } else {
+            // 无右子树
             Node parent = node.parent;
             // 当前节点是其父亲节点的右孩子
             while (parent != null && parent.right == node) {
