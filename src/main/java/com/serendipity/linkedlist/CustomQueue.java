@@ -1,4 +1,4 @@
-package com.serendipity.listnode;
+package com.serendipity.linkedlist;
 
 import java.util.Objects;
 
