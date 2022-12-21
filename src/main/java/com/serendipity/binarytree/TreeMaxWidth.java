@@ -112,10 +112,10 @@ public class TreeMaxWidth {
         for (int i = 0; i < testTimes; i++) {
             Node head = generateRandomBST(maxLevel, maxValue);
             if (maxWidthUseMap(head) != maxWidthNoMap(head)) {
-                System.out.println("Oops!");
+                System.out.println("failed");
             }
         }
-        System.out.println("finish!");
+        System.out.println("success");
 
     }
 }
