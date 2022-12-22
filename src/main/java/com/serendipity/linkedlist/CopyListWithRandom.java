@@ -24,19 +24,22 @@ public class CopyListWithRandom {
     }
 
     public static Node copyRandomList1(Node head) {
+        // key 老节点
+        // value 新节点
         HashMap<Node, Node> map = new HashMap<>();
         Node cur = head;
         while (cur != null) {
             map.put(cur, new Node(cur.value));
             cur = cur.next;
         }
-        cur=head;
+        cur = head;
         while (cur != null) {
             // cur 老
             // map.get(cur) 新
             // 新.next -> cur.next克隆节点找到
             map.get(cur).next = map.get(cur.next);
             map.get(cur).random = map.get(cur.random);
+            cur = cur.next;
         }
         return map.get(head);
     }
@@ -55,10 +58,10 @@ public class CopyListWithRandom {
             cur.next.next = next;
             cur = next;
         }
-        cur=head;
+        cur = head;
         Node copy = null;
         // 1 1' 2 2' 3 3'
-        // 依次设置 1‘ 2’ 3‘ random指针
+        // 依次设置 1' 2' 3' random指针
         while (cur != null) {
             next = cur.next.next;
             copy = cur.next;
