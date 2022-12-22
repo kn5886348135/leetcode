@@ -49,8 +49,9 @@ public class FindFirstIntersectNode {
             fast = fast.next.next;
             slow = slow.next;
         }
-        // 循环结束则证明有环
+        // slow fast 相遇
         fast = head;
+        // n2 -> walk again from head
         while (slow != fast) {
             slow = slow.next;
             fast = fast.next;
@@ -59,6 +60,7 @@ public class FindFirstIntersectNode {
         return slow;
     }
 
+    // 如果两个链表都无环，返回第一个相交节点，如果不想交，返回null
     public static Node noLoop(Node head1, Node head2) {
         if (head1 == null || head2 == null) {
             return null;
