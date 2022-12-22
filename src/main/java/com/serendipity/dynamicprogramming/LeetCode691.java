@@ -5,11 +5,20 @@ import java.util.HashMap;
 /**
  * @author jack
  * @version 1.0
- * @description 给定一个字符串str，给定一个字符串类型的数组arr，出现的字符都是小写英文。arr每一个字符串，代表一张
+ * @description LeetCode691
+ *              给定一个字符串str，给定一个字符串类型的数组arr，出现的字符都是小写英文。arr每一个字符串，代表一张
  * 贴纸，你可以把单个字符剪开使用，目的是拼出str来。返回需要至少多少张贴纸可以完成这个任务。
+ *
+ * We are given n different types of stickers. Each sticker has a lowercase English word on it.
+ *
+ * You would like to spell out the given string target by cutting individual letters from your collection of stickers
+ * and rearranging them. You can use each sticker more than once if you want, and you have infinite quantities of
+ * each sticker.
+ *
+ * Return the minimum number of stickers that you need to spell out target. If the task is impossible, return -1.
  * @date 2022/12/22/10:06
  */
-public class StickersToSpellWord {
+public class LeetCode691 {
 
     public static int minStickers1(String[] stickers, String target) {
         int ans = process1(stickers, target);
@@ -126,9 +135,6 @@ public class StickersToSpellWord {
         if (dp.containsKey(target)) {
             return dp.get(target);
         }
-        if (target.length() == 0) {
-            return 0;
-        }
         char[] chs = target.toCharArray();
         int[] count = new int[26];
         for (char ch : chs) {
@@ -153,7 +159,7 @@ public class StickersToSpellWord {
                     }
                 }
                 String rest = builder.toString();
-                min = Math.min(min, process2(stickers, rest));
+                min = Math.min(min, process3(stickers, rest, dp));
             }
         }
         int ans = min + (min == Integer.MAX_VALUE ? 0 : 1);
