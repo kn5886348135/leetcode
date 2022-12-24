@@ -7,17 +7,28 @@ import java.util.PriorityQueue;
 /**
  * @author jack
  * @version 1.0
- * @description
+ * @description  题目
+ *               数组arr代表每一个咖啡机冲一杯咖啡的时间，每个咖啡机只能串行的制造咖啡。
+ *               现在有n个人需要喝咖啡，只能用咖啡机来制造咖啡。
+ *               认为每个人喝咖啡的时间非常短，冲好的时间即是喝完的时间。
+ *               每个人喝完之后咖啡杯可以选择洗或者自然挥发干净，只有一台洗咖啡杯的机器，只能串行的洗咖啡杯。
+ *               洗杯子的机器洗完一个杯子时间为a，任何一个杯子自然挥发干净的时间为b。
+ *               四个参数：arr, n, a, b
+ *               假设时间点从0开始，返回所有人喝完咖啡并洗完咖啡杯的全部过程结束后，至少来到什么时间点。
  * @date 2022/12/24/10:53
  */
 public class Coffee {
 
+    // 验证的方法
+    // 彻底的暴力
+    // 很慢但是绝对正确
     public static int right(int[] arr, int n, int a, int b) {
         int[] times = new int[arr.length];
         int[] drink = new int[n];
         return forceMake(arr, times, 0, drink, n, a, b);
     }
 
+    // 每个人暴力尝试用每一个咖啡机给自己做咖啡
     public static int forceMake(int[] arr, int[] times, int kth, int[] drink, int n, int a, int b) {
         if (kth == n) {
             int[] drinkSorted = Arrays.copyOf(drink, kth);
@@ -41,13 +52,17 @@ public class Coffee {
         if (index == drinks.length) {
             return time;
         }
+        // 选择一：当前index号咖啡杯，选择用洗咖啡机刷干净
         int wash = Math.max(drinks[index], washLine) + a;
         int ans1 = forceWash(drinks, a, b, index + 1, wash, Math.max(wash, time));
+
+        // 选择二：当前index号咖啡杯，选择自然挥发
         int dry = drinks[index] + b;
         int ans2 = forceWash(drinks, a, b, index + 1, washLine, Math.max(dry, time));
         return Math.min(ans1, ans2);
     }
 
+    // 以下为贪心+优良暴力
     public static class Machine {
         public int timePoint;
         public int workTime;
@@ -66,6 +81,7 @@ public class Coffee {
         }
     }
 
+    // 优良一点的暴力尝试的方法
     public static int minTime1(int[] arr, int n, int a, int b) {
         PriorityQueue<Machine> heap = new PriorityQueue<>(new MachineComparator());
         for (int i = 0; i < arr.length; i++) {
@@ -81,21 +97,28 @@ public class Coffee {
         return bestTime(drinks, a, b, 0, 0);
     }
 
+    // drinks 所有杯子可以开始洗的时间
+    // wash 单杯洗干净的时间（串行）
+    // air 挥发干净的时间(并行)
+    // free 洗的机器什么时候可用
+    // drinks[index.....]都变干净，最早的结束时间（返回）
     public static int bestTime(int[] drinks, int wash, int air, int index, int free) {
         if (index == drinks.length) {
             return 0;
         }
+        // index号杯子 决定洗
         int selfClean1 = Math.max(drinks[index], free) + wash;
         int restClean1 = bestTime(drinks, wash, air, index + 1, selfClean1);
         int p1 = Math.max(selfClean1, restClean1);
 
+        // index号杯子 决定挥发
         int selfClean2 = drinks[index] + air;
         int restClean2 = bestTime(drinks, wash, air, index + 1, free);
         int p2 = Math.max(selfClean2, restClean2);
         return Math.min(p1, p2);
     }
 
-
+    // 贪心+优良尝试改成动态规划
     public static int minTime2(int[] arr, int n, int a, int b) {
         PriorityQueue<Machine> heap = new PriorityQueue<>(new MachineComparator());
         for (int i = 0; i < arr.length; i++) {
@@ -122,11 +145,12 @@ public class Coffee {
             for (int free = 0; free <= maxFree; free++) {
                 int selfClean1 = Math.max(drinks[index], free) + wash;
                 if (selfClean1 > maxFree) {
-                    continue;
+                    break; // 因为后面的也都不用填了
                 }
+                // index号杯子 决定洗
                 int restClean1 = dp[index + 1][selfClean1];
                 int p1 = Math.max(selfClean1, restClean1);
-
+                // index号杯子 决定挥发
                 int selfClean2 = drinks[index] + air;
                 int restClean2 = dp[index + 1][free];
                 int p2 = Math.max(selfClean2, restClean2);
@@ -145,9 +169,9 @@ public class Coffee {
     }
 
     public static void printArray(int[] arr) {
-        System.out.println("arr ");
+        System.out.print("arr : ");
         for (int i = 0; i < arr.length; i++) {
-            System.out.println(arr[i] + ", ");
+            System.out.print(arr[i] + ", ");
         }
         System.out.println();
     }
@@ -170,6 +194,7 @@ public class Coffee {
                 System.out.println("a " + a);
                 System.out.println("b " + b);
                 System.out.println(ans1 + " , " + ans2 + " , " + ans3);
+                System.out.println("===============");
                 break;
             }
         }
