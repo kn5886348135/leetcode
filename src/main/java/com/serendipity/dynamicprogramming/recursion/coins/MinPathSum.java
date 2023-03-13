@@ -56,7 +56,7 @@ public class MinPathSum {
         int[] dp = new int[col];
         dp[0] = matrix[0][0];
         // 初始化第一行，一直往右走，累加
-        for (int j = 1; j < row; j++) {
+        for (int j = 1; j < col; j++) {
             dp[j] = dp[j - 1] + matrix[0][j];
         }
         // 状态转移方程，matrix[i][j]的上、左最小值加上当前位置
@@ -89,8 +89,8 @@ public class MinPathSum {
             for (int j = 0; j < matrix[0].length; j++) {
                 System.out.print(matrix[i][j] + " ");
             }
+            System.out.println();
         }
-        System.out.println();
     }
 
 }
