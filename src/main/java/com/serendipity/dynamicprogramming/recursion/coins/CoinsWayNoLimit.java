@@ -102,8 +102,12 @@ public class CoinsWayNoLimit {
     public static int[] generateRandomArr(int length, int value) {
         int len = (int) (Math.random() * length);
         int[] arr = new int[len];
+        boolean[] has = new boolean[value + 1];
         for (int i = 0; i < len; i++) {
-            arr[i] = (int) (Math.random() * value) + 1;
+            do {
+                arr[i] = (int) (Math.random() * value) + 1;
+            } while (has[arr[i]]);
+            has[arr[i]] = true;
         }
         return arr;
     }
