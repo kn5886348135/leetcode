@@ -19,7 +19,7 @@ public class CoinsWaySameValueSamePapper {
 
     public static void main(String[] args) {
         int maxLen = 10;
-        int maxValue = 30;
+        int maxValue = 20;
         int testTime = 1000000;
         for (int i = 0; i < testTime; i++) {
             int[] arr = generateRandomArr(maxLen, maxValue);
@@ -51,7 +51,7 @@ public class CoinsWaySameValueSamePapper {
 
     // 每一张面值对应的数量
     public static Info getInfo(int[] arr) {
-        Map<Integer, Integer> counts = new HashMap<>();
+        HashMap<Integer, Integer> counts = new HashMap<>();
         for (int value : arr) {
             if (!counts.containsKey(value)) {
                 counts.put(value, 1);
@@ -70,7 +70,7 @@ public class CoinsWaySameValueSamePapper {
         return new Info(coins, pieces);
     }
 
-    public static int coinsWay(int[] arr,int aim) {
+    public static int coinsWay(int[] arr, int aim) {
         if (arr == null || arr.length == 0 || aim < 0) {
             return 0;
         }
@@ -78,13 +78,14 @@ public class CoinsWaySameValueSamePapper {
         return process(info.coins, info.pieces, 0, aim);
     }
 
+    // 暴力递归
     public static int process(int[] coins, int[] pieces, int index, int rest) {
         if (index == coins.length) {
             return rest == 0 ? 1 : 0;
         }
         int ways = 0;
         for (int piece = 0; piece * coins[index] <= rest && piece <= pieces[index]; piece++) {
-            ways = process(coins, pieces, index + 1, rest - (piece * coins[index]));
+            ways += process(coins, pieces, index + 1, rest - (piece * coins[index]));
         }
         return ways;
     }
@@ -111,6 +112,7 @@ public class CoinsWaySameValueSamePapper {
         return dp[0][aim];
     }
 
+    // 动态规划，优化
     public static int dp2(int[] arr, int aim) {
         if (arr == null || arr.length == 0 || aim < 0) {
             return 0;
@@ -138,12 +140,8 @@ public class CoinsWaySameValueSamePapper {
     public static int[] generateRandomArr(int length, int value) {
         int len = (int) (Math.random() * length);
         int[] arr = new int[len];
-        boolean[] has = new boolean[value + 1];
         for (int i = 0; i < len; i++) {
-            do {
-                arr[i] = (int) (Math.random() * value) + 1;
-            } while (has[arr[i]]);
-            has[arr[i]] = true;
+            arr[i] = (int) (Math.random() * value) + 1;
         }
         return arr;
     }
