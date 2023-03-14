@@ -59,16 +59,19 @@ public class KillMonster {
         return ways;
     }
 
-    public static double dp1(int n,int m,int k) {
+    // 动态规划
+    public static double dp1(int n, int m, int k) {
         if (n < 1 || m < 1 || k < 1) {
             return 0;
         }
         long all = (long) Math.pow(m + 1, k);
         long[][] dp = new long[k + 1][n + 1];
+        dp[0][0] = 1;
         for (int times = 1; times <= k; times++) {
             dp[times][0] = (long) Math.pow(m + 1, times);
-            for (int hp = 0; hp <= n; hp++) {
+            for (int hp = 1; hp <= n; hp++) {
                 long ways = 0;
+                // 枚举行为
                 for (int i = 0; i <= m; i++) {
                     if (hp - i >= 0) {
                         ways += dp[times - 1][hp - i];
@@ -83,7 +86,8 @@ public class KillMonster {
         return (double) kill / (double) all;
     }
 
-    public static double dp2(int n,int m,int k) {
+    // 动态规划，利用相邻元素优化枚举行为
+    public static double dp2(int n, int m, int k) {
         if (n < 1 || m < 1 || k < 1) {
             return 0;
         }

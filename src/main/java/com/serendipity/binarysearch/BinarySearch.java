@@ -1,6 +1,6 @@
 package com.serendipity.binarysearch;
 
-import com.serendipity.listnode.Node;
+import com.serendipity.linkedlist.Node;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ public class BinarySearch {
 //        System.out.println(binarySearchLeft(arr, target) == validateIndexLeft(arr, target));
         System.out.println(localMin(arr));
         Map<String, String> map = new HashMap<>();
-        map.put("xunian", "xxxxxxxxxxxxxx");
+        map.put("jack", "xxxxxxxxxxxxxx");
         String str = "xunian";
         System.out.println(map.containsKey(str));
         Integer a = 1234567;

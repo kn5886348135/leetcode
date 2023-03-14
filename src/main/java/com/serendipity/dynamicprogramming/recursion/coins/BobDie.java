@@ -22,6 +22,7 @@ public class BobDie {
         return (double) process(row, col, k, n, m) / Math.pow(4, k);
     }
 
+    // 目前在row，col位置，还有rest步要走，走完了如果还在棋盘中就获得1个生存点，返回总的生存点数
     public static long process(int row, int col, int rest, int n, int m) {
         // 边界条件
         if (row < 0 || row == n || col < 0 || col == m) {
