@@ -39,8 +39,8 @@ public class SplitSumClosed {
         for (int num : arr) {
             sum += num;
         }
-        // (-1 >> 1) == -1
-        return process(arr, 1, sum >> 1);
+        // (-1 >> 1) == -1 不成立
+        return process(arr, 0, sum >> 1);
     }
 
     // arr index及以后的元素不超过sum/2的最大累加和
@@ -87,17 +87,16 @@ public class SplitSumClosed {
     }
 
     public static int[] generateRandomArr(int length, int value) {
-        int len = (int) (Math.random() * length);
-        int[] arr = new int[len];
-        for (int i = 0; i < len; i++) {
-            arr[i] = (int) (Math.random() * value) + 1;
+        int[] arr = new int[length];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = (int) (Math.random() * value);
         }
         return arr;
     }
 
     public static void printArr(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + " ");
+        for (int num : arr) {
+            System.out.print(num + " ");
         }
         System.out.println();
     }
