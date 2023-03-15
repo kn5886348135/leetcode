@@ -1,9 +1,5 @@
 package com.serendipity.leetcode.easy;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
 /**
  * 平衡二叉树
  * 给定一个二叉树，判断它是否是高度平衡的二叉树。
