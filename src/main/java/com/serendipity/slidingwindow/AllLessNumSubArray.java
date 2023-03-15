@@ -36,7 +36,7 @@ public class AllLessNumSubArray {
     // 子数组连续
     // 对数器
     public static int allLessNumSubArray1(int[] arr, int num) {
-        if (arr == null || arr.length < 1) {
+        if (arr == null || arr.length == 0 || num < 0) {
             return 0;
         }
         int len = arr.length;
@@ -45,7 +45,7 @@ public class AllLessNumSubArray {
             for (int right = left; right < len; right++) {
                 int max = arr[left];
                 int min = arr[left];
-                for (int i = left; i <= right; i++) {
+                for (int i = left + 1; i <= right; i++) {
                     max = Math.max(max, arr[i]);
                     min = Math.min(min, arr[i]);
                 }
@@ -60,14 +60,14 @@ public class AllLessNumSubArray {
     // 滑动窗口
     // 如果S[left...right]达标，那么S[left...right]的子数组一定达标
     // 如果S[left...right]不达标，那么包含S[left...right]的数组一定不达标
-    public static int allLessNumSubArray2(int[] arr,int num) {
+    public static int allLessNumSubArray2(int[] arr, int num) {
         if (arr == null || arr.length == 0 || num < 0) {
             return 0;
         }
         int len = arr.length;
         int ans = 0;
-        LinkedList<Integer> maxWindow = new LinkedList();
-        LinkedList<Integer> minWindow = new LinkedList();
+        LinkedList<Integer> maxWindow = new LinkedList<>();
+        LinkedList<Integer> minWindow = new LinkedList<>();
         int right = 0;
         // 窗口右侧向右滑动到不满足条件后，窗口左侧向右滑动一次
         // 时间复杂度为O(n)
