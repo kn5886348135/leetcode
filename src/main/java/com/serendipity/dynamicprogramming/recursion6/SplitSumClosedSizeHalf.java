@@ -46,7 +46,7 @@ public class SplitSumClosedSizeHalf {
         if ((arr.length & 1) == 0) {
             return process(arr, 0, arr.length >> 1, sum >> 1);
         } else {
-            return Math.max(process(arr, 0, arr.length >> 1, sum >> 1), process(arr, 0, arr.length >> 1 + 1, sum >> 1));
+            return Math.max(process(arr, 0, arr.length >> 1, sum >> 1), process(arr, 0, (arr.length >> 1) + 1, sum >> 1));
         }
     }
 
@@ -129,7 +129,7 @@ public class SplitSumClosedSizeHalf {
         int len = arr.length;
         int m = (len + 1) >> 1;
         int[][][] dp = new int[len][m + 1][sum + 1];
-        for (int i = 0; i <= len; i++) {
+        for (int i = 0; i < len; i++) {
             for (int j = 0; j <= m; j++) {
                 for (int k = 0; k <= sum; k++) {
                     dp[i][j][k] = Integer.MIN_VALUE;
@@ -148,7 +148,7 @@ public class SplitSumClosedSizeHalf {
         }
 
         for (int i = 1; i < len; i++) {
-            for (int j = 1; j <= (Math.min(i + 1, m)); j++) {
+            for (int j = 1; j <= Math.min(i + 1, m); j++) {
                 for (int k = 0; k <= sum; k++) {
                     dp[i][j][k] = dp[i - 1][j][k];
                     if (k - arr[i] >= 0) {
