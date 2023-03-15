@@ -44,7 +44,7 @@ public class NQueens {
             return 1;
         }
         int ans = 0;
-        // 在row行每一列合法位置递归
+        // 在row行col列上尝试放置皇后
         for (int col = 0; col < n; col++) {
             if (isValid(record, row, col)) {
                 // 更新已经存在的皇后位置，每个循环中record数组是不一样的
@@ -55,9 +55,9 @@ public class NQueens {
         return ans;
     }
 
-    // 判断当前皇后位置是否合法
+    // 判断row行、col列皇后位置是否合法
     public static boolean isValid(int[] record, int row, int col) {
-        // k表示已经存在的皇后在哪一行
+        // 已经存在的皇后位置在k行、record[k]列
         for (int k = 0; k < row; k++) {
             // 当前列与之前皇后的列重合 或者 当前列与之前皇后在一条斜线
             if (col == record[k] || Math.abs(record[k] - col) == Math.abs(row - k)) {
@@ -85,7 +85,7 @@ public class NQueens {
     // colLim           上一行皇后影响的列
     // leftDiaLim       上一行皇后对下一行皇后左下角的影响
     // rightDiaLim      上一行皇后对下一样皇后右下角的影响
-    public static int process2(int limit, int colLim, int leftDiaLim,int rightDiaLim) {
+    public static int process2(int limit, int colLim, int leftDiaLim, int rightDiaLim) {
         // 表示之前的皇后位置是一种有效方法
         if (colLim == limit) {
             return 1;
