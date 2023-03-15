@@ -20,6 +20,7 @@ public class SplitNumber {
     }
 
     public static int ways(int n) {
+        // 等于0没法裂开
         if (n <= 0) {
             return 0;
         }
@@ -45,6 +46,7 @@ public class SplitNumber {
 
     // 暴力递归，有枚举
     public static int dp1(int n) {
+        // 等于0没法裂开
         if (n <= 0) {
             return 0;
         }
@@ -70,6 +72,7 @@ public class SplitNumber {
 
     // 暴力递归，优化枚举
     public static int dp2(int n) {
+        // 等于0没法裂开
         if (n <= 0) {
             return 0;
         }
