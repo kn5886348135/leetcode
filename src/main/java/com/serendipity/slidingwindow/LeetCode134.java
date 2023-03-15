@@ -27,6 +27,7 @@ public class LeetCode134 {
     }
 
     // 滑动窗口
+    // 这个方法的时间复杂度O(N)，额外空间复杂度O(N)
     public static int canCompleteCircuit2(int[] gas, int[] cost) {
         boolean[] good = goodArray(gas, cost);
         for (int i = 0; i < gas.length; i++) {
@@ -67,7 +68,7 @@ public class LeetCode134 {
                 list.pollFirst();
             }
             while (!list.isEmpty() && arr[list.peekLast()] >= arr[j]) {
-                list.pollFirst();
+                list.pollLast();
             }
             list.addLast(j);
         }
