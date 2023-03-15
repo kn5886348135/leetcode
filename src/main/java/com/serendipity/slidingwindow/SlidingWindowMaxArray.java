@@ -19,10 +19,7 @@ public class SlidingWindowMaxArray {
         int testTime = 10000;
         for (int i = 0; i < testTime; i++) {
             int[] arr = generateRandomArr(maxLen, maxValue);
-            int width = (int) (Math.random() * (arr.length + 1));
-            while (width < 3) {
-                width = (int) (Math.random() * (arr.length + 1));
-            }
+            int width = (int) (Math.random() * arr.length) + 1;
             int[] ans1 = slidingWindow2(arr, width);
             int[] ans2 = slidingWindow1(arr, width);
             if (!isEqual(ans1, ans2)) {
