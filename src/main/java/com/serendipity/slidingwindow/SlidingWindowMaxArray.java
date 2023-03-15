@@ -14,34 +14,19 @@ import java.util.LinkedList;
 public class SlidingWindowMaxArray {
 
     public static void main(String[] args) {
-        int maxLen = 20;
-        int maxValue = 50;
-        int width = 3;
+        int maxLen = 100;
+        int maxValue = 100;
         int testTime = 10000;
         for (int i = 0; i < testTime; i++) {
-            int len = (int) (Math.random() * maxLen);
-            while (len < width) {
-                len = (int) (Math.random() * maxLen);
+            int[] arr = generateRandomArr(maxLen, maxValue);
+            int width = (int) (Math.random() * (arr.length + 1));
+            while (width < 3) {
+                width = (int) (Math.random() * (arr.length + 1));
             }
-            int[] arr = generateRandomArr(len, maxValue);
-            int[] ans1 = slidingWindow1(arr, width);
-            int[] ans2 = slidingWindow2(arr, width);
-            for (int j = 0; j < ans1.length; j++) {
-                if (ans1[j] != ans2[j]) {
-                    System.out.println("Oops!");
-                    for (int num : arr) {
-                        System.out.print(num + " ");
-                    }
-                    System.out.println("arr iterator");
-                    for (int num : ans1) {
-                        System.out.print(num + " ");
-                    }
-                    System.out.println("ans1 iterator");
-                    for (int num : ans2) {
-                        System.out.print(num + " ");
-                    }
-                    System.out.println("ans2 iterator");
-                }
+            int[] ans1 = slidingWindow2(arr, width);
+            int[] ans2 = slidingWindow1(arr, width);
+            if (!isEqual(ans1, ans2)) {
+                System.out.println("Oops!");
             }
         }
     }
@@ -105,7 +90,7 @@ public class SlidingWindowMaxArray {
     }
 
     public static int[] generateRandomArr(int length, int value) {
-        int[] arr = new int[length];
+        int[] arr = new int[(int) (Math.random() * length) + 1];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = (int) (Math.random() * value);
         }
@@ -117,6 +102,24 @@ public class SlidingWindowMaxArray {
             System.out.print(num + " ");
         }
         System.out.println();
+    }
+
+    public static boolean isEqual(int[] arr1, int[] arr2) {
+        if ((arr1 == null && arr2 != null) || (arr1 != null && arr2 == null)) {
+            return false;
+        }
+        if (arr1 == null && arr2 == null) {
+            return true;
+        }
+        if (arr1.length != arr2.length) {
+            return false;
+        }
+        for (int i = 0; i < arr1.length; i++) {
+            if (arr1[i] != arr2[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
