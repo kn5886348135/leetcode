@@ -163,11 +163,13 @@ public class MinCoinsOnePaper {
         return new Info(coins, pieces);
     }
 
+    // dp2时间复杂度为：O(arr长度) + O(货币种数 * aim * 每种货币的平均张数)
     public static int dp2(int[] arr, int aim) {
         if (aim == 0) {
             return 0;
         }
 
+        // 得到info时间复杂度O(arr长度)
         Info info = getInfo(arr);
         int[] coins = info.coins;
         int[] pieces = info.pieces;
@@ -178,10 +180,11 @@ public class MinCoinsOnePaper {
             dp[len][j] = Integer.MAX_VALUE;
         }
 
+        // 这三层for循环，时间复杂度为O(货币种数 * aim * 每种货币的平均张数)
         for (int index = len - 1; index >= 0; index--) {
             for (int rest = 0; rest <= aim; rest++) {
                 dp[index][rest] = dp[index + 1][rest];
-                for (int piece = 1; piece * coins[index] <= aim && piece < pieces[index]; piece++) {
+                for (int piece = 1; piece * coins[index] <= aim && piece <= pieces[index]; piece++) {
                     if (rest - piece * coins[index] >= 0 && dp[index + 1][rest - piece * coins[index]] != Integer.MAX_VALUE) {
                         dp[index][rest] = Math.min(dp[index][rest], piece + dp[index + 1][rest - piece * coins[index]]);
                     }
@@ -191,11 +194,13 @@ public class MinCoinsOnePaper {
         return dp[0][aim];
     }
 
+    // dp3时间复杂度为：O(arr长度) + O(货币种数 * aim)
+    // 优化需要用到窗口内最小值的更新结构
     public static int dp3(int[] arr, int aim) {
         if (aim == 0) {
             return 0;
         }
-
+        // 得到info时间复杂度O(arr长度)
         Info info = getInfo(arr);
         int[] coins = info.coins;
         int[] pieces = info.pieces;
@@ -205,9 +210,12 @@ public class MinCoinsOnePaper {
         for (int j = 1; j <= aim; j++) {
             dp[len][j] = Integer.MAX_VALUE;
         }
-
+        // 虽然是嵌套了很多循环，但是时间复杂度为O(货币种数 * aim)
+        // 因为用了窗口内最小值的更新结构
         for (int index = len - 1; index >= 0; index--) {
             for (int mod = 0; mod < Math.min(aim + 1, coins[index]); mod++) {
+                // 当前面值 X
+                // mod  mod + x   mod + 2*x   mod + 3 * x
                 LinkedList<Integer> list = new LinkedList<>();
                 list.add(mod);
                 dp[index][mod] = dp[index + 1][mod];
