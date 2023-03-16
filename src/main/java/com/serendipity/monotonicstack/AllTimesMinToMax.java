@@ -13,7 +13,16 @@ import java.util.Stack;
 public class AllTimesMinToMax {
 
     public static void main(String[] args) {
-
+        int testTimes = 2000000;
+        System.out.println("test begin");
+        for (int i = 0; i < testTimes; i++) {
+            int[] arr = gerenareRondomArray();
+            if (sumPlusMinOfSubArray1(arr) != sumPlusMinOfSubArray2(arr)) {
+                System.out.println("FUCK!");
+                break;
+            }
+        }
+        System.out.println("test finish");
     }
 
     // 对数器
@@ -73,6 +82,45 @@ public class AllTimesMinToMax {
             max = Math.max(max, (stack.isEmpty() ? sums[len - 1] : (sums[len - 1] - sums[stack.peek()])) * arr[j]);
         }
         return max;
+    }
+
+    public static int[] gerenareRondomArray() {
+        int[] arr = new int[(int) (Math.random() * 20) + 10];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = (int) (Math.random() * 101);
+        }
+        return arr;
+    }
+
+    // leetcode
+    // https://leetcode.com/problems/maximum-subarray-min-product/
+    // 注意测试题目数量大，要取模
+    // 注意溢出的处理用long类型来表示累加和
+    // 可以用自己手写的数组栈，优化系统实现的栈
+    public static int maxSumMinProduct(int[] arr) {
+        int size = arr.length;
+        long[] sums = new long[size];
+        sums[0] = arr[0];
+        for (int i = 1; i < size; i++) {
+            sums[i] = sums[i - 1] + arr[i];
+        }
+        long max = Long.MIN_VALUE;
+        int[] stack = new int[size];
+        int stackSize = 0;
+        for (int i = 0; i < size; i++) {
+            while (stackSize != 0 && arr[stack[stackSize - 1]] >= arr[i]) {
+                int j = stack[--stackSize];
+                max = Math.max(max,
+                        (stackSize == 0 ? sums[i - 1] : (sums[i - 1] - sums[stack[stackSize - 1]])) * arr[j]);
+            }
+            stack[stackSize++] = i;
+        }
+        while (stackSize != 0) {
+            int j = stack[--stackSize];
+            max = Math.max(max,
+                    (stackSize == 0 ? sums[size - 1] : (sums[size - 1] - sums[stack[stackSize - 1]])) * arr[j]);
+        }
+        return (int) (max % 1000000007);
     }
 
 }
