@@ -61,8 +61,11 @@ public class LeetCode85 {
 
         int max = 0;
         int[] height = new int[col];
+        // 第i行及以后的行可以组成目标矩形
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
+                // 拿到直方图
+                // 必须 要有第一行，所以出现'0'的行清空之前数据
                 height[j] = matrix[i][j] == '0' ? 0 : height[j] + 1;
             }
             max = Math.max(maxRecFromBottom(height), max);
@@ -70,6 +73,7 @@ public class LeetCode85 {
         return max;
     }
 
+    // 组成直方图就是矩形
     public static int maxRecFromBottom(int[] height) {
         if (height == null || height.length == 0) {
             return 0;
