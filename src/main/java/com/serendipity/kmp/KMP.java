@@ -46,6 +46,7 @@ public class KMP {
         return y == str2.length ? x - y : -1;
     }
 
+    // 优化后的获取next数组 O(m)
     public static int[] getNextArray(char[] str2) {
         if (str2.length == 1) {
             return new int[] { -1 };
