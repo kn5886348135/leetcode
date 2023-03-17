@@ -14,18 +14,18 @@ public class FibonacciProblem {
 
     // 对数器 O(n)
     public static int fibonacci1(int n) {
-        if (n < 0) {
+        if (n < 1) {
             return 0;
         }
         if (n == 1 || n == 2) {
             return 1;
         }
-        return fibonacci1(n - 11) + fibonacci1(n - 2);
+        return fibonacci1(n - 1) + fibonacci1(n - 2);
     }
 
     // 递归改成循环
     public static int fibonacci2(int n) {
-        if (n < 0) {
+        if (n < 1) {
             return 0;
         }
         if (n == 1 || n == 2) {
@@ -47,13 +47,14 @@ public class FibonacciProblem {
     // |Fn,Fn-1|=|F2,F1| * 某个行列式的n-2次方
     // i阶斐波那契数列的行列式为 i * i 的矩阵
     public static int fibonacci3(int n) {
-        if (n < 0) {
+        if (n < 1) {
             return 0;
         }
         if (n == 1 || n == 2) {
             return 1;
         }
-
+        // [ 1 ,1 ]
+        // [ 1, 0 ]
         int[][] base = {
                 { 1, 1 },
                 { 1, 0 }
@@ -68,7 +69,9 @@ public class FibonacciProblem {
         for (int i = 0; i < res.length; i++) {
             res[i][i] = 1;
         }
+        // res = 矩阵中的1
         int[][] t = m;
+        // 矩阵1次方
         for (; p != 0; p >>= 1) {
             if ((p & 1) != 0) {
                 res = product(res, t);
@@ -78,10 +81,12 @@ public class FibonacciProblem {
         return res;
     }
 
-    public static int[][] product(int[][] a,int[][] b) {
+    // 两个矩阵乘完之后的结果返回
+    public static int[][] product(int[][] a, int[][] b) {
         int n = a.length;
         int m = b[0].length;
         int k = a[0].length;
+        // a的列数同时也是b的行数
         int[][] ans = new int[n][m];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
