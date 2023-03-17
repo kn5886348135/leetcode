@@ -1,7 +1,5 @@
 package com.serendipity.kmp;
 
-import com.serendipity.graph.LeetCode743;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +55,7 @@ public class TreeEqual {
         return containsTree1(node1.left, node2) || containsTree1(node1.right, node2);
     }
 
-    // 递归判断二叉树的结构是否相同，不判断值
+    // 递归判断二叉树的结构是否相同，判断值
     public static boolean isSameValueStructure(Node node1, Node node2) {
         if (node1 == null && node2 != null) {
             return false;
@@ -68,9 +66,14 @@ public class TreeEqual {
         if (node1 == null && node2 == null) {
             return true;
         }
+        if (node1.value != node2.value) {
+            return false;
+        }
         return isSameValueStructure(node1.left, node2.left) && isSameValueStructure(node1.right, node2.right);
     }
 
+    // 获取树的先序遍历组成字符串数组
+    // 使用kmp算法匹配
     public static boolean containsTree2(Node node1, Node node2) {
         if (node2 == null) {
             return true;
@@ -80,9 +83,9 @@ public class TreeEqual {
         }
         List<String> list1 = preSerial(node1);
         List<String> list2 = preSerial(node2);
-        String[] str = new String[list2.size()];
+        String[] str = new String[list1.size()];
         for (int i = 0; i < str.length; i++) {
-            str[i] = list2.get(i);
+            str[i] = list1.get(i);
         }
 
         String[] match = new String[list2.size()];
@@ -100,6 +103,8 @@ public class TreeEqual {
 
     public static void pres(Node node, List<String> list) {
         if (node == null) {
+            // 空节点一定要添加，表示节点结束
+            list.add(null);
         } else {
             list.add(String.valueOf(node.value));
             pres(node.left, list);
