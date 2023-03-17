@@ -7,7 +7,7 @@ package com.serendipity.monotonicstack;
  *              返回所有子数组最小值的累加和
  * @date 2023/03/17/12:29
  */
-public class SumOfSubarrayMinimums {
+public class LeetCode907 {
 
     public static void main(String[] args) {
         int maxLen = 100;
@@ -31,6 +31,7 @@ public class SumOfSubarrayMinimums {
     }
 
     // 对数器
+    // 暴力解
     public static int subArrayMinSum1(int[] arr) {
         if (arr == null || arr.length == 0) {
             return 0;
@@ -40,7 +41,7 @@ public class SumOfSubarrayMinimums {
         for (int i = 0; i < arr.length; i++) {
             for (int j = i; j < arr.length; j++) {
                 int min = arr[i];
-                for (int k = i + 1; k < arr.length; k++) {
+                for (int k = i + 1; k <= j; k++) {
                     min = Math.min(min, arr[k]);
                 }
                 ans += min;
@@ -49,7 +50,7 @@ public class SumOfSubarrayMinimums {
         return ans;
     }
 
-    // 不用单调栈
+    // 不用单调栈，没有取模
     // 当前位置index作为子数组的最小值，找到子数组的个数
     // index左边的个数 * index右边的个数 = 子数组的个数
     public static int subArrayMinSum2(int[] arr) {
@@ -106,7 +107,7 @@ public class SumOfSubarrayMinimums {
         return right;
     }
 
-    // 数组实现的单调栈
+    // 数组实现的单调栈 时间复杂度 O(n)
     public static int subArrayMinSum3(int[] arr) {
         if (arr == null || arr.length == 0) {
             return 0;
