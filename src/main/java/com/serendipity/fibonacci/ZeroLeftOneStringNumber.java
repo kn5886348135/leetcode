@@ -69,7 +69,8 @@ public class ZeroLeftOneStringNumber {
         return 2 * res[0][0] + res[1][0];
     }
 
-    // 2 * n 长度铺满 1 * 2的瓷砖有多少种方式
+    // 用1 * 2的瓷砖，把N * 2的区域填满
+    // 返回铺瓷砖的方法数
     public static int fi(int n) {
         if (n < 1) {
             return 0;
