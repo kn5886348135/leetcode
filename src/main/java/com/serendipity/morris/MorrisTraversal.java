@@ -77,7 +77,7 @@ public class MorrisTraversal {
                     mostRight.right = null;
                 }
             }
-            // 没有左节点或者左节点的最右节点遍历完成
+            // 没有左节点或者右节点遍历完成
             cur = cur.right;
         }
     }
@@ -99,6 +99,7 @@ public class MorrisTraversal {
                 }
                 // 最右节点为空，第一次遍历到最右节点
                 if (mostRight.right == null) {
+                    System.out.print(cur.value + " ");
                     // 指向cur
                     mostRight.right = cur;
                     cur = cur.left;
@@ -108,11 +109,12 @@ public class MorrisTraversal {
                     mostRight.right = null;
                 }
             } else {
-                System.out.println(cur.value + " ");
+                System.out.print(cur.value + " ");
             }
-            // 没有左节点或者左节点的最右节点遍历完成
+            // 没有左节点或者右节点遍历完成
             cur = cur.right;
         }
+        System.out.println();
     }
 
     // morris中序
@@ -141,10 +143,11 @@ public class MorrisTraversal {
                     mostRight.right = null;
                 }
             }
-            System.out.println(cur.value + " ");
-            // 没有左节点或者左节点的最右节点遍历完成
+            System.out.print(cur.value + " ");
+            // 没有左节点或者右节点遍历完成
             cur = cur.right;
         }
+        System.out.println();
     }
 
     // morris后序
@@ -173,13 +176,11 @@ public class MorrisTraversal {
                     mostRight.right = null;
                     printEdge(cur.left);
                 }
-            } else {
-                System.out.println(cur.value + " ");
             }
-            // 没有左节点或者左节点的最右节点遍历完成
+            // 没有左节点或者右节点遍历完成
             cur = cur.right;
         }
-        printEdge(cur.left);
+        printEdge(head);
         System.out.println();
     }
 
@@ -188,7 +189,7 @@ public class MorrisTraversal {
         Node tail = reverseEdge(head);
         Node cur = tail;
         while (cur != null) {
-            System.out.println(cur.value + " ");
+            System.out.print(cur.value + " ");
             cur = cur.right;
         }
         // 链表还原
@@ -271,7 +272,7 @@ public class MorrisTraversal {
                 // 必须跑完程序，将二叉树还原
                 ans = false;
             }
-            // 没有左节点或者左节点的最右节点遍历完成
+            // 没有左节点或者最右节点遍历完成
             pre = cur.value;
             cur = cur.right;
         }
