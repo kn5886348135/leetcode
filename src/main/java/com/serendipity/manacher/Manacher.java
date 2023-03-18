@@ -53,14 +53,16 @@ public class Manacher {
 
         char[] chs = manacherString(str);
         // 回文半径数组
-        int[] pArr = new int[str.length()];
+        int[] pArr = new int[chs.length];
         int c = -1;
         // 最右扩成功位置的下一个位置
         int right = -1;
         int max = Integer.MIN_VALUE;
-        for (int i = 0; i < str.length(); i++) {
-            pArr[i] = right > i ? Math.min(pArr[2 * c - 1], right - 1) : 1;
-            while (i + pArr[i] < str.length() && i - pArr[i] > -1) {
+        for (int i = 0; i < chs.length; i++) {
+            // R第一个违规的位置，i>= R
+            // i位置扩出来的答案，i位置扩的区域，至少是多大。
+            pArr[i] = right > i ? Math.min(pArr[2 * c - i], right - i) : 1;
+            while (i + pArr[i] < chs.length && i - pArr[i] > -1) {
                 if (chs[i + pArr[i]] == chs[i - pArr[i]]) {
                     pArr[i]++;
                 } else {
