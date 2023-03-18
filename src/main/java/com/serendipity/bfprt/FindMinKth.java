@@ -30,7 +30,7 @@ public class FindMinKth {
     public static int minKth1(int[] arr, int k) {
         PriorityQueue<Integer> maxHeap = new PriorityQueue<>((o1, o2) -> o2 - o1);
         for (int i = 0; i < k; i++) {
-            maxHeap.add(i);
+            maxHeap.add(arr[i]);
         }
         for (int i = k; i < arr.length; i++) {
             if (arr[i] < maxHeap.peek()) {
@@ -44,6 +44,7 @@ public class FindMinKth {
 
     // 改写快排，利用荷兰国旗问题 O(n)时间复杂度
     // 最坏时间复杂度O(n2)，最好时间复杂度O(n)，时间复杂度的证明需要计算概率期望，很复杂
+    // k >= 1
     public static int minKth2(int[] array, int k) {
         int[] arr = new int[array.length];
         System.arraycopy(array, 0, arr, 0, arr.length);
@@ -62,8 +63,10 @@ public class FindMinKth {
     // arr[left...right]范围上做荷兰国旗划分，找到位于index的数
     public static int process2(int[] arr, int left, int right, int index) {
         if (left == right) {
+            // L = =R ==INDEX
             return arr[left];
         }
+        // 不止一个数  L +  [0, R -L]
         int pivot = arr[left + (int) (Math.random() * (right - left + 1))];
         int[] range = partition(arr, left, right, pivot);
         if (index >= range[0] && index <= range[1]) {
@@ -116,7 +119,7 @@ public class FindMinKth {
         // 5个数中的中位数组成新数组
         // 返回新数组的中位数
         // 保证每次都可以淘汰一部分(3n/10)数据
-        int pivot = medianOofMedians(arr, left, right);
+        int pivot = medianOfMedians(arr, left, right);
         int[] range = partition(arr, left, right, pivot);
         if (index >= range[0] && index <= range[1]) {
             return arr[index];
@@ -131,14 +134,19 @@ public class FindMinKth {
     // 5个数内部排序
     // 每个小组的中位数组成新的数组matrix
     // 返回matrix的中位数
-    public static int medianOofMedians(int[] arr, int left, int right) {
-        int size = right - left - 1;
-        int offset = size * 5 == 0 ? 0 : 1;
+    public static int medianOfMedians(int[] arr, int left, int right) {
+        int size = right - left + 1;
+        int offset = size % 5 == 0 ? 0 : 1;
         int[] matrix = new int[size / 5 + offset];
         for (int i = 0; i < matrix.length; i++) {
             int first = left + i * 5;
+            // L ... L + 4
+            // L +5 ... L +9
+            // L +10....L+14
             matrix[i] = getMedian(arr, first, Math.min(right, first + 4));
         }
+        // marr中，找到中位数
+        // marr(0, marr.len - 1,  mArr.length / 2 )
         return bfprt(matrix, 0, matrix.length - 1, matrix.length / 2);
     }
 
