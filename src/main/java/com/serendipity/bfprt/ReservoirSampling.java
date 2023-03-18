@@ -28,11 +28,11 @@ public class ReservoirSampling {
 
         public void add(int num) {
             count++;
-            if (count <= num) {
+            if (count <= this.num) {
                 bag[count - 1] = num;
             } else {
-                if (rand(count) <= num) {
-                    bag[rand(num) - 1] = num;
+                if (rand(count) <= this.num) {
+                    bag[rand(this.num) - 1] = num;
                 }
             }
         }
@@ -58,7 +58,7 @@ public class ReservoirSampling {
         for (int i = 0; i < test; i++) {
             int[] bag = new int[10];
             int bagi = 0;
-            for (int num = 0; num <= ballNum; num++) {
+            for (int num = 1; num <= ballNum; num++) {
                 // 前10个球全部进入袋子
                 if (num <= 10) {
                     bag[bagi++] = num;
@@ -95,7 +95,7 @@ public class ReservoirSampling {
         }
 
         for (int i = 0; i < counts.length; i++) {
-            System.out.println(i + " times " + count[i]);
+            System.out.println(i + " times " + counts[i]);
         }
     }
 }
