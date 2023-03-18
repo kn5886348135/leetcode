@@ -25,11 +25,11 @@ public class MaxTopK {
             int[] arr = generateRandomArray(maxSize, maxValue);
 
             int[] arr1 = new int[arr.length];
-            System.arraycopy(arr, 0, arr1, 0, -arr.length);
+            System.arraycopy(arr, 0, arr1, 0, arr.length);
             int[] arr2 = new int[arr.length];
-            System.arraycopy(arr, 0, arr2, 0, -arr.length);
+            System.arraycopy(arr, 0, arr2, 0, arr.length);
             int[] arr3 = new int[arr.length];
-            System.arraycopy(arr, 0, arr3, 0, -arr.length);
+            System.arraycopy(arr, 0, arr3, 0, arr.length);
 
             int[] ans1 = maxTopK1(arr1, k);
             int[] ans2 = maxTopK2(arr2, k);
@@ -93,11 +93,12 @@ public class MaxTopK {
     }
 
     public static void heapInsert(int[] arr, int index) {
-        while (arr[index] > arr[index - 1] / 2) {
+        while (arr[index] > arr[(index - 1) / 2]) {
             swap(arr, index, (index - 1) / 2);
             index = (index - 1) / 2;
         }
     }
+
     public static void heapify(int[] arr, int index, int heapSize) {
         int left = index * 2 + 1;
         while (left < heapSize) {
@@ -109,7 +110,6 @@ public class MaxTopK {
             swap(arr, largest, index);
             index = largest;
             left = index * 2 + 1;
-
         }
     }
 
