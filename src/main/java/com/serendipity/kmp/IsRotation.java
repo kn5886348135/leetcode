@@ -22,6 +22,7 @@ public class IsRotation {
         return getIndexOf(str, str1) != -1;
     }
 
+    // KMP Algorithm
     public static int getIndexOf(String str1, String str2) {
         if (str1.length() < str2.length()) {
             return -1;
@@ -33,7 +34,7 @@ public class IsRotation {
         int sIndex = 0;
         int mIndex = 0;
         int[] next = getNextArray(mch);
-        while (sIndex < sch.length&&mIndex<mch.length) {
+        while (sIndex < sch.length && mIndex < mch.length) {
             if (sch[sIndex] == mch[mIndex]) {
                 sIndex++;
                 mIndex++;

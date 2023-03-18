@@ -47,6 +47,8 @@ public class KMP {
     }
 
     // 优化后的获取next数组 O(m)
+    // 动态规划
+    // 利用已经求好的i-1的next数组推倒i的next数组
     public static int[] getNextArray(char[] str2) {
         if (str2.length == 1) {
             return new int[] { -1 };
@@ -57,11 +59,20 @@ public class KMP {
         int i = 2; // 目前在哪个位置上求next数组的值
         int cn = 0; // 当前是哪个位置的值再和i-1位置的字符比较
         while (i < next.length) {
+            // 前缀字符串和后缀字符串的末位比较
             if (str2[i - 1] == str2[cn]) { // 配成功的时候
+                // next[i++]只能大于cn，如果next[i++] = cn + 2，则表示next[i-1] = cn + 1，产生矛盾
+                // 所以next[i] = cn + 1
+                // 可以画图模拟
                 next[i++] = ++cn;
             } else if (cn > 0) {
+                // 前缀字符串的末位和后缀字符串的末位不相等
+                // cn > 0表示两个字符串不为空，还是有一部分相同的
+                // cn在前一步已经++，此时next[cn]就是上一个匹配的字符位置
+                // 如果cn = cn - 1，则要证明0 - cn-1这一段是相等的，而0 - next[cn]这一段已经被证明了
                 cn = next[cn];
             } else {
+                // 两个字符串为空，i位置没有
                 next[i++] = 0;
             }
         }
