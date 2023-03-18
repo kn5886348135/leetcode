@@ -14,6 +14,7 @@ public class IsRotation {
         System.out.println(isRotation(str1, str2));
     }
 
+    // str = str1 + str1，如果str2是str的子字符串则str1、str2互为旋转字符串
     public static boolean isRotation(String str1, String str2) {
         if (str1 == null || str2 == null || str1.length() != str2.length()) {
             return false;

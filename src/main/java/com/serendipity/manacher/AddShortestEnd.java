@@ -24,7 +24,7 @@ public class AddShortestEnd {
         int right = -1;
         int maxContainsEnd = -1;
         for (int i = 0; i < chs.length; i++) {
-            pArr[i] = right > i ? Math.max(pArr[2 * c - 1], right - i) : 1;
+            pArr[i] = right > i ? Math.min(pArr[2 * c - i], right - i) : 1;
             while (i + pArr[i] < chs.length && i - pArr[i] > -1) {
                 if (chs[i + pArr[i]] == chs[i - pArr[i]]) {
                     pArr[i]++;
