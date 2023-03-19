@@ -46,32 +46,32 @@ public class SegmentTree {
         for (int i = 0; i < testTimes; i++) {
             int[] origin = genarateRandomArray(len, max);
             SegmentTree seg = new SegmentTree(origin);
-            int S = 1;
-            int N = origin.length;
+            int start = 1;
+            int originLen = origin.length;
             int root = 1;
-            seg.build(S, N, root);
+            seg.build(start, originLen, root);
             Verify rig = new Verify(origin);
             for (int j = 0; j < addOrUpdateTimes; j++) {
-                int num1 = (int) (Math.random() * N) + 1;
-                int num2 = (int) (Math.random() * N) + 1;
-                int L = Math.min(num1, num2);
-                int R = Math.max(num1, num2);
-                int C = (int) (Math.random() * max) - (int) (Math.random() * max);
+                int num1 = (int) (Math.random() * originLen) + 1;
+                int num2 = (int) (Math.random() * originLen) + 1;
+                int left = Math.min(num1, num2);
+                int right = Math.max(num1, num2);
+                int target = (int) (Math.random() * max) - (int) (Math.random() * max);
                 if (Math.random() < 0.5) {
-                    seg.add(L, R, C, S, N, root);
-                    rig.add(L, R, C);
+                    seg.add(left, right, target, start, originLen, root);
+                    rig.add(left, right, target);
                 } else {
-                    seg.update(L, R, C, S, N, root);
-                    rig.update(L, R, C);
+                    seg.update(left, right, target, start, originLen, root);
+                    rig.update(left, right, target);
                 }
             }
             for (int k = 0; k < queryTimes; k++) {
-                int num1 = (int) (Math.random() * N) + 1;
-                int num2 = (int) (Math.random() * N) + 1;
-                int L = Math.min(num1, num2);
-                int R = Math.max(num1, num2);
-                long ans1 = seg.query(L, R, S, N, root);
-                long ans2 = rig.query(L, R);
+                int num1 = (int) (Math.random() * originLen) + 1;
+                int num2 = (int) (Math.random() * originLen) + 1;
+                int left = Math.min(num1, num2);
+                int right = Math.max(num1, num2);
+                long ans1 = seg.query(left, right, start, originLen, root);
+                long ans2 = rig.query(left, right);
                 if (ans1 != ans2) {
                     return false;
                 }
@@ -96,6 +96,7 @@ public class SegmentTree {
     public SegmentTree(int[] origin) {
         this.len = origin.length + 1;
         arr = new int[len];
+        // arr[0] 不用 从1开始使用
         for (int i = 1; i < len; i++) {
             arr[i] = origin[i - 1];
         }
@@ -214,6 +215,7 @@ public class SegmentTree {
         if (right > mid) {
             add(left, right, target, mid + 1, scopeRight, index << 1 | 1);
         }
+        pushUp(index);
     }
 
     /**
