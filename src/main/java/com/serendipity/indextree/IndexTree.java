@@ -49,6 +49,9 @@ public class IndexTree {
         return res;
     }
 
+    // index & -index : 提取出index最右侧的1出来
+    // index :           0011001000
+    // index & -index :  0000001000
     public void add(int index, int target) {
         while (index <= len) {
             tree[index] += target;
@@ -61,7 +64,7 @@ public class IndexTree {
         private int len;
 
         public Verify(int len) {
-            this.len = len;
+            this.len = len + 1;
             this.nums = new int[this.len + 1];
         }
 
