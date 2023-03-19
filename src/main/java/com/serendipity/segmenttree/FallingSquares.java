@@ -27,10 +27,7 @@ public class FallingSquares {
     }
 
     public static class SegmentTree {
-
-        // 数组的长度
         private int[] max;
-        // 更新方法更新的值
         private int[] change;
         // 更新的懒标记，避免change[index] = 0产生无解，全部更新为0还是不更新
         private boolean[] update;
@@ -43,15 +40,13 @@ public class FallingSquares {
         }
 
         // index为线段树中的索引位置
-        // index位置的累加和等于左右子树的累加和相加
+        // index位置的最大值等于左右子树的较大的那个
         private void pushUp(int index) {
             max[index] = Math.max(max[index << 1], max[index << 1 | 1]);
         }
 
-        // 之前的所有懒增加，和懒更新，从父范围，发给左右两个子范围
-        // left表示左子树元素结点个数，right表示右子树结点个数
-        private void pushDown(int index, int left, int right) {
-            // 先分发更新的
+        // ln表示左子树元素结点个数，rn表示右子树结点个数
+        private void pushDown(int index) {
             if (update[index]) {
                 update[index << 1] = true;
                 update[index << 1 | 1] = true;
@@ -83,7 +78,7 @@ public class FallingSquares {
             }
             // 当前任务需要下发
             int mid = (scopeLeft + scopeRight) >> 1;
-            pushDown(index, mid - scopeLeft + 1, scopeRight - mid);
+            pushDown(index);
             // 下发左子树
             if (left <= mid) {
                 update(left, right, target, scopeLeft, mid, index << 1);
@@ -110,7 +105,7 @@ public class FallingSquares {
                 return max[index];
             }
             int mid = (scopeLeft + scopeRight) >> 1;
-            pushDown(index, mid - scopeLeft + 1, scopeRight - mid);
+            pushDown(index);
             int leftMax = 0;
             int rightMax = 0;
             // 下发左子树
@@ -156,14 +151,5 @@ public class FallingSquares {
             segmentTree.update(left, right, height, 1, size, 1);
         }
         return res;
-    }
-
-    public static int[] genarateRandomArray(int len, int max) {
-        int size = (int) (Math.random() * len) + 1;
-        int[] origin = new int[size];
-        for (int i = 0; i < size; i++) {
-            origin[i] = (int) (Math.random() * max) - (int) (Math.random() * max);
-        }
-        return origin;
     }
 }
