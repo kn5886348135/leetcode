@@ -37,7 +37,7 @@ public class Hash {
 
     private MessageDigest hash;
 
-    public Hash(String algorithm ) {
+    public Hash(String algorithm) {
         try {
             hash = MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
