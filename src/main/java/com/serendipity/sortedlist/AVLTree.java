@@ -1,7 +1,5 @@
 package com.serendipity.sortedlist;
 
-import java.security.interfaces.ECKey;
-
 /**
  * @author jack
  * @version 1.0
@@ -46,7 +44,7 @@ public class AVLTree {
          * @param cur   当前节点
          * @return      子树右旋后的头结点
          */
-        public AVLNode<K, V> rightRotate(AVLNode<K, V> cur) {
+        private AVLNode<K, V> rightRotate(AVLNode<K, V> cur) {
             // 拿到左节点
             AVLNode<K, V> left = cur.left;
             // 左节点的右节点挂到cur的左边
@@ -68,7 +66,7 @@ public class AVLTree {
          * @param cur   当前节点
          * @return      子树左旋后的头结点
          */
-        public AVLNode<K, V> leftRotate(AVLNode<K, V> cur) {
+        private AVLNode<K, V> leftRotate(AVLNode<K, V> cur) {
             // 拿到右节点
             AVLNode<K, V> right = cur.right;
             // 右节点的左节点挂到cur的右边
@@ -90,7 +88,7 @@ public class AVLTree {
          * @param cur   当前节点
          * @return      平衡后的子树的头结点
          */
-        public AVLNode<K,V> maintain(AVLNode<K,V> cur) {
+        private AVLNode<K, V> maintain(AVLNode<K, V> cur) {
             if (cur == null) {
                 return null;
             }
@@ -118,11 +116,11 @@ public class AVLTree {
                     // 以右节点的右节点为顶点的子树高度
                     int rightRightHeight = cur.right != null && cur.right.right != null ? cur.right.right.height : 0;
                     // RL和RR类型
-                    if (rightLeftHeight >= rightRightHeight) {
+                    if (rightRightHeight >= rightLeftHeight) {
                         cur = leftRotate(cur);
                     } else {
                         // RL类型
-                        cur.right = rightRotate(cur.left);
+                        cur.right = rightRotate(cur.right);
                         cur = leftRotate(cur);
                     }
                 }
@@ -151,7 +149,7 @@ public class AVLTree {
         // 搜索不小于且最靠近key的节点
         private AVLNode<K, V> findLastNoSmallIndex(K key) {
             // 不能删除，如果没有找到则是返回最接近的节点
-            AVLNode<K, V> ans = root;
+            AVLNode<K, V> ans = null;
             AVLNode<K, V> cur = root;
             while (cur != null) {
                 if (key.compareTo(cur.key) == 0) {
@@ -170,7 +168,7 @@ public class AVLTree {
         // 搜索不小于且最靠近key的节点
         private AVLNode<K, V> findLastNoBigIndex(K key) {
             // 不能删除，如果没有找到则是返回最接近的节点
-            AVLNode<K, V> ans = root;
+            AVLNode<K, V> ans = null;
             AVLNode<K, V> cur = root;
             while (cur != null) {
                 if (key.compareTo(cur.key) == 0) {
@@ -204,7 +202,8 @@ public class AVLTree {
             }
         }
 
-        // 删除节点
+        // 在cur这棵树上，删掉key所代表的节点
+        // 返回cur这棵树的新头部
         private AVLNode<K, V> delete(AVLNode<K, V> cur, K key) {
             // key在右子树
             if (key.compareTo(cur.key) > 0) {
@@ -231,8 +230,8 @@ public class AVLTree {
                         des = des.left;
                     }
                     // 右子树删除node
-                    delete(cur.right, des.key);
-                    // cur.right = delete(cur.right, des.key);
+                    // delete(cur.right, des.key);
+                    cur.right = delete(cur.right, des.key);
                     // node放到cur位置
                     des.left = cur.left;
                     des.right = cur.right;
@@ -257,7 +256,6 @@ public class AVLTree {
             if (key == null) {
                 return false;
             }
-
             AVLNode<K, V> lastNode = findLastIndex(key);
             return lastNode != null && key.compareTo(lastNode.key) == 0 ? true : false;
         }
