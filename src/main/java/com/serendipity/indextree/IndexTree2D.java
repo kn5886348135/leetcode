@@ -4,6 +4,8 @@ package com.serendipity.indextree;
  * @author jack
  * @version 1.0
  * @description 二维indexTree
+ *              https://leetcode.com/problems/range-sum-query-2d-mutable
+ *              付费题目
  * @date 2023/03/19/21:44
  */
 public class IndexTree2D {
@@ -18,7 +20,7 @@ public class IndexTree2D {
     private int col;
 
     public IndexTree2D(int[][] matrix) {
-        if (matrix == null || matrix.length == 0) {
+        if (matrix.length == 0 || matrix[0].length == 0) {
             return;
         }
         row = matrix.length;
