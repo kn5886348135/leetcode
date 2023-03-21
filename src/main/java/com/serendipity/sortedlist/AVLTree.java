@@ -165,7 +165,7 @@ public class AVLTree {
             return ans;
         }
 
-        // 搜索不小于且最靠近key的节点
+        // 搜索不大于且最靠近key的节点
         private AVLNode<K, V> findLastNoBigIndex(K key) {
             // 不能删除，如果没有找到则是返回最接近的节点
             AVLNode<K, V> ans = null;
