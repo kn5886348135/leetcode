@@ -83,17 +83,16 @@ public class SkipList {
                 return null;
             }
             int level = this.maxLevel;
-            SkipListNode<K, V> cur = head;
+            SkipListNode<K, V> cur = this.head;
             while (level >= 0) {
-                // 从最高层开始，逐层查找最右边小于key的节点
-                cur = mostRightLessNodeInTree(key, cur, level--);
+                cur = mostRightLessNodeInLevel(key, cur, level--);
             }
             return cur;
         }
 
         // 在level层，找到小于key的最右节点
         // level没有发生变化，cur和next一直在向skiplist的下一个节点移动
-        private SkipListNode<K, V> mostRightLessNodeInTree(K key, SkipListNode<K, V> cur, int level) {
+        private SkipListNode<K, V> mostRightLessNodeInLevel(K key, SkipListNode<K, V> cur, int level) {
             SkipListNode<K, V> next = cur.nextNodes.get(level);
             while (next != null && next.isKeyLess(key)) {
                 cur = next;
@@ -115,6 +114,7 @@ public class SkipList {
             if (key == null) {
                 return;
             }
+            // 0层上，最右一个，< key 的Node -> >key
             SkipListNode<K, V> less = mostRightLessNodeInTree(key);
             SkipListNode<K, V> find = less.nextNodes.get(0);
             // 更新节点值
@@ -139,10 +139,10 @@ public class SkipList {
                     newNode.nextNodes.add(null);
                 }
                 int level = this.maxLevel;
-                SkipListNode<K, V> pre = head;
+                SkipListNode<K, V> pre = this.head;
                 while (level >= 0) {
                     // 从头结点的maxLevel层开始，查找最右小于key的节点
-                    pre = mostRightLessNodeInTree(key, pre, level);
+                    pre = mostRightLessNodeInLevel(key, pre, level);
                     if (level <= newNodeLevel) {
                         // 更新每一层的节点
                         newNode.nextNodes.set(level, pre.nextNodes.get(level));
@@ -168,15 +168,19 @@ public class SkipList {
                 int level = this.maxLevel;
                 SkipListNode<K, V> pre = this.head;
                 while (level >= 0) {
-                    pre = mostRightLessNodeInTree(key, pre, level);
+                    pre = mostRightLessNodeInLevel(key, pre, level);
                     SkipListNode<K, V> next = pre.nextNodes.get(level);
+                    // 1）在这一层中，pre下一个就是key
+                    // 2）在这一层中，pre的下一个key是>要删除key
                     if (next != null && next.isKeyEqual(key)) {
                         pre.nextNodes.set(level, next.nextNodes.get(level));
                     }
+                    // 在level层只有一个节点了，就是默认节点head
                     if (level != 0 && pre == head && pre.nextNodes.get(level) == null) {
                         this.head.nextNodes.remove(level);
                         this.maxLevel--;
                     }
+                    level--;
                 }
             }
         }
@@ -187,7 +191,7 @@ public class SkipList {
 
         public K lastKey() {
             int level = this.maxLevel;
-            SkipListNode<K, V> cur = head;
+            SkipListNode<K, V> cur = this.head;
             while (level >= 0) {
                 SkipListNode<K, V> next = cur.nextNodes.get(level);
                 while (next != null) {
