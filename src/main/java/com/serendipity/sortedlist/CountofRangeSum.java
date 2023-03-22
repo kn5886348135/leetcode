@@ -36,7 +36,7 @@ public class CountofRangeSum {
     public static int countRangeSum1(int[] arr, int lower, int upper) {
         int len = arr.length;
         long[] sums = new long[len + 1];
-        for (int i = 0; i < len; i++) {
+        for (int i = 0; i < len; ++i) {
             sums[i + 1] = sums[i] + arr[i];
         }
         return countWhileMergeSort(sums, 0, len + 1, lower, upper);
@@ -48,7 +48,7 @@ public class CountofRangeSum {
         }
         int mid = (start + end) >> 1;
         int count = countWhileMergeSort(sums, start, mid, lower, upper) +
-                countWhileMergeSort(sums, mid + 1, end, lower, upper);
+                countWhileMergeSort(sums, mid, end, lower, upper);
         int j = mid, k = mid, t = mid;
         long[] cache = new long[end - start];
         for (int i = start, r = 0; i < mid; ++i, ++r) {
@@ -102,7 +102,7 @@ public class CountofRangeSum {
 
         private SBTNode leftRotate(SBTNode cur) {
             long same = cur.all - (cur.left != null ? cur.left.all : 0) - (cur.right != null ? cur.right.all : 0);
-            SBTNode rightNode = cur.left;
+            SBTNode rightNode = cur.right;
             cur.right = rightNode.left;
             rightNode.left = cur;
             rightNode.size = cur.size;
@@ -195,12 +195,18 @@ public class CountofRangeSum {
     }
 
     public static int countRangeSum2(int[] arr, int lower, int upper) {
+        // 黑盒，加入数字（前缀和），不去重，可以接受重复数字
+        // < num , 有几个数？
         SizeBalancedTreeVariant variantSBT = new SizeBalancedTreeVariant();
         long sum = 0;
         int ans = 0;
+        // 一个数都没有的时候，就已经有一个前缀和累加和为0，
         variantSBT.add(0);
         for (int i = 0; i < arr.length; i++) {
             sum += arr[i];
+            // [sum - upper, sum - lower]
+            // [10, 20] ?
+            // < 10 ?  < 21 ?
             long a = variantSBT.lessKeySize(sum - lower + 1);
             long b = variantSBT.lessKeySize(sum - upper);
             ans += a - b;
