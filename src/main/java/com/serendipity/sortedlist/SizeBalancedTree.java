@@ -69,7 +69,7 @@ public class SizeBalancedTree {
             leftNode.right = cur;
             leftNode.size = cur.size;
             // 计算size
-            cur.size = (cur.left != null ? cur.left.size : 0) + (cur.right != null ? cur.right.size : 0);
+            cur.size = (cur.left != null ? cur.left.size : 0) + (cur.right != null ? cur.right.size : 0) + 1;
             return leftNode;
         }
 
@@ -80,7 +80,7 @@ public class SizeBalancedTree {
             rightNode.left = cur;
             rightNode.size = cur.size;
             // 计算size
-            cur.size = (cur.left != null ? cur.left.size : 0) + (cur.right != null ? cur.right.size : 0);
+            cur.size = (cur.left != null ? cur.left.size : 0) + (cur.right != null ? cur.right.size : 0) + 1;
             return rightNode;
         }
 
@@ -91,13 +91,13 @@ public class SizeBalancedTree {
             }
 
             int leftSize = cur.left != null ? cur.left.size : 0;
-            int leftLeftSize = cur.left.left != null ? cur.left.left.size : 0;
-            int leftRightSize = cur.left.right != null ? cur.left.right.size : 0;
+            int leftLeftSize = cur.left != null && cur.left.left != null ? cur.left.left.size : 0;
+            int leftRightSize = cur.left != null && cur.left.right != null ? cur.left.right.size : 0;
             int rightSize = cur.right != null ? cur.right.size : 0;
-            int rightLeftSize = cur.right.left != null ? cur.right.left.size : 0;
-            int rightRightSize = cur.right.right != null ? cur.right.right.size : 0;
+            int rightLeftSize = cur.right != null && cur.right.left != null ? cur.right.left.size : 0;
+            int rightRightSize = cur.right != null && cur.right.right != null ? cur.right.right.size : 0;
 
-            // 4中类型的破坏平衡性
+            // 4种类型的破坏平衡性
             if (leftLeftSize > rightSize) {
                 cur = rightRotate(cur);
                 cur.right = maintain(cur.right);
@@ -199,7 +199,7 @@ public class SizeBalancedTree {
             cur.size--;
             if (key.compareTo(cur.key) > 0) {
                 // 去右子树删除
-                cur.right = delete(cur, key);
+                cur.right = delete(cur.right, key);
             } else if (key.compareTo(cur.key) < 0) {
                 // 去左子树删除
                 cur.left = delete(cur.left, key);
@@ -213,7 +213,6 @@ public class SizeBalancedTree {
                     cur = cur.left;
                 } else {
                     // 左右子树都存在
-                    // 最左子树移动到cur
                     SBTNode<K, V> pre = null;
                     SBTNode<K, V> des = cur.right;
                     des.size--;
