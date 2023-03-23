@@ -82,7 +82,7 @@ public class LeetCode406 {
         int len = people.length;
         Unit[] units = new Unit[len];
         for (int i = 0; i < len; i++) {
-            units[i] = new Unit(people[i][0], people[i][i]);
+            units[i] = new Unit(people[i][0], people[i][1]);
         }
         Arrays.sort(units, (o1, o2) -> (o1.h != o2.h ? o2.h - o1.h : o1.k - o2.k));
         ArrayList<Unit> arrayList = new ArrayList<>();
@@ -102,18 +102,19 @@ public class LeetCode406 {
         int len = people.length;
         Unit[] units = new Unit[len];
         for (int i = 0; i < len; i++) {
-            units[i] = new Unit(people[i][0], people[i][i]);
+            units[i] = new Unit(people[i][0], people[i][1]);
         }
         Arrays.sort(units, (o1, o2) -> (o1.h != o2.h ? o2.h - o1.h : o1.k - o2.k));
-        ArrayList<Unit> arrayList = new ArrayList<>();
-        for (Unit unit : units) {
-            arrayList.add(unit.k, unit);
+        SBTree tree = new SBTree();
+        for (int i = 0; i < len; i++) {
+            tree.insert(units[i].k, i);
         }
+        LinkedList<Integer> allIndexes = tree.allIndexes();
         int[][] ans = new int[len][2];
         int index = 0;
-        for (Unit unit : arrayList) {
-            ans[index][0] = unit.h;
-            ans[index++][1] = unit.k;
+        for (Integer arri : allIndexes) {
+            ans[index][0] = units[arri].h;
+            ans[index++][1] = units[arri].k;
         }
         return ans;
     }
@@ -122,9 +123,9 @@ public class LeetCode406 {
         public int h;
         public int k;
 
-        public Unit(int h, int k) {
-            this.h = h;
-            this.k = k;
+        public Unit(int height, int greater) {
+            h = height;
+            k = greater;
         }
     }
 
@@ -187,7 +188,7 @@ public class LeetCode406 {
                 cur.left = maintain(cur.left);
                 cur = maintain(cur);
             } else if (rightLeftSize > leftSize) {
-                cur.right = leftRotate(cur.right);
+                cur.right = rightRotate(cur.right);
                 cur = leftRotate(cur);
                 cur.left = maintain(cur.left);
                 cur.right = maintain(cur.right);
@@ -198,7 +199,7 @@ public class LeetCode406 {
 
         private SBTNode insert(SBTNode root, int index, SBTNode cur) {
             if (root == null) {
-                return null;
+                return cur;
             }
             root.size++;
             int leftAndHeadSize = (root.left != null ? root.left.size : 0) + 1;
@@ -234,7 +235,7 @@ public class LeetCode406 {
         public void insert(int index, int value) {
             SBTNode cur = new SBTNode(value);
             if (this.root == null) {
-                root = cur;
+                this.root = cur;
             } else {
                 if (index <= root.size) {
                     root = insert(root, index, cur);
@@ -249,7 +250,7 @@ public class LeetCode406 {
 
         public LinkedList<Integer> allIndexes() {
             LinkedList<Integer> indexes = new LinkedList<>();
-            process(this.root, indexes);
+            process(root, indexes);
             return indexes;
         }
     }
