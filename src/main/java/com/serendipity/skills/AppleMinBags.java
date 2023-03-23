@@ -13,7 +13,7 @@ package com.serendipity.skills;
 public class AppleMinBags {
 
     public static void main(String[] args) {
-        for (int apple = 0; apple < 200; apple++) {
+        for (int apple = 1; apple < 200; apple++) {
             System.out.println(apple + " " + minBags1(apple));
             System.out.println(apple + " " + minBags2(apple));
         }
@@ -30,7 +30,7 @@ public class AppleMinBags {
                 return bag8 + (rest / 6);
             } else {
                 bag8--;
-                rest += 6;
+                rest += 8;
             }
         }
         return -1;
