@@ -54,12 +54,12 @@ public class SlidingWindowMedian {
             if (cur == null) {
                 return null;
             }
-            long leftSize = cur.left != null ? cur.left.size : 0;
-            long leftLeftSize = cur.left != null && cur.left.left != null ? cur.left.left.size : 0;
-            long leftRightSize = cur.left != null && cur.left.right != null ? cur.left.right.size : 0;
-            long rightSize = cur.right != null ? cur.right.size : 0;
-            long rightLeftSize = cur.right != null && cur.right.left != null ? cur.right.left.size : 0;
-            long rightRightSize = cur.right != null && cur.right.right != null ? cur.right.right.size : 0;
+            int leftSize = cur.left != null ? cur.left.size : 0;
+            int leftLeftSize = cur.left != null && cur.left.left != null ? cur.left.left.size : 0;
+            int leftRightSize = cur.left != null && cur.left.right != null ? cur.left.right.size : 0;
+            int rightSize = cur.right != null ? cur.right.size : 0;
+            int rightLeftSize = cur.right != null && cur.right.left != null ? cur.right.left.size : 0;
+            int rightRightSize = cur.right != null && cur.right.right != null ? cur.right.right.size : 0;
             if (leftLeftSize > rightSize) {
                 cur = rightRotate(cur);
                 cur.right = maintain(cur.right);
@@ -131,7 +131,7 @@ public class SlidingWindowMedian {
                     SBTNode<K> pre = null;
                     SBTNode<K> des = cur.right;
                     des.size--;
-                    while (pre.left != null) {
+                    while (des.left != null) {
                         pre = des;
                         des = des.left;
                         des.size--;
@@ -208,12 +208,12 @@ public class SlidingWindowMedian {
 
         @Override
         public int compareTo(Node o) {
-            return this.value != o.value ? Integer.valueOf(value).compareTo(o.value) :
-                    Integer.valueOf(index).compareTo(o.index);
+            return this.value != o.value ? Integer.valueOf(this.value).compareTo(o.value) :
+                    Integer.valueOf(this.index).compareTo(o.index);
         }
     }
 
-    public static double[] medianSlidingWindow(int[] arr,int k) {
+    public static double[] medianSlidingWindow(int[] arr, int k) {
         SizeBalancedTree<Node> sbtree = new SizeBalancedTree<>();
         for (int i = 0; i < k - 1; i++) {
             sbtree.add(new Node(i, arr[i]));
@@ -227,7 +227,7 @@ public class SlidingWindowMedian {
                 Node downmid = sbtree.getIndexKey(sbtree.size() >> 1);
                 ans[index++] = ((double) upmid.value + (double) downmid.value) / 2;
             } else {
-                Node mid = sbtree.getIndexKey(sbtree.size() >> 1 - 1);
+                Node mid = sbtree.getIndexKey(sbtree.size() >> 1);
                 ans[index++] = (double) mid.value;
             }
             sbtree.remove(new Node(i - k + 1, arr[i - k + 1]));
