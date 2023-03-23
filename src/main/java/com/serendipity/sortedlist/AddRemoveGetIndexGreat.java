@@ -186,21 +186,20 @@ public class AddRemoveGetIndexGreat {
         private SBTNode<V> add(SBTNode<V> root, int index, SBTNode<V> cur) {
             if (root == null) {
                 return cur;
-            } else {
-                root.size++;
-                int leftAndHeadSize = (root.left != null ? root.left.size : 0) + 1;
-                // index在root的左边
-                // 左旋右旋不会改变cur在集合中的位置
-                // index在root的左边
-                if (index < leftAndHeadSize) {
-                    root.left = add(root.left, index, cur);
-                } else {
-                    // index在root的右边
-                    root.right = add(root.right, index - leftAndHeadSize, cur);
-                }
-                root = maintain(cur);
-                return root;
             }
+            root.size++;
+            int leftAndHeadSize = (root.left != null ? root.left.size : 0) + 1;
+            // 重复值只是value相同，但是是不同的节点
+            // index在root的左边
+            if (index < leftAndHeadSize) {
+                root.left = add(root.left, index, cur);
+            } else {
+                // index在root的右边
+                root.right = add(root.right, index - leftAndHeadSize, cur);
+            }
+            // 左旋右旋不会改变节点的相对位置
+            root = maintain(root);
+            return root;
         }
 
         // 删除节点
@@ -258,13 +257,14 @@ public class AddRemoveGetIndexGreat {
             if (this.root == null) {
                 this.root = cur;
             } else {
-                if (index <= root.size) {
-                    root = add(root, index, cur);
+                if (index <= this.root.size) {
+                    this.root = add(this.root, index, cur);
                 }
+                // index > this.root.size 怎么处理？
             }
         }
 
-        private V get(int index) {
+        public V get(int index) {
             SBTNode<V> ans = get(this.root, index);
             return ans.value;
         }
