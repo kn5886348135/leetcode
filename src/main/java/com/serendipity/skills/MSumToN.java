@@ -19,15 +19,15 @@ public class MSumToN {
             System.out.println(num + " " + isMSum1(num));
             System.out.println(num + " " + isMSum2(num));
         }
-        for (int num = 0; num < 5000; num++) {
+        for (int num = 1; num < 5000; num++) {
             if (isMSum1(num) != isMSum2(num)) {
-                System.out.println("Oops");
+                System.out.println("Oops!");
             }
         }
     }
 
     public static boolean isMSum1(int num) {
-        for (int start = 0; start <= num; start++) {
+        for (int start = 1; start <= num; start++) {
             int sum = start;
             for (int j = start + 1; j <= num; j++) {
                 if (sum + j > num) {
