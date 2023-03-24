@@ -40,6 +40,7 @@ public class MoneyProblem {
 
     // 目前，你的能力是ability，你来到了index号怪兽的面前，如果要通过后续所有的怪兽，
     // 请返回需要花的最少钱数
+    // 暴力递归1，不适合改写成动态规划
     public static long process1(int[] d, int[] p, int ability, int index) {
         if (index == d.length) {
             return 0;
@@ -81,6 +82,7 @@ public class MoneyProblem {
         return Math.max(p1, p2);
     }
 
+    // 暴力递归2
     public static int minMoney2(int[] d, int[] p) {
         int allMoney = 0;
         for (int i = 0; i < p.length; i++) {
@@ -121,6 +123,7 @@ public class MoneyProblem {
         return dp[0][0];
     }
 
+    // 如果d[index]特别大，比如10的8次方，动态规划的列就特别多
     public static long func3(int[] d, int[] p) {
         int sum = 0;
         for (int num : p) {
