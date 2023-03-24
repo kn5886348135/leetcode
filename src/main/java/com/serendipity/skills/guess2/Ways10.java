@@ -27,7 +27,7 @@ public class Ways10 {
     public static long ways1(int n) {
         int zero = n;
         int one = n;
-        LinkedList<Integer> path = new LinkedList();
+        LinkedList<Integer> path = new LinkedList<>();
         LinkedList<LinkedList<Integer>> ans = new LinkedList<>();
         process(zero, one, path, ans);
         long count = 0;
@@ -88,7 +88,7 @@ public class Ways10 {
         long a = 1;
         long b = 1;
         long limit = n << 1;
-        for (int i = 1; i <= limit; i++) {
+        for (long i = 1; i <= limit; i++) {
             if (i <= n) {
                 a *= i;
             } else {
