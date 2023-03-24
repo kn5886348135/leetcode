@@ -32,6 +32,7 @@ public class SnacksWays {
     public static int process(int[] arr, int index, int rest) {
         // 没有容量
         if (rest < 0) {
+            // -1 无方案的意思
             return -1;
         }
 
@@ -64,7 +65,7 @@ public class SnacksWays {
     public static int ways3(int[] arr, int w) {
         int len = arr.length;
         int[][] dp = new int[len][w + 1];
-        for (int i = 0; i <= w; i++) {
+        for (int i = 0; i < len; i++) {
             dp[i][0] = 1;
         }
         if (arr[0] <= w) {
@@ -72,7 +73,7 @@ public class SnacksWays {
         }
         for (int i = 1; i < len; i++) {
             for (int j = 1; j <= w; j++) {
-                dp[i][j] = dp[i - 1][j] + ((j - arr[i] >= 0) ? dp[i - 1][j - arr[i]] : 0);
+                dp[i][j] = dp[i - 1][j] + ((j - arr[i]) >= 0 ? dp[i - 1][j - arr[i]] : 0);
             }
         }
         int ans = 0;
@@ -95,7 +96,7 @@ public class SnacksWays {
         long ways = process4(arr, 0, 0, mid, bag, lmap);
 
         TreeMap<Long, Long> rmap = new TreeMap<>();
-        ways += process4(arr, mid + 1, arr.length - 1, mid, bag, lmap);
+        ways += process4(arr, mid + 1, 0, arr.length - 1, bag, rmap);
         TreeMap<Long, Long> rpre = new TreeMap<>();
         long pre = 0;
         for (Map.Entry<Long, Long> entry : rmap.entrySet()) {
