@@ -80,13 +80,14 @@ public class SubsquenceMaxModM {
     public static int max3(int[] arr, int m) {
         int len = arr.length;
         // arr[i]特别大，但是m不大
-        boolean[][] dp = new boolean[len][m + 1];
+        boolean[][] dp = new boolean[len][m];
         for (int i = 0; i < len; i++) {
             dp[i][0] = true;
         }
-        dp[0][arr[0] & m] = true;
+        dp[0][arr[0] % m] = true;
         for (int i = 1; i < len; i++) {
             for (int j = 1; j < m; j++) {
+                // dp[i][j] T or F
                 dp[i][j] = dp[i - 1][j];
                 int cur = arr[i] % m;
                 if (cur <= j) {
@@ -105,7 +106,7 @@ public class SubsquenceMaxModM {
         return ans;
     }
 
-    // arr的累加和很大，m也很大，但是arr的长度相对不大
+    // arr的累加和很大，m也很大，但是arr的长度相对不大，比如30以内
     public static int max4(int[] arr, int m) {
         if (arr.length == 1) {
             return arr[0] % m;
@@ -122,7 +123,7 @@ public class SubsquenceMaxModM {
         return ans;
     }
 
-    // 从index触发，最后有边界是end+1，arr[index...end]
+    // 从index出发，最后有边界是end+1，arr[index...end]
     public static void process4(int[] arr, int index, int sum, int end, int m, TreeSet<Integer> treeSet) {
         if (index == end + 1) {
             treeSet.add(sum % m);
