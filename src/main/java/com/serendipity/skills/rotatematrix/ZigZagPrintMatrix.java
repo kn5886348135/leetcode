@@ -31,6 +31,7 @@ public class ZigZagPrintMatrix {
             tC = tC == endC ? tC : tC + 1;
             dC = dR == endR ? dC + 1 : dC;
             dR = dR == endR ? dR : dR + 1;
+            fromUp = !fromUp;
         }
         System.out.println();
     }
@@ -40,6 +41,7 @@ public class ZigZagPrintMatrix {
             while (tR != dR + 1) {
                 System.out.print(m[tR++][tC--] + " ");
             }
+        } else {
             while (dR != tR - 1) {
                 System.out.print(m[dR--][dC++] + " ");
             }
