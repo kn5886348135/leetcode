@@ -38,18 +38,24 @@ public class LongestLessSumSubArrayLength {
                 minSumEnds[i] = i;
             }
         }
+        // 迟迟扩不进来那一块儿的开头位置
         int end = 0;
         int sum = 0;
         int ans = 0;
         for (int i = 0; i < arr.length; i++) {
+            // while循环结束之后：
+            // 1) 如果以i开头的情况下，累加和<=k的最长子数组是arr[i..end-1]，看看这个子数组长度能不能更新res；
+            // 2) 如果以i开头的情况下，累加和<=k的最长子数组比arr[i..end-1]短，更新还是不更新res都不会影响最终结果；
             while (end < arr.length && sum + minSums[end] <= k) {
                 sum += minSums[end];
                 end = minSumEnds[end] + 1;
             }
             ans = Math.max(ans, end - i);
+            // 还有窗口，哪怕窗口没有数字 [i~end) [4,4)
             if (end > i) {
                 sum -= arr[i];
             } else {
+                // i == end,  即将 i++, i > end, 此时窗口概念维持不住了，所以end跟着i一起走
                 end = i + 1;
             }
         }
