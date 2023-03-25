@@ -71,7 +71,7 @@ public class AvgLessEqualValueLongestSubarray {
             int p2 = 0;
             int query = -arr[i] - modify;
             if (origins.floorKey(query) != null) {
-                p2 = i - origins.get(origins.floorKey(query) + 1);
+                p2 = i - origins.get(origins.floorKey(query)) + 1;
             }
             ans = Math.max(ans, Math.max(p1, p2));
             int curOrigin = -modify - v;
@@ -83,9 +83,9 @@ public class AvgLessEqualValueLongestSubarray {
         return ans;
     }
 
-    // 时间复杂度优于O(N*logN)
+    // 时间复杂度O(N)
     // arr中每个数减去v，问题变成子数组累加和小于等于0的问题
-    public static int ways3(int[] arr,int v) {
+    public static int ways3(int[] arr, int v) {
         if (arr == null || arr.length == 0) {
             return 0;
         }
@@ -95,6 +95,7 @@ public class AvgLessEqualValueLongestSubarray {
         return maxLengthAwesome(arr, 0);
     }
 
+    // 找到数组中累加和<=k的最长子数组
     public static int maxLengthAwesome(int[] arr, int k) {
         int len = arr.length;
         int[] sums = new int[len];
