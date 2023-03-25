@@ -139,7 +139,7 @@ public class IsSum {
         HashSet<Integer> rightSum = new HashSet<>();
         process4(arr, 0, mid, 0, leftSum);
         process4(arr, mid, len, 0, rightSum);
-        for (Integer num : leftSum) {
+        for (int num : leftSum) {
             if (rightSum.contains(sum - num)) {
                 return true;
             }
