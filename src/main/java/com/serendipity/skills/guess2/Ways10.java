@@ -78,6 +78,7 @@ public class Ways10 {
     }
 
     // 卡特兰数公式，排列组合
+    // 怎么证明是卡特兰数问题？
     public static long ways2(int n) {
         if (n < 0) {
             return 0;

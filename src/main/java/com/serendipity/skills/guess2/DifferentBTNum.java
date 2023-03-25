@@ -19,6 +19,13 @@ public class DifferentBTNum {
         }
     }
 
+    //	k(0) = 1, k(1) = 1
+    //
+    // 	k(n) = k(0) * k(n - 1) + k(1) * k(n - 2) + ... + k(n - 2) * k(1) + k(n - 1) * k(0)
+    // 	或者
+    // 	k(n) = c(2n, n) / (n + 1)
+    // 	或者
+    // 	k(n) = c(2n, n) - c(2n, n-1)
     public static long num1(int n) {
         if (n < 0) {
             return 0;
