@@ -99,7 +99,7 @@ public class PostOfficeProblem {
                         bestChoose = leftEnd;
                     }
                 }
-                dp[j][i] = ans;
+                dp[i][j] = ans;
                 best[i][j] = bestChoose;
             }
         }
