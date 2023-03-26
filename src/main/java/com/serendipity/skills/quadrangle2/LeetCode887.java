@@ -44,7 +44,7 @@ public class LeetCode887 {
         }
     }
 
-    // 对数器 暴力递归
+    // 对数器 暴力递归 会超时
     public static int superEggDrop1(int k, int n) {
         if (n < 1 || k < 1) {
             return 0;
@@ -68,6 +68,7 @@ public class LeetCode887 {
         }
         int min = Integer.MAX_VALUE;
         for (int i = 1; i < n + 1; i++) {
+            // 第一次扔的时候，仍在了i层
             min = Math.min(min, Math.max(process1(i - 1, k - 1), process1(n - i, k)));
         }
         return min + 1;
@@ -97,7 +98,7 @@ public class LeetCode887 {
         return dp[n][m];
     }
 
-    // 四边形不等式技巧优化
+    // 四边形不等式技巧优化 不是最好的方法
     public static int superEggDrop3(int m, int n) {
         if (n < 1 || m < 1) {
             return 0;
@@ -112,7 +113,7 @@ public class LeetCode887 {
         int[][] best = new int[n + 1][m + 1];
         for (int i = 1; i < dp[0].length; i++) {
             dp[1][i] = 1;
-            dp[1][i] = 1;
+            best[1][i] = 1;
         }
         for (int i = 2; i < n + 1; i++) {
             for (int j = m; j > 1; j--) {
@@ -156,6 +157,7 @@ public class LeetCode887 {
         }
     }
 
+    // 对方法4 进行常数项优化
     public static int superEggDrop5(int m, int n) {
         if (n < 1 || m < 1) {
             return 0;
