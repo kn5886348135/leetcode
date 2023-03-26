@@ -23,17 +23,24 @@ public class LeetCode464 {
             return true;
         }
         // 所有累加和小于指定的累加和
-        if ((maxChoosableInteger * (maxChoosableInteger + 11) >> 1) < desiredTotal) {
+        if ((maxChoosableInteger * (maxChoosableInteger + 1) >> 1) < desiredTotal) {
             return false;
         }
         int[] arr = new int[maxChoosableInteger];
         for (int i = 0; i < maxChoosableInteger; i++) {
             arr[i] = i + 1;
         }
-        return process(arr, desiredTotal);
+        // arr[i] != -1 表示arr[i]这个数字还没被拿走
+        // arr[i] == -1 表示arr[i]这个数字已经被拿走
+        // 集合，arr，1~choose
+        return process1(arr, desiredTotal);
     }
 
-    public static boolean process(int[] arr, int rest) {
+    // 当前轮到先手拿，
+    // 先手只能选择在arr中还存在的数字，
+    // 还剩rest这么值，
+    // 返回先手会不会赢
+    public static boolean process1(int[] arr, int rest) {
         // 先手失败
         if (rest <= 0) {
             return false;
@@ -44,7 +51,7 @@ public class LeetCode464 {
                 int cur = arr[i];
                 // 标记为不可选取
                 arr[i] = -1;
-                boolean next = process(arr, rest - cur);
+                boolean next = process1(arr, rest - cur);
                 // 还原
                 arr[i] = cur;
                 // 下一层递归的先手失败
@@ -62,14 +69,14 @@ public class LeetCode464 {
             return true;
         }
         // 所有累加和小于指定的累加和
-        if ((maxChoosableInteger * (maxChoosableInteger + 11) >> 1) < desiredTotal) {
+        if ((maxChoosableInteger * (maxChoosableInteger + 1) >> 1) < desiredTotal) {
             return false;
         }
-        return process1(maxChoosableInteger, 0, desiredTotal);
+        return process2(maxChoosableInteger, 0, desiredTotal);
     }
 
     // 通过位运算标记i位置是否被选取
-    public static boolean process1(int maxChoosableInteger, int status, int rest) {
+    public static boolean process2(int maxChoosableInteger, int status, int rest) {
         // 先手失败
         if (rest <= 0) {
             return false;
@@ -78,7 +85,7 @@ public class LeetCode464 {
         for (int i = 1; i <= maxChoosableInteger; i++) {
             // i是此时先手的决定
             if (((1 << i) & status) == 0) {
-                if (!process1(maxChoosableInteger, (status | (1 << i)), rest - i)) {
+                if (!process2(maxChoosableInteger, (status | (1 << i)), rest - i)) {
                     return true;
                 }
             }
@@ -86,25 +93,25 @@ public class LeetCode464 {
         return false;
     }
 
-    // 状态压缩动态规划 时间复杂度O(2^N * N)
+    // 暴力尝试改动态规划而已
     public static boolean canIWin3(int maxChoosableInteger, int desiredTotal) {
         if (desiredTotal == 0) {
             return true;
         }
         // 所有累加和小于指定的累加和
-        if ((maxChoosableInteger * (maxChoosableInteger + 11) >> 1) < desiredTotal) {
+        if ((maxChoosableInteger * (maxChoosableInteger + 1) >> 1) < desiredTotal) {
             return false;
         }
         int[] dp = new int[1 << (maxChoosableInteger + 1)];
         // dp[status] == 1  true
         // dp[status] == -1  false
         // dp[status] == 0  process(status)处理
-        return process2(maxChoosableInteger, 0, desiredTotal, dp);
+        return process3(maxChoosableInteger, 0, desiredTotal, dp);
     }
 
-    // 加入dp做记忆化搜索
-    // rest是由status决定的
-    public static boolean process2(int maxChoosableInteger, int status, int rest, int[] dp) {
+    // 为什么明明status和rest是两个可变参数，却只用status来代表状态(也就是dp)
+    // 因为选了一批数字之后，得到的和一定是一样的，所以rest是由status决定的，所以rest不需要参与记忆化搜索
+    public static boolean process3(int maxChoosableInteger, int status, int rest, int[] dp) {
         if (dp[status] != 0) {
             return dp[status] == 1 ? true : false;
         }
@@ -113,9 +120,9 @@ public class LeetCode464 {
             for (int i = 1; i <= maxChoosableInteger; i++) {
                 // i是此时先手的决定
                 if (((1 << i) & status) == 0) {
-                    if (!process2(maxChoosableInteger, (status | (1 << i)), rest - i, dp)) {
+                    if (!process3(maxChoosableInteger, (status | (1 << i)), rest - i, dp)) {
                         ans = true;
-                        return true;
+                        break;
                     }
                 }
             }
