@@ -1,4 +1,4 @@
-package com.serendipity.skills.quadrilateralinequalitytrick1;
+package com.serendipity.skills.quadrangle;
 
 /**
  * @author jack
@@ -19,7 +19,6 @@ public class BestSplitForEveryPosition {
         int n = 20;
         int max = 30;
         int testTime = 1000000;
-        System.out.println("测试开始");
         for (int i = 0; i < testTime; i++) {
             int len = (int) (Math.random() * n);
             int[] arr = randomArray(len, max);
@@ -30,7 +29,6 @@ public class BestSplitForEveryPosition {
                 System.out.println("Oops!");
             }
         }
-        System.out.println("测试结束");
     }
 
     // 对数器 时间复杂度O(N3)
@@ -49,7 +47,7 @@ public class BestSplitForEveryPosition {
                 }
                 int sumR = 0;
                 for (int right = s + 1; right <= range; right++) {
-                    sumL += arr[right];
+                    sumR += arr[right];
                 }
                 ans[range] = Math.max(ans[range], Math.min(sumL, sumR));
             }
@@ -136,8 +134,8 @@ public class BestSplitForEveryPosition {
         if (arr1.length != arr2.length) {
             return false;
         }
-        int N = arr1.length;
-        for (int i = 0; i < N; i++) {
+        int len = arr1.length;
+        for (int i = 0; i < len; i++) {
             if (arr1[i] != arr2[i]) {
                 return false;
             }

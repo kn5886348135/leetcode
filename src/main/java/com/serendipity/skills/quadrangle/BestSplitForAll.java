@@ -1,4 +1,4 @@
-package com.serendipity.skills.quadrilateralinequalitytrick1;
+package com.serendipity.skills.quadrangle;
 
 /**
  * @author jack
