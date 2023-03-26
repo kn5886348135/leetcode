@@ -37,8 +37,8 @@ public class StoneMerge {
         return s;
     }
 
-    public static int w(int[] s, int l, int r) {
-        return s[r + l] - s[l];
+    public static int w(int[] s, int left, int right) {
+        return s[right + 1] - s[left];
     }
 
     // 暴力递归
@@ -75,6 +75,7 @@ public class StoneMerge {
         for (int left = len - 2; left >= 0; left--) {
             for (int right = left + 1; right < len; right++) {
                 int next = Integer.MAX_VALUE;
+                // 遍历left-right的每一个元素
                 for (int leftEnd = left; leftEnd < right; leftEnd++) {
                     next = Math.min(next, dp[left][leftEnd] + dp[leftEnd + 1][right]);
                 }
