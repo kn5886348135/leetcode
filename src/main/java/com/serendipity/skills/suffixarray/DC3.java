@@ -162,6 +162,9 @@ public class DC3 {
         return ans;
     }
 
+    // h[i-1] - 1 <= h[i] 怎么证明？
+    // h数组做到不回退的优化，遍历一次拿到height数组
+    // 用rank[]跳过了h[]数组
     private int[] height(int[] s) {
         int len = s.length;
         int[] ans = new int[len];

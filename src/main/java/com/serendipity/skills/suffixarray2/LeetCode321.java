@@ -23,9 +23,13 @@ public class LeetCode321 {
             return null;
         }
         int[] res = new int[k];
+        // 生成dp1这个表，以后从nums1中，只要固定拿N个数，
         int[][] dp1 = getdp(nums1);
         int[][] dp2 = getdp(nums2);
+        // get1 从arr1里拿的数量
+        // K - get1 从arr2里拿的数量
         for (int get1 = Math.max(0, k - len2); get1 <= Math.min(k, len1); get1++) {
+            // arr1 挑 get1个，怎么得到一个最优结果
             int[] pick1 = maxPick(nums1, dp1, get1);
             int[] pick2 = maxPick(nums2, dp2, k - get1);
             int[] merge = merge(pick1, pick2);
@@ -84,11 +88,11 @@ public class LeetCode321 {
         int size2 = nums2.length;
         int[] nums = new int[size1 + 1 + size2];
         for (int i = 0; i < size1; i++) {
-            nums[i] = nums[i] + 2;
+            nums[i] = nums1[i] + 2;
         }
         nums[size1] = 1;
         for (int i = 0; i < size2; i++) {
-            nums[i + size1 + 1] = nums[i] + 2;
+            nums[i + size1 + 1] = nums2[i] + 2;
         }
         DC3 dc3 = new DC3(nums, 11);
         int[] rank = dc3.rank;
@@ -102,7 +106,7 @@ public class LeetCode321 {
         while (i < size1) {
             ans[r++] = nums1[i++];
         }
-        while (i < size2 ) {
+        while (j < size2) {
             ans[r++] = nums2[j++];
         }
         return ans;
@@ -116,15 +120,6 @@ public class LeetCode321 {
         public DC3(int[] nums, int max) {
             this.sa = sa(nums, max);
             this.rank = rank();
-        }
-
-        public static void main(String[] args) {
-            int len = 100000;
-            int maxValue = 100;
-            long start = System.currentTimeMillis();
-            new com.serendipity.skills.suffixarray.DC3(randomArray(len, maxValue), maxValue);
-            long end = System.currentTimeMillis();
-            System.out.println("数据量 " + len + ", 运行时间 " + (end - start) + " ms");
         }
 
         private int[] sa(int[] nums, int max) {
@@ -241,25 +236,22 @@ public class LeetCode321 {
             return ans;
         }
 
-        public static int[] randomArray(int len, int maxValue) {
-            int[] arr = new int[len];
-            for (int i = 0; i < len; i++) {
-                arr[i] = (int) (Math.random() * maxValue) + 1;
-            }
-            return arr;
-        }
     }
 
     // dp[i][j]从i及以后拿j个数的开始位置
     public static int[][] getdp(int[] arr) {
+        // 0~N-1
         int size = arr.length;
+        // 1 ~ N
         int pick = arr.length + 1;
         int[][] dp = new int[size][pick];
-        for (int i = 0; i < pick; i++) {
+        // get 不从0开始，因为拿0个无意义
+        for (int i = 1; i < pick; i++) { // 1 ~ N
             int maxIndex = size - i;
+            // i~N-1
             for (int j = size - i; j >= 0; j--) {
                 if (arr[j] >= arr[maxIndex]) {
-                    maxIndex = i;
+                    maxIndex = j;
                 }
                 dp[j][i] = maxIndex;
             }
