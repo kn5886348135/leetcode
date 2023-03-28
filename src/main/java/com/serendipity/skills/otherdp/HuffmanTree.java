@@ -66,7 +66,7 @@ public class HuffmanTree {
     }
 
     // 根据str生成词频统计表
-    public static HashMap<Character,Integer> countMap(String str) {
+    public static HashMap<Character, Integer> countMap(String str) {
         HashMap<Character, Integer> ans = new HashMap<>();
         char[] chs = str.toCharArray();
         for (char ch : chs) {
@@ -89,12 +89,22 @@ public class HuffmanTree {
         }
     }
 
-
+    // 根据由文章生成词频表countMap，生成哈夫曼编码表
+    // key : 字符
+    // value: 该字符编码后的二进制形式
+    // 比如，频率表 A：60, B:45, C:13 D:69 E:14 F:5 G:3
+    // A 10
+    // B 01
+    // C 0011
+    // D 11
+    // E 000
+    // F 00101
+    // G 00100
     public static HashMap<Character, String> huffmanForm(HashMap<Character, Integer> countMap) {
         HashMap<Character, String> ans = new HashMap<>();
         if (countMap.size() == 1) {
-            for (Character character : countMap.keySet()) {
-                ans.put(character, "0");
+            for (char key : countMap.keySet()) {
+                ans.put(key, "0");
             }
             return ans;
         }
@@ -138,6 +148,7 @@ public class HuffmanTree {
         return builder.toString();
     }
 
+    // 原始字符串的哈夫曼编码huffmanEncode，根据哈夫曼编码表，还原成原始字符串
     public static String huffmanDecode(String huffmanEncode, HashMap<Character, String> huffmanForm) {
         TrieNode root = createTrie(huffmanForm);
         TrieNode cur = root;
@@ -156,7 +167,7 @@ public class HuffmanTree {
 
     public static TrieNode createTrie(HashMap<Character, String> huffmanForm) {
         TrieNode root = new TrieNode();
-        for (Character key : huffmanForm.keySet()) {
+        for (char key : huffmanForm.keySet()) {
             char[] path = huffmanForm.get(key).toCharArray();
             TrieNode cur = root;
             for (int i = 0; i < path.length; i++) {
