@@ -80,6 +80,9 @@ public class DeleteAdjacentSameCharacter {
         return process(chs, 0, chs.length - 1, false);
     }
 
+    // str[L...R] 前面有没有跟着[L]字符，has T 有 F 无
+    // L,R,has
+    // 最少能剩多少字符，消不了
     public static int process(char[] chs, int left, int right, boolean has) {
         if (left > right) {
             return 0;
@@ -93,6 +96,7 @@ public class DeleteAdjacentSameCharacter {
             k++;
             index++;
         }
+        // index表示，第一个不是[L]字符的位置
         int ans1 = (k > 1 ? 0 : 1) + process(chs, index, right, false);
         int ans2 = Integer.MAX_VALUE;
         for (int split = index; split <= right; split++) {
