@@ -82,7 +82,7 @@ public class InsertS2MakeMostAlphabeticalOrder {
         int m = chs2.length;
         int min = chs1[0];
         int max = chs1[0];
-        for (int i = 0; i < n; i++) {
+        for (int i = 1; i < n; i++) {
             min = Math.min(min, chs1[i]);
             max = Math.max(max, chs1[i]);
         }
@@ -92,11 +92,11 @@ public class InsertS2MakeMostAlphabeticalOrder {
         }
         int[] all = new int[n + m + 1];
         int index = 0;
-        for (int i = 1; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             all[index++] = chs1[i] - min + 2;
         }
         all[index++] = 1;
-        for (int i = 1; i < m; i++) {
+        for (int i = 0; i < m; i++) {
             all[index++] = chs2[i] - min + 2;
         }
         DC3 dc3 = new DC3(all, max - min + 2);
