@@ -96,7 +96,7 @@ public class LongestCommonSubstringConquerByHeight {
         int n = chs1.length;
         int m = chs2.length;
         int min = chs1[0];
-        int max = chs2[0];
+        int max = chs1[0];
         for (int i = 1; i < n; i++) {
             min = Math.min(min, chs1[i]);
             max = Math.max(max, chs1[i]);
@@ -259,6 +259,7 @@ public class LongestCommonSubstringConquerByHeight {
         private int[] height(int[] s) {
             int len = s.length;
             int[] ans = new int[len];
+            // 依次求h[i] , k = 0
             for (int i = 0, k = 0; i < len; ++i) {
                 if (this.rank[i] != 0) {
                     if (k > 0) {
@@ -268,6 +269,7 @@ public class LongestCommonSubstringConquerByHeight {
                     while (i + k < len && j + k < len && s[i + k] == s[j + k]) {
                         ++k;
                     }
+                    // h[i] = k
                     ans[this.rank[i]] = k;
                 }
             }
