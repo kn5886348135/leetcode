@@ -146,5 +146,4 @@ public class LeetCode1163 {
             return a1 < b1 || (a1 == b1 && leq(a2, a3, b2, b3));
         }
     }
-
 }
