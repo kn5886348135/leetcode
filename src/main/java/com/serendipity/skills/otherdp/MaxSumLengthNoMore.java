@@ -71,11 +71,11 @@ public class MaxSumLengthNoMore {
             }
             qmax.add(i);
         }
-        int max = Integer.MIN_VALUE;
+        int max = sum[qmax.peekFirst()];
         int left = 0;
-        for (; i < len; i++) {
+        for (; i < len; left++, i++) {
             if (qmax.peekFirst() == left) {
-                qmax.pollLast();
+                qmax.pollFirst();
             }
             while (!qmax.isEmpty() && sum[qmax.peekLast()] <= sum[i]) {
                 qmax.pollLast();
@@ -83,9 +83,9 @@ public class MaxSumLengthNoMore {
             qmax.add(i);
             max = Math.max(max, sum[qmax.peekFirst()] - sum[left]);
         }
-        for (; left < len; left++) {
+        for (; left < len - 1; left++) {
             if (qmax.peekFirst() == left) {
-                qmax.pollLast();
+                qmax.pollFirst();
             }
             max = Math.max(max, sum[qmax.peekFirst()] - sum[left]);
         }
