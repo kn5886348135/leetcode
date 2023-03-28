@@ -21,6 +21,8 @@ public class LeetCode546 {
             return 0;
         }
         int ans = func1(arr, left + 1, right, 0) + (k + 1) * (k + 1);
+
+        // 前面的K个X，和arr[L]数，合在一起了，现在有K+1个arr[L]位置的数
         for (int i = left + 1; i <= right; i++) {
             if (arr[i] == arr[left]) {
                 ans = Math.max(ans, func1(arr, left + 1, i - 1, 0) + func1(arr, i, right, k + 1));
@@ -69,10 +71,15 @@ public class LeetCode546 {
         if (dp[left][right][k] > 0) {
             return dp[left][right][k];
         }
+        // 找到开头，
+        // 1,1,1,1,1,5
+        // 3 4 5 6 7 8
+        //         !
         int last = left;
         while (last + 1 <= right && boxes[last + 1] == boxes[left]) {
             last++;
         }
+        // K个1     (K + last - L) last
         int pre = k + last - left;
         int ans = (pre + 1) * (pre + 1) + process2(boxes, last + 1, right, 0, dp);
         for (int i = last + 2; i <= right; i++) {
