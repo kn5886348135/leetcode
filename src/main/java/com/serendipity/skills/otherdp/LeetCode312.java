@@ -91,9 +91,7 @@ public class LeetCode312 {
                 arr[left - 1] * arr[right] * arr[right + 1] + process(arr, left, right - 1));
         // left...right中间某一个位置最后打爆
         for (int i = left + 1; i < right; i++) {
-            // i位置的气球最后打爆
-            int cur = Math.max(max, arr[left - 1] * arr[i] * arr[right + 1] + process(arr, left, i - 1) + process(arr, i + 1, right));
-            max = Math.max(max, cur);
+            max = Math.max(max, arr[left - 1] * arr[i] * arr[right + 1] + process(arr, left, i - 1) + process(arr, i + 1, right));
         }
         return max;
     }
@@ -117,7 +115,7 @@ public class LeetCode312 {
         for (int i = 1; i <= len; i++) {
             dp[i][i] = help[i - 1] * help[i] * help[i + 1];
         }
-        for (int left = len; left >= 1; left++) {
+        for (int left = len; left >= 1; left--) {
             for (int right = left + 1; right <= len; right++) {
                 int ans = help[left - 1] * help[left] * help[right + 1] + dp[left + 1][right];
                 ans = Math.max(ans, help[left - 1] * help[right] * help[right + 1] + dp[left][right - 1]);
