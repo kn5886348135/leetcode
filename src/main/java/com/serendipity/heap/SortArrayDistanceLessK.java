@@ -45,6 +45,7 @@ public class SortArrayDistanceLessK {
         // 默认小根堆
         PriorityQueue<Integer> heap = new PriorityQueue<>();
         int index = 0;
+        // 0...K-1
         for (; index <= Math.min(arr.length - 1, k - 1); index++) {
             heap.add(arr[index]);
         }
