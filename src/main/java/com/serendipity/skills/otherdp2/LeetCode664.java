@@ -23,12 +23,16 @@ public class LeetCode664 {
         return process1(chs, 0, chs.length - 1);
     }
 
+    // 要想刷出str[L...R]的样子！
+    // 返回最少的转数
     public static int process1(char[] chs, int left, int right) {
         if (left == right) {
             return 1;
         }
+        // L...R
         int ans = right - left + 1;
         for (int i = left + 1; i <= right; i++) {
+            // L...k-1 k....R
             ans = Math.min(ans, process1(chs, left, i - 1) + process1(chs, i, right) - (chs[left] == chs[i] ? 1 : 0));
         }
         return ans;
@@ -41,7 +45,7 @@ public class LeetCode664 {
         char[] chs = str.toCharArray();
         int len = chs.length;
         int[][] dp = new int[len][len];
-        return process2(chs, 0, chs.length - 1, dp);
+        return process2(chs, 0, len - 1, dp);
     }
 
     public static int process2(char[] chs, int left, int right, int[][] dp) {
@@ -77,7 +81,7 @@ public class LeetCode664 {
             for (int right = left + 2; right < len; right++) {
                 dp[left][right] = right - left + 1;
                 for (int k = left + 1; k <= right; k++) {
-                    dp[left][right] = Math.min(dp[left][right], dp[left][k - 1] + dp[k][right] - (chs[left] == chs[right] ? 1 : 0));
+                    dp[left][right] = Math.min(dp[left][right], dp[left][k - 1] + dp[k][right] - (chs[left] == chs[k] ? 1 : 0));
                 }
             }
         }
