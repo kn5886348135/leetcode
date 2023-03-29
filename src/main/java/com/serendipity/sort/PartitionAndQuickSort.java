@@ -21,7 +21,6 @@ public class PartitionAndQuickSort {
         int maxSize = 100;
         int maxValue = 100;
         boolean succeed = true;
-        System.out.println("test begin");
         for (int i = 0; i < testTime; i++) {
             int[] arr1 = generateRandomArray(maxSize, maxValue);
             int[] arr2 = copyArray(arr1);
@@ -29,14 +28,12 @@ public class PartitionAndQuickSort {
             quickSort1(arr1);
             quickSort2(arr2);
             quickSort3(arr3);
-            if (!isEqual(arr1, arr2) || !isEqual(arr1, arr3)) {
-                System.out.println("Oops!");
+            if (!isEqual(arr1, arr2) || !isEqual(arr2, arr3)) {
                 succeed = false;
                 break;
             }
         }
-        System.out.println("test end");
-        System.out.println(succeed ? "Nice!" : "Oops!");
+        System.out.println(succeed ? "success" : "failed");
     }
 
     // 分片方法
@@ -181,7 +178,6 @@ public class PartitionAndQuickSort {
         return new int[] { less + 1, more };
     }
 
-    // for test
     public static int[] generateRandomArray(int maxSize, int maxValue) {
         int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
         for (int i = 0; i < arr.length; i++) {
@@ -190,7 +186,6 @@ public class PartitionAndQuickSort {
         return arr;
     }
 
-    // for test
     public static int[] copyArray(int[] arr) {
         if (arr == null) {
             return null;
@@ -202,7 +197,6 @@ public class PartitionAndQuickSort {
         return res;
     }
 
-    // for test
     public static boolean isEqual(int[] arr1, int[] arr2) {
         if ((arr1 == null && arr2 != null) || (arr1 != null && arr2 == null)) {
             return false;
@@ -221,7 +215,6 @@ public class PartitionAndQuickSort {
         return true;
     }
 
-    // for test
     public static void printArray(int[] arr) {
         if (arr == null) {
             return;

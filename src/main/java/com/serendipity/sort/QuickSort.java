@@ -36,6 +36,7 @@ public class QuickSort {
         System.out.println("测试" + testTime + "组是否全部通过：" + (succeed ? "是" : "否"));
     }
 
+    // 荷兰国旗问题
     public static int[] netherlandsFlag(int[] arr, int left, int right) {
         if (left > right) {
             return new int[]{-1, -1};
@@ -108,6 +109,7 @@ public class QuickSort {
         stack.push(new Op(0, el - 1));
         stack.push(new Op(er + 1, len - 1));
         while (!stack.isEmpty()) {
+            // op.l ... op.r
             Op op = stack.pop();
             if (op.left < op.right) {
                 swap(arr, op.left + (int) (Math.random() * (op.right - op.left + 1)), op.right);
