@@ -50,29 +50,28 @@ public class EveryStepShowBoss {
         int maxValue = 10;
         int maxLen = 100;
         int maxK = 6;
-        int testCount = 100000;
-        for (int i = 0; i < testCount; i++) {
-            Data data = randomData(maxValue, maxLen);
+        int testTimes = 100000;
+        for (int i = 0; i < testTimes; i++) {
+            Data testData = randomData(maxValue, maxLen);
             int k = (int) (Math.random() * maxK) + 1;
-            int[] arr = data.arr;
-            boolean[] op = data.op;
+            int[] arr = testData.arr;
+            boolean[] op = testData.op;
             List<List<Integer>> ans1 = topK(arr, op, k);
-            List<List<Integer>> ans2 = topK(arr, op, k);
+            List<List<Integer>> ans2 = compare(arr, op, k);
             if (!sameAnswer(ans1, ans2)) {
                 for (int j = 0; j < arr.length; j++) {
-                    System.out.print(arr[j] + ", " + op[j] + " ");
+                    System.out.println(arr[j] + " , " + op[j]);
                 }
-                System.out.println();
                 System.out.println(k);
                 System.out.println(ans1);
                 System.out.println(ans2);
-                System.out.println("test failed");
+                System.out.println("出错了！");
                 break;
             }
         }
     }
 
-    private static class Customer{
+    public static class Customer {
         public int id;
         public int buy;
         public int enterTime;
@@ -84,21 +83,7 @@ public class EveryStepShowBoss {
         }
     }
 
-    private static class CandidateComparator implements Comparator<Customer> {
-        @Override
-        public int compare(Customer o1, Customer o2) {
-            return o1.buy != o2.buy ? (o2.buy - o1.buy) : (o1.enterTime - o2.enterTime);
-        }
-    }
-
-    private static class DaddyComparator implements Comparator<Customer>{
-        @Override
-        public int compare(Customer o1, Customer o2) {
-            return o1.buy != o2.buy ? (o1.buy - o2.buy) : (o1.enterTime - o2.enterTime);
-        }
-    }
-
-    private static class WhosYourDaddy {
+    public static class WhosYourDaddy {
         private HashMap<Integer, Customer> customers;
         private HeapGenerator<Customer> candHeap;
         private HeapGenerator<Customer> daddyHeap;
@@ -112,8 +97,8 @@ public class EveryStepShowBoss {
         }
 
         // 当前处理i号事件，arr[i] -> id, buyOrRefund
-        private void operate(int time, int id, boolean buyOrRefund) {
-            if (!buyOrRefund && customers.containsKey(id)) {
+        public void operate(int time, int id, boolean buyOrRefund) {
+            if (!buyOrRefund && !customers.containsKey(id)) {
                 return;
             }
             if (!customers.containsKey(id)) {
@@ -184,18 +169,19 @@ public class EveryStepShowBoss {
 
     public static List<List<Integer>> topK(int[] arr, boolean[] op, int k) {
         List<List<Integer>> ans = new ArrayList<>();
-        WhosYourDaddy whosYourDaddy = new WhosYourDaddy(k);
+        WhosYourDaddy whoDaddies = new WhosYourDaddy(k);
         for (int i = 0; i < arr.length; i++) {
-            whosYourDaddy.operate(i, arr[i], op[i]);
-            ans.add(whosYourDaddy.getDaddies());
+            whoDaddies.operate(i, arr[i], op[i]);
+            ans.add(whoDaddies.getDaddies());
         }
         return ans;
     }
 
-    private static List<List<Integer>> compare(int[] arr, boolean[] op, int k) {
+    // 干完所有的事，模拟，不优化
+    public static List<List<Integer>> compare(int[] arr, boolean[] op, int k) {
         HashMap<Integer, Customer> map = new HashMap<>();
-        List<Customer> cands = new ArrayList<>();
-        List<Customer> daddy = new ArrayList<>();
+        ArrayList<Customer> cands = new ArrayList<>();
+        ArrayList<Customer> daddy = new ArrayList<>();
         List<List<Integer>> ans = new ArrayList<>();
         for (int i = 0; i < arr.length; i++) {
             int id = arr[i];
@@ -221,7 +207,9 @@ public class EveryStepShowBoss {
             if (customer.buy == 0) {
                 map.remove(id);
             }
-            if (!cands.contains(customer) &&!daddy.contains(customer)){
+            // c
+            // 下面做
+            if (!cands.contains(customer) && !daddy.contains(customer)) {
                 if (daddy.size() < k) {
                     customer.enterTime = i;
                     daddy.add(customer);
@@ -232,20 +220,20 @@ public class EveryStepShowBoss {
             }
             cleanZeroBuy(cands);
             cleanZeroBuy(daddy);
-            cands.sort(new CandidateComparator());
-            daddy.sort(new DaddyComparator());
+            cands.sort((o1, o2) -> o1.buy != o2.buy ? (o2.buy - o1.buy) : (o1.enterTime - o2.enterTime));
+            daddy.sort((o1, o2) -> o1.buy != o2.buy ? (o1.buy - o2.buy) : (o1.enterTime - o2.enterTime));
             move(cands, daddy, k, i);
             ans.add(getCurAns(daddy));
         }
         return ans;
     }
 
-    private static void move(List<Customer> cands, List<Customer> daddy, int k, int time) {
+    public static void move(ArrayList<Customer> cands, ArrayList<Customer> daddy, int k, int time) {
         if (cands.isEmpty()) {
             return;
         }
         // 候选区不为空
-        if (daddy.size() < k){
+        if (daddy.size() < k) {
             Customer customer = cands.get(0);
             customer.enterTime = time;
             daddy.add(customer);
@@ -260,12 +248,12 @@ public class EveryStepShowBoss {
                 newDaddy.enterTime = time;
                 oldDaddy.enterTime = time;
                 daddy.add(newDaddy);
-                daddy.add(oldDaddy);
+                cands.add(oldDaddy);
             }
         }
     }
 
-    private static void cleanZeroBuy(List<Customer> arr) {
+    public static void cleanZeroBuy(ArrayList<Customer> arr) {
         List<Customer> noZero = new ArrayList<>();
         for (Customer customer : arr) {
             if (customer.buy != 0) {
@@ -278,7 +266,7 @@ public class EveryStepShowBoss {
         }
     }
 
-    private static List<Integer> getCurAns(List<Customer> daddy) {
+    public static List<Integer> getCurAns(ArrayList<Customer> daddy) {
         List<Integer> ans = new ArrayList<>();
         for (Customer customer : daddy) {
             ans.add(customer.id);
@@ -286,7 +274,7 @@ public class EveryStepShowBoss {
         return ans;
     }
 
-    public static class Data{
+    public static class Data {
         public int[] arr;
         public boolean[] op;
 
@@ -296,7 +284,7 @@ public class EveryStepShowBoss {
         }
     }
 
-    public static Data randomData(int maxValue, int maxLen){
+    public static Data randomData(int maxValue, int maxLen) {
         int len = (int) (Math.random() * maxLen) + 1;
         int[] arr = new int[len];
         boolean[] op = new boolean[len];
@@ -307,8 +295,8 @@ public class EveryStepShowBoss {
         return new Data(arr, op);
     }
 
-    private static boolean sameAnswer(List<List<Integer>> ans1,List<List<Integer>> ans2) {
-        if (ans1.size()!= ans2.size()) {
+    public static boolean sameAnswer(List<List<Integer>> ans1, List<List<Integer>> ans2) {
+        if (ans1.size() != ans2.size()) {
             return false;
         }
         for (int i = 0; i < ans1.size(); i++) {
