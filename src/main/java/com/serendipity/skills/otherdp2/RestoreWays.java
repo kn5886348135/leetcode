@@ -69,7 +69,7 @@ public class RestoreWays {
         if (arr[arr.length - 1] > arr[arr.length - 2]) {
             return false;
         }
-        for (int i = 1; i < arr.length; i++) {
+        for (int i = 1; i < arr.length - 1; i++) {
             if (arr[i] > Math.max(arr[i - 1], arr[i + 1])) {
                 return false;
             }
@@ -96,20 +96,23 @@ public class RestoreWays {
     // s==1 表示arr[i] == arr[i+1]
     // s==2 表示arr[i] > arr[i+1]
     public static int process1(int[] arr, int i, int v, int s) {
+        // 0...i 只剩一个数了，0...0
         if (i == 0) {
             return ((s == 0 || s == 1) && (arr[0] == 0 || v == arr[0])) ? 1 : 0;
         }
-
+        // i > 0
         if (arr[i] != 0 && v != arr[i]) {
             return 0;
         }
         // i>0 并且i位置的数可以变成v
         int ways = 0;
+        // [i] -> V <= [i+1]
         if (s == 0 || s == 1) {
             for (int pre = 1; pre < 201; pre++) {
                 ways += process1(arr, i - 1, pre, pre < v ? 0 : (pre == v ? 1 : 2));
             }
         } else {
+            // ? 当前 > 右 当前 <= max{左，右}
             for (int pre = v; pre < 201; pre++) {
                 ways += process1(arr, i - 1, pre, pre == v ? 1 : 2);
             }
@@ -119,15 +122,17 @@ public class RestoreWays {
 
     // 代码层面变化，本质和process1一样
     public static int func(int[] arr, int i, int v, int s) {
+        // 0...i 只剩一个数了，0...0
         if (i == 0) {
             return ((s == 0 || s == 1) && (arr[0] == 0 || v == arr[0])) ? 1 : 0;
         }
-
+        // i > 0
         if (arr[i] != 0 && v != arr[i]) {
             return 0;
         }
         // i>0 并且i位置的数可以变成v
         int ways = 0;
+        // [i] -> V <= [i+1]
         if (s == 0 || s == 1) {
             for (int pre = 1; pre < v; pre++) {
                 ways += func(arr, i - 1, pre, 0);
@@ -152,7 +157,7 @@ public class RestoreWays {
                 dp[0][v][1] = 1;
             }
         }
-        for (int i = 0; i < len; i++) {
+        for (int i = 1; i < len; i++) {
             for (int v = 1; v < 201; v++) {
                 for (int s = 0; s < 3; s++) {
                     if (arr[i] == 0 || v == arr[i]) {
