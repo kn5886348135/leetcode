@@ -62,8 +62,9 @@ public class DoubleLinkedListQuickSort {
         }
     }
 
-    // left...right是一个双向链表的头和尾
+    // left...right是一个双向链表的头和尾，长度为len
     // left的last指针指向null，left左边没有节点，right的next指针指向null，right右边没有节点
+    // 返回排好序之后的双向链表的头和尾(HeadTail)
     public static HeadTail process(Node left, Node right, int len) {
         if (left == null) {
             return null;
@@ -73,10 +74,14 @@ public class DoubleLinkedListQuickSort {
         }
         // left...right不止一个节点，拿到一个随机节点
         int randomIndex = (int) (Math.random() * len);
+        // 根据随机下标得到随机节点
         Node randomNode = left;
         while (randomIndex-- != 0) {
             randomNode = randomNode.next;
         }
+        // 把随机节点从原来的环境里分离出来
+        // 比如 a(L) -> b -> c -> d(R), 如果randomNode = c，那么调整之后
+        // a(L) -> b -> d(R), c会被挖出来，randomNode = c
         if (randomNode == left || randomNode == right) {
             if (randomNode == left) {
                 left = randomNode.next;
@@ -85,14 +90,19 @@ public class DoubleLinkedListQuickSort {
                 randomNode.last.next = null;
             }
         } else {
+            // randomNode一定是中间的节点
             randomNode.last.next = randomNode.next;
             randomNode.next.last = randomNode.last;
         }
         randomNode.last = null;
         randomNode.next = null;
         Info info = partition(left, randomNode);
+        // <randomNode的部分去排序
         HeadTail lht = process(info.leftHead, info.leftTail, info.leftSize);
+        // >randomNode的部分去排序
         HeadTail rht = process(info.rightHead, info.rightTail, info.rightSize);
+        // 左部分排好序、右部分排好序
+        // 把它们串在一起
         if (lht != null) {
             lht.tail.next = info.equalHead;
             info.equalHead.last = lht.tail;
@@ -101,6 +111,7 @@ public class DoubleLinkedListQuickSort {
             info.equalTail.next = rht.head;
             rht.head.last = info.equalTail;
         }
+        // 返回排好序之后总的头和总的尾
         Node head = lht != null ? lht.head : info.equalHead;
         Node tail = rht != null ? rht.tail : info.equalTail;
         return new HeadTail(head, tail);
@@ -128,6 +139,20 @@ public class DoubleLinkedListQuickSort {
         }
     }
 
+    // (L....一直到空)，是一个双向链表
+    // pivot是一个不在(L....一直到空)的独立节点，它作为划分值
+    // 根据荷兰国旗问题的划分方式，把(L....一直到空)划分成:
+    // <pivot 、 =pivot 、 >pivot 三个部分，然后把pivot融进=pivot的部分
+    // 比如 4(L)->6->7->1->5->0->9->null pivot=5(这个5和链表中的5，是不同的节点)
+    // 调整完成后:
+    // 4->1->0 小于的部分
+    // 5->5 等于的部分
+    // 6->7->9 大于的部分
+    // 三个部分是断开的
+    // 然后返回Info：
+    // 小于部分的头、尾、节点个数 : lh,lt,ls
+    // 大于部分的头、尾、节点个数 : rh,rt,rs
+    // 等于部分的头、尾 : eh,et
     public static Info partition(Node left, Node pivot) {
         Node leftHead = null;
         Node leftTail = null;
@@ -135,8 +160,8 @@ public class DoubleLinkedListQuickSort {
         Node rightHead = null;
         Node rightTail = null;
         int rightSize = 0;
-        Node equalHead = null;
-        Node equalTail = null;
+        Node equalHead = pivot;
+        Node equalTail = pivot;
         Node tmp = null;
         while (left != null) {
             tmp = left.next;
@@ -148,7 +173,7 @@ public class DoubleLinkedListQuickSort {
                     leftHead = left;
                     leftTail = left;
                 } else {
-                    leftTail = left;
+                    leftTail.next = left;
                     left.last = leftTail;
                     leftTail = left;
                 }
@@ -156,7 +181,7 @@ public class DoubleLinkedListQuickSort {
                 rightSize++;
                 if (rightHead == null) {
                     rightHead = left;
-                    rightTail = leftTail;
+                    rightTail = left;
                 } else {
                     rightTail.next = left;
                     left.last = rightTail;
