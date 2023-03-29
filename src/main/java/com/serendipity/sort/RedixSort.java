@@ -2,18 +2,18 @@ package com.serendipity.sort;
 
 import java.util.Arrays;
 
-public class CountSort {
+public class RedixSort {
 
     public static void main(String[] args) {
         int testTime = 500000;
         int maxSize = 100;
-        int maxValue = 150;
+        int maxValue = 100000;
         boolean succeed = true;
         for (int i = 0; i < testTime; i++) {
             int[] arr1 = generateRandomArray(maxSize, maxValue);
             int[] arr2 = new int[arr1.length];
             System.arraycopy(arr1, 0, arr2, 0, arr1.length);
-            countSort(arr1);
+            radixSort(arr1);
             Arrays.sort(arr2);
             if (!isEqual(arr1, arr2)) {
                 succeed = false;
@@ -22,36 +22,60 @@ public class CountSort {
                 break;
             }
         }
-        System.out.println(succeed ? "success" : "failed");
+        System.out.println(succeed ? "Nice!" : "Fucking fucked!");
+
         int[] arr = generateRandomArray(maxSize, maxValue);
         printArray(arr);
-        countSort(arr);
+        radixSort(arr);
         printArray(arr);
     }
 
-    // only for 0~200 value
-    public static void countSort(int[] arr) {
+    private static void radixSort(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
         }
+        radixSort(arr, 0, arr.length - 1, maxbits(arr));
+    }
+
+    public static int maxbits(int[] arr) {
         int max = Integer.MIN_VALUE;
         for (int i = 0; i < arr.length; i++) {
             max = Math.max(max, arr[i]);
         }
-        int[] bucket = new int[max + 1];
-        for (int i = 0; i < arr.length; i++) {
-            bucket[arr[i]]++;
+        int res = 0;
+        while (max != 0) {
+            res++;
+            max /= 10;
         }
-        int i = 0;
-        for (int j = 0; j < bucket.length; j++) {
-            while (bucket[j]-- > 0) {
-                arr[i++] = j;
+        return res;
+    }
+
+    public static void radixSort(int[] arr, int left, int right, int digit) {
+        final int radix = 10;
+        int i = 0, j = 0;
+        int[] help = new int[right - left + 1];
+        for (int d = 1; d <= digit; d++) {
+            int[] count = new int[radix];
+            for (i = left; i <= right; i++) {
+                j = getDigit(arr[i], d);
+                count[j]++;
+            }
+            for (i = 1; i < radix; i++) {
+                count[i] = count[i] + count[i - 1];
+            }
+            for (i = right; i >= left; i--) {
+                j = getDigit(arr[i], d);
+                help[count[j] - 1] = arr[i];
+                count[j]--;
+            }
+            for (i = left, j = 0; i <= right; i++, j++) {
+                arr[i] = help[j];
             }
         }
     }
 
-    public static void comparator(int[] arr) {
-        Arrays.sort(arr);
+    public static int getDigit(int x, int d) {
+        return ((x / ((int) Math.pow(10, d - 1))) % 10);
     }
 
     public static int[] generateRandomArray(int maxSize, int maxValue) {
