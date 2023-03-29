@@ -22,7 +22,7 @@ public class RedixSort {
                 break;
             }
         }
-        System.out.println(succeed ? "Nice!" : "Fucking fucked!");
+        System.out.println(succeed ? "success" : "failed");
 
         int[] arr = generateRandomArray(maxSize, maxValue);
         printArray(arr);
@@ -30,7 +30,8 @@ public class RedixSort {
         printArray(arr);
     }
 
-    private static void radixSort(int[] arr) {
+    // only for no-negative value
+    public static void radixSort(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
         }
@@ -50,13 +51,24 @@ public class RedixSort {
         return res;
     }
 
+    // arr[L..R]排序  ,  最大值的十进制位数digit
     public static void radixSort(int[] arr, int left, int right, int digit) {
         final int radix = 10;
         int i = 0, j = 0;
+        // 有多少个数准备多少个辅助空间
         int[] help = new int[right - left + 1];
+        // 有多少位就进出几次
         for (int d = 1; d <= digit; d++) {
+            // 10个空间
+            // count[0] 当前位(d位)是0的数字有多少个
+            // count[1] 当前位(d位)是(0和1)的数字有多少个
+            // count[2] 当前位(d位)是(0、1和2)的数字有多少个
+            // count[i] 当前位(d位)是(0~i)的数字有多少个
+            // count[0..9]
             int[] count = new int[radix];
             for (i = left; i <= right; i++) {
+                // 103  1   3
+                // 209  1   9
                 j = getDigit(arr[i], d);
                 count[j]++;
             }
