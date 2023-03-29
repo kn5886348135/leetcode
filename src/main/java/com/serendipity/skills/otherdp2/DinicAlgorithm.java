@@ -57,16 +57,16 @@ public class DinicAlgorithm {
         public Dinic(int len) {
             this.len = len + 1;
             this.nexts = new ArrayList<>();
-            for (int i = 0; i <= len; i++) {
-                nexts.add(new ArrayList<>());
+            for (int i = 0; i <= this.len; i++) {
+                this.nexts.add(new ArrayList<>());
             }
             this.edges = new ArrayList<>();
-            this.depth = new int[len];
-            this.cur = new int[len];
+            this.depth = new int[this.len];
+            this.cur = new int[this.len];
         }
 
         public void addEdge(int u, int v, int r) {
-            int m = edges.size();
+            int m = this.edges.size();
             this.edges.add(new Edge(u, v, r));
             this.nexts.get(u).add(m);
             this.edges.add(new Edge(v, u, 0));
@@ -106,12 +106,17 @@ public class DinicAlgorithm {
             return visited[t];
         }
 
+        // 当前来到了s点，s可变
+        // 最终目标是t，t固定参数
+        // r，收到的任务
+        // 收集到的流，作为结果返回，ans <= r
         private int dfs(int s, int t, int r) {
             if (s == t || r == 0) {
                 return r;
             }
             int f = 0;
             int flow = 0;
+            // s点从哪条边开始试 -> cur[s]
             for (; this.cur[s] < this.nexts.get(s).size(); this.cur[s]++) {
                 int ei = this.nexts.get(s).get(this.cur[s]);
                 Edge e = this.edges.get(ei);
