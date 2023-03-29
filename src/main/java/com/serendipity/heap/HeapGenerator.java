@@ -9,7 +9,7 @@ import java.util.List;
 public class HeapGenerator<T> {
 
     private ArrayList<T> heap;
-    private HashMap<T,Integer> indexMap;
+    private HashMap<T, Integer> indexMap;
     private int heapSize;
     private Comparator<? super T> comp;
 
@@ -32,7 +32,7 @@ public class HeapGenerator<T> {
         return indexMap.containsKey(obj);
     }
 
-    public T peek(){
+    public T peek() {
         return heap.get(0);
     }
 
@@ -68,7 +68,8 @@ public class HeapGenerator<T> {
         heapify(indexMap.get(obj));
     }
 
-    public List<T> getAllElements(){
+    // 请返回堆上的所有元素
+    public List<T> getAllElements() {
         List<T> ans = new ArrayList<>();
         for (T c : heap) {
             ans.add(c);
@@ -91,7 +92,7 @@ public class HeapGenerator<T> {
             if (best == index) {
                 break;
             }
-            swap(index, best);
+            swap(best, index);
             index = best;
             left = index * 2 + 1;
         }
