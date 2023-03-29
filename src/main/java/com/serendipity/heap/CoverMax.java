@@ -25,7 +25,7 @@ public class CoverMax {
         Line l6 = new Line(3, 7);
 
         // 底层堆结构，heap
-        PriorityQueue<Line> heap = new PriorityQueue<>((o1, o2) -> o1.start-o2.start);
+        PriorityQueue<Line> heap = new PriorityQueue<>((o1, o2) -> o1.start - o2.start);
         heap.add(l1);
         heap.add(l2);
         heap.add(l3);
@@ -49,10 +49,6 @@ public class CoverMax {
             int ans3 = maxCover3(lines);
             if (ans1 != ans2 || ans1 != ans3) {
                 System.out.println("Oops!");
-                System.out.println(ans1);
-                System.out.println(ans2);
-                System.out.println(ans3);
-
             }
         }
     }
@@ -88,6 +84,7 @@ public class CoverMax {
         PriorityQueue<Integer> heap = new PriorityQueue<>();
         int max = 0;
         for (int i = 0; i < lines.length; i++) {
+            // lines[i] -> cur 在黑盒中，把<=cur.start 东西都弹出
             while (!heap.isEmpty() && heap.peek() <= lines[i].start) {
                 heap.poll();
             }
@@ -107,9 +104,15 @@ public class CoverMax {
         }
     }
 
+    // 和maxCover2过程是一样的
+    // 只是代码更短
+    // 不使用类定义的写法
     public static int maxCover3(int[][] arr) {
-        Arrays.sort(arr, (o1, o2) -> o1[0] - o2[0]);
-        // 小根堆，每一条线段的结尾数值，使用默认的
+        Arrays.sort(arr, (o1, o2) -> (o1[0] - o2[0]));
+        // arr是二维数组，可以认为m内部是一个一个的一维数组
+        // 每一个一维数组就是一个对象，也就是线段
+        // 如下的code，就是根据每一个线段的开始位置排序
+        // 比如, m = { {5,7}, {1,4}, {2,6} } 跑完如下的code之后变成：{ {1,4}, {2,6}, {5,7} }
         PriorityQueue<Integer> heap = new PriorityQueue<>();
         int max = 0;
         for (int[] line : arr) {
