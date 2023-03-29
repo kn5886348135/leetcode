@@ -36,17 +36,17 @@ public class TrieTree {
                     int ans3 = right.prefixNumber(arr[j]);
                     if (ans1 != ans2 || ans2 != ans3) {
                         System.out.println("Oops!");
-                        break;
                     }
                 }
             }
         }
     }
 
+    // 前缀树节点类型
     public static class Node1 {
-        private int pass;
-        private int end;
-        private Node1[] nexts;
+        public int pass;
+        public int end;
+        public Node1[] nexts;
 
         public Node1() {
             this.pass = 0;
@@ -70,7 +70,9 @@ public class TrieTree {
             Node1 node = root;
             node.pass++;
             int index = 0;
+            // 从左往右遍历字符
             for (int i = 0; i < chs.length; i++) {
+                // 由字符，对应成走向哪条路
                 index = chs[i] - 'a';
                 if (node.nexts[index] == null) {
                     node.nexts[index] = new Node1();
@@ -99,6 +101,7 @@ public class TrieTree {
             }
         }
 
+        // word这个单词之前加入过几次
         public int search(String word) {
             if (word == null) {
                 return 0;
@@ -116,6 +119,7 @@ public class TrieTree {
             return node.end;
         }
 
+        // 所有加入的字符串中，有几个是以pre这个字符串作为前缀的
         public int prefixNumber(String pre) {
             if (pre == null) {
                 return 0;
@@ -135,9 +139,9 @@ public class TrieTree {
     }
 
     public static class Node2 {
-        private int pass;
-        private int end;
-        private HashMap<Integer, Node2> nexts;
+        public int pass;
+        public int end;
+        public HashMap<Integer, Node2> nexts;
 
         public Node2() {
             this.pass = 0;
@@ -190,6 +194,7 @@ public class TrieTree {
             }
         }
 
+        // word这个单词之前加入过几次
         public int search(String word) {
             if (word == null) {
                 return 0;
@@ -207,6 +212,7 @@ public class TrieTree {
             return node.end;
         }
 
+        // 所有加入的字符串中，有几个是以pre这个字符串作为前缀的
         public int prefixNumber(String pre) {
             if (pre == null) {
                 return 0;
