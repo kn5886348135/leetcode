@@ -36,6 +36,7 @@ public class LeetCode327 {
         int ans = 0;
         int windowL = left;
         int windowR = left;
+        // [windowL, windowR)
         for (int i = m + 1; i <= right; i++) {
             long min = arr[i] - upper;
             long max = arr[i] - lower;
