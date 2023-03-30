@@ -42,19 +42,15 @@ public class InsertionSort {
         printArray(arr);
     }
 
-    // 前半部分有序，每次拿后半部分第一个数据依次交换到正确位置。
-    private static void insertionSort(int[] arr){
-        int length = arr.length;
-        if (arr == null || length < 2) {
+    public static void insertionSort(int[] arr) {
+        if (arr == null || arr.length < 2) {
             return;
         }
-        for (int i = 0; i < length - 1; i++) {
-            for (int j = i + 1; j > 0; j--) {
-                if (arr[j - 1] > arr[j]) {
-                    swap(arr, j - 1, j);
-                } else {
-                    break;
-                }
+        // 不只1个数
+        for (int i = 1; i < arr.length; i++) {
+            // 0 ~ i 做到有序
+            for (int j = i - 1; j >= 0 && arr[j] > arr[j + 1]; j--) {
+                swap(arr, j, j + 1);
             }
         }
     }
@@ -78,17 +74,6 @@ public class InsertionSort {
             arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
         }
         return arr;
-    }
-
-    public static int[] copyArray(int[] arr) {
-        if (arr == null) {
-            return null;
-        }
-        int[] res = new int[arr.length];
-        for (int i = 0; i < arr.length; i++) {
-            res[i] = arr[i];
-        }
-        return res;
     }
 
     public static boolean isEqual(int[] arr1, int[] arr2) {
