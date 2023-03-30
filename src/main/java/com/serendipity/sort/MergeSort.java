@@ -6,27 +6,31 @@ import java.util.Arrays;
  * 合并排序
  */
 public class MergeSort {
+
     public static void main(String[] args) {
         int testTime = 500000;
         int maxSize = 100;
         int maxValue = 100;
-        boolean succeed = true;
-        System.out.println("test begin");
         for (int i = 0; i < testTime; i++) {
             int[] arr1 = generateRandomArray(maxSize, maxValue);
-            int[] arr2 = copyArray(arr1);
-            int[] arr3 = copyArray(arr1);
-            Arrays.sort(arr1);
-            mergeSort(arr2, 0, arr1.length - 1);
-            mergeSortNoRecursion(arr3);
-            if (!isEqual(arr1, arr2) || !isEqual(arr1, arr3)) {
-                System.out.println("Oops!");
-                succeed = false;
+            int[] arr2 = new int[arr1.length];
+            System.arraycopy(arr1, 0, arr2, 0, arr1.length);
+            int[] arr3 = new int[arr1.length];
+            System.arraycopy(arr1, 0, arr3, 0, arr1.length);
+            int[] arr4 = new int[arr1.length];
+            System.arraycopy(arr1, 0, arr4, 0, arr1.length);
+
+            mergeSort1(arr1);
+            mergeSort2(arr2);
+            mergeSort(arr3, 0, arr3.length - 1);
+            mergeSortNoRecursion(arr4);
+            if (!isEqual(arr1, arr2)) {
+                System.out.println("出错了！");
+                printArray(arr1);
+                printArray(arr2);
                 break;
             }
         }
-        System.out.println("test end");
-        System.out.println(succeed ? "Nice!" : "Oops!");
     }
 
     /**
@@ -75,6 +79,28 @@ public class MergeSort {
         }
     }
 
+    // 递归方法实现
+    public static void mergeSort1(int[] arr) {
+        if (arr == null || arr.length < 2) {
+            return;
+        }
+        process1(arr, 0, arr.length - 1);
+    }
+
+    // 请把arr[L..R]排有序
+    // l...r N
+    // T(N) = 2 * T(N / 2) + O(N)
+    // O(N * logN)
+    public static void process1(int[] arr, int L, int R) {
+        if (L == R) { // base case
+            return;
+        }
+        int mid = L + ((R - L) >> 1);
+        process1(arr, L, mid);
+        process1(arr, mid + 1, R);
+        merge1(arr, L, mid, R);
+    }
+
     // 非递归版本
     private static void mergeSortNoRecursion(int[] arr) {
         if (arr == null || arr.length < 2) {
@@ -118,7 +144,54 @@ public class MergeSort {
         }
     }
 
-    // for test
+    public static void merge1(int[] arr, int L, int M, int R) {
+        int[] help = new int[R - L + 1];
+        int i = 0;
+        int p1 = L;
+        int p2 = M + 1;
+        while (p1 <= M && p2 <= R) {
+            help[i++] = arr[p1] <= arr[p2] ? arr[p1++] : arr[p2++];
+        }
+        // 要么p1越界了，要么p2越界了
+        while (p1 <= M) {
+            help[i++] = arr[p1++];
+        }
+        while (p2 <= R) {
+            help[i++] = arr[p2++];
+        }
+        for (i = 0; i < help.length; i++) {
+            arr[L + i] = help[i];
+        }
+    }
+
+    // 非递归方法实现
+    public static void mergeSort2(int[] arr) {
+        if (arr == null || arr.length < 2) {
+            return;
+        }
+        int N = arr.length;
+        // 步长
+        int mergeSize = 1;
+        while (mergeSize < N) { // log N
+            // 当前左组的，第一个位置
+            int L = 0;
+            while (L < N) {
+                if (mergeSize >= N - L) {
+                    break;
+                }
+                int M = L + mergeSize - 1;
+                int R = M + Math.min(mergeSize, N - M - 1);
+                merge1(arr, L, M, R);
+                L = R + 1;
+            }
+            // 防止溢出
+            if (mergeSize > N / 2) {
+                break;
+            }
+            mergeSize <<= 1;
+        }
+    }
+
     public static int[] generateRandomArray(int maxSize, int maxValue) {
         int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
         for (int i = 0; i < arr.length; i++) {
@@ -127,7 +200,6 @@ public class MergeSort {
         return arr;
     }
 
-    // for test
     public static int[] copyArray(int[] arr) {
         if (arr == null) {
             return null;
@@ -139,7 +211,6 @@ public class MergeSort {
         return res;
     }
 
-    // for test
     public static boolean isEqual(int[] arr1, int[] arr2) {
         if ((arr1 == null && arr2 != null) || (arr1 != null && arr2 == null)) {
             return false;
@@ -156,5 +227,15 @@ public class MergeSort {
             }
         }
         return true;
+    }
+
+    public static void printArray(int[] arr) {
+        if (arr == null) {
+            return;
+        }
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
     }
 }
