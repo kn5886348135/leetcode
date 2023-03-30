@@ -51,7 +51,6 @@ public class BinarySearch {
         return index;
     }
 
-
     public static boolean exist(int[] sortedArr, int num) {
         if (sortedArr == null || sortedArr.length == 0) {
             return false;
@@ -73,6 +72,25 @@ public class BinarySearch {
         return sortedArr[left] == num;
     }
 
+    public int search(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1;
+        int index = -1;
+        int middle;
+        while (left <= right) {
+            middle = left + ((right - left) >> 1);
+            if (nums[middle] == target) {
+                index = middle;
+                return index;
+            } else if (nums[middle] > target) {
+                right = middle - 1;
+            } else {
+                left = middle + 1;
+            }
+        }
+        return index;
+    }
+
     public static boolean test(int[] sortedArr, int num) {
         for(int cur : sortedArr) {
             if(cur == num) {
@@ -80,6 +98,16 @@ public class BinarySearch {
             }
         }
         return false;
+    }
+
+    private static int validateIndex(int[]arr,int target){
+        int length = arr.length;
+        for (int i = 0; i < length; i++) {
+            if (arr[i] == target) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public static int[] generateRandomArray(int maxSize, int maxValue) {
