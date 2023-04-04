@@ -1,4 +1,4 @@
-package com.serendipity.binarysearch;
+package com.serendipity._1binarysearch;
 
 /**
  * @author jack

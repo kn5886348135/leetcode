@@ -1,4 +1,4 @@
-package com.serendipity.binarysearch;
+package com.serendipity._1binarysearch;
 
 import java.util.Arrays;
 
