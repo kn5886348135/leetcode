@@ -1,4 +1,4 @@
-package com.serendipity._1binarysearch;
+package com.serendipity.algo1binarysearch;
 
 import com.serendipity.common.CommonUitl;
 
