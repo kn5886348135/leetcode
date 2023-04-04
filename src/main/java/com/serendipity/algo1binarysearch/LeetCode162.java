@@ -1,6 +1,6 @@
 package com.serendipity.algo1binarysearch;
 
-import com.serendipity.common.CommonUitl;
+import com.serendipity.common.CommonUtil;
 
 /**
  * @author jack
@@ -19,7 +19,7 @@ public class LeetCode162 {
         int maxSize = 30;
         int maxValue = 100;
         for (int i = 0; i < testTime; i++) {
-            int[] arr = CommonUitl.generateRandomDiffAdjacentArray(maxSize, maxValue);
+            int[] arr = CommonUtil.generateRandomDiffAdjacentArray(maxSize, maxValue);
             int ans = findPeakElement(arr);
             if (!verifyPeakElement(arr, ans)) {
                 System.out.println("出错了！");

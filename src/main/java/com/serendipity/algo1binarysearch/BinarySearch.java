@@ -1,6 +1,6 @@
 package com.serendipity.algo1binarysearch;
 
-import com.serendipity.common.CommonUitl;
+import com.serendipity.common.CommonUtil;
 
 import java.util.Arrays;
 
@@ -18,7 +18,7 @@ public class BinarySearch {
         int maxValue = 100;
         boolean succeed = true;
         for (int i = 0; i < testTime; i++) {
-            int[] arr = CommonUitl.generateRandomArray(maxSize, maxValue);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue);
             Arrays.sort(arr);
             int value = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
             if (verityBinarySearch(arr, value) != binarySearch(arr, value)) {
