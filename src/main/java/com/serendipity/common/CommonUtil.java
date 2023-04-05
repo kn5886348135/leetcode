@@ -63,4 +63,17 @@ public class CommonUtil {
         }
         System.out.println();
     }
+
+    // 打印int类型二进制字符串方法
+    private static void printCompleteBinaryStr(int num){
+        for (int i = 31; i >= 0; i--) {
+            // 打印二进制位
+            System.out.print((num & (1 << i)) == 0 ? "0" : "1");
+            // 增加空格
+            if (i < 31 && (i + 1) % 8 == 0) {
+                System.out.print(" ");
+            }
+        }
+        System.out.println();
+    }
 }
