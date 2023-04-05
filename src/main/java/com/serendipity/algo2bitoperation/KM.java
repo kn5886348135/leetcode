@@ -33,7 +33,7 @@ public class KM {
 
             int[] arr = randomArr(len, range, k, m);
             int ans1 = onlyKTimes(arr, k, m);
-            int ans2 = onlyKTimesMap(arr, k, m);
+            int ans2 = verifyOnlyKTimes(arr, k, m);
             if (ans1 != ans2) {
                 System.out.println("出错了");
             }
@@ -49,7 +49,7 @@ public class KM {
                 m++;
             }
             int[] arr = randomArray1(kinds, range, k, m);
-            int ans1 = test(arr, k, m);
+            int ans1 = verifyOnlyKTimes(arr, k, m);
             int ans2 = onlyKTimes1(arr, k, m);
             int ans3 = km1(arr, k, m);
             if (ans1 != ans2 || ans1 != ans3) {
@@ -99,7 +99,8 @@ public class KM {
         return ans;
     }
 
-    private static int onlyKTimesMap(int[] arr,int k,int m) {
+    // 对数器
+    public static int verifyOnlyKTimes(int[] arr, int k, int m) {
         Map<Integer, Integer> map = new HashMap<>();
         for (int num : arr) {
             if (map.containsKey(num)) {
@@ -113,7 +114,7 @@ public class KM {
                 return num;
             }
         }
-        return -1;
+        return Integer.MAX_VALUE;
     }
 
     private static int[] randomArr(int maxKinds, int range, int k, int m) {
@@ -150,25 +151,6 @@ public class KM {
 
     private static int randomNumber(int range) {
         return ((int) (Math.random() * range) + 1) - ((int) (Math.random() * range) + 1);
-    }
-
-    public static int test(int[] arr, int k, int m) {
-        HashMap<Integer, Integer> map = new HashMap<>();
-        for (int num : arr) {
-            if (map.containsKey(num)) {
-                map.put(num, map.get(num) + 1);
-            } else {
-                map.put(num, 1);
-            }
-        }
-        int ans = 0;
-        for (int num : map.keySet()) {
-            if (map.get(num) == k) {
-                ans = num;
-                break;
-            }
-        }
-        return ans;
     }
 
     // 请保证arr中，只有一种数出现了K次，其他数都出现了M次
@@ -226,7 +208,7 @@ public class KM {
     }
 
     public static int[] randomArray1(int maxKinds, int range, int k, int m) {
-        int ktimeNum = randomNumber1(range);
+        int ktimeNum = randomNumber(range);
         // 真命天子出现的次数
         int times = k;
         // 2
@@ -243,7 +225,7 @@ public class KM {
         while (numKinds != 0) {
             int curNum = 0;
             do {
-                curNum = randomNumber1(range);
+                curNum = randomNumber(range);
             } while (set.contains(curNum));
             set.add(curNum);
             numKinds--;
@@ -260,10 +242,5 @@ public class KM {
             arr[j] = tmp;
         }
         return arr;
-    }
-
-    // [-range, +range]
-    public static int randomNumber1(int range) {
-        return (int) (Math.random() * (range + 1)) - (int) (Math.random() * (range + 1));
     }
 }
