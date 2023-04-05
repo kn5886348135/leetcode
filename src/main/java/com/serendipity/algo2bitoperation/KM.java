@@ -1,5 +1,7 @@
 package com.serendipity.algo2bitoperation;
 
+import com.serendipity.common.CommonUtil;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -15,44 +17,28 @@ public class KM {
 
     public static HashMap<Integer, Integer> map = new HashMap<>();
 
-    // arr中只有一个数出现了K次，其他数都出现了M次，找出出现了K次的数
     public static void main(String[] args) {
         int kinds = 5;
         int len = 100;
         int range = 200;
         int testTime = 100000;
         int max = 9;
-        for (int i = 0; i < testTime; i++) {
-            int a = (int) (Math.random() * max + 1);
-            int b = (int) (Math.random() * max + 1);
-            int k = Math.min(a, b);
-            int m = Math.max(a, b);
-            if (k == m) {
-                m++;
-            }
-
-            int[] arr = randomArr(len, range, k, m);
-            int ans1 = onlyKTimes(arr, k, m);
-            int ans2 = verifyOnlyKTimes(arr, k, m);
-            if (ans1 != ans2) {
-                System.out.println("出错了");
-            }
-        }
 
         for (int i = 0; i < testTime; i++) {
-            int a = (int) (Math.random() * max) + 1; // a 1 ~ 9
-            int b = (int) (Math.random() * max) + 1; // b 1 ~ 9
+            int a = (int) (Math.random() * max) + 1;
+            int b = (int) (Math.random() * max) + 1;
             int k = Math.min(a, b);
             int m = Math.max(a, b);
             // k < m
             if (k == m) {
                 m++;
             }
-            int[] arr = randomArray1(kinds, range, k, m);
+            int[] arr = randomArr(kinds, range, k, m);
             int ans1 = verifyOnlyKTimes(arr, k, m);
             int ans2 = onlyKTimes1(arr, k, m);
             int ans3 = km1(arr, k, m);
-            if (ans1 != ans2 || ans1 != ans3) {
+            int ans4 = onlyKTimes(arr, k, m);
+            if (ans1 != ans2 || ans1 != ans3 || ans1 != ans4) {
                 System.out.println(ans1);
                 System.out.println(ans3);
                 System.out.println("出错了！");
@@ -60,6 +46,8 @@ public class KM {
         }
     }
 
+    // 获取所有元素的二进制，使用辅助数组或者map保存二进制中1的个数
+    // 出现k次数的二进制位1的累加和对m取模一定是k的整数倍
     private static int onlyKTimes(int[] arr, int k, int m) {
         int[] t = new int[32];
         // 假设a出现k次，b出现m次
@@ -81,18 +69,6 @@ public class KM {
             if (t[i] % m == k) {
                 ans |= (1 << i);
             } else {
-                return -1;
-            }
-        }
-        // 验证a是不是出现了k次
-        if (ans == 0) {
-            int count = 0;
-            for (int num : arr) {
-                if (num == 0) {
-                    count++;
-                }
-            }
-            if (count != k) {
                 return -1;
             }
         }
@@ -122,7 +98,7 @@ public class KM {
         int numKinds = (int) (Math.random() * maxKinds) + 2;
         int[] arr = new int[k + (numKinds - 1) * m];
         int index = 0;
-        while (index < k) {
+        for (; index < k; index++) {
             arr[index] = ktimeNum;
         }
         numKinds--;
@@ -142,9 +118,7 @@ public class KM {
         // 打乱顺序
         for (int i = 0; i < arr.length; i++) {
             int j = (int) (Math.random() * arr.length);
-            int temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
+            CommonUtil.swap(arr, i, j);
         }
         return arr;
     }
@@ -205,42 +179,5 @@ public class KM {
             }
         }
         return ans;
-    }
-
-    public static int[] randomArray1(int maxKinds, int range, int k, int m) {
-        int ktimeNum = randomNumber(range);
-        // 真命天子出现的次数
-        int times = k;
-        // 2
-        int numKinds = (int) (Math.random() * maxKinds) + 2;
-        // k * 1 + (numKinds - 1) * m
-        int[] arr = new int[times + (numKinds - 1) * m];
-        int index = 0;
-        for (; index < times; index++) {
-            arr[index] = ktimeNum;
-        }
-        numKinds--;
-        HashSet<Integer> set = new HashSet<>();
-        set.add(ktimeNum);
-        while (numKinds != 0) {
-            int curNum = 0;
-            do {
-                curNum = randomNumber(range);
-            } while (set.contains(curNum));
-            set.add(curNum);
-            numKinds--;
-            for (int i = 0; i < m; i++) {
-                arr[index++] = curNum;
-            }
-        }
-        // arr 填好了
-        for (int i = 0; i < arr.length; i++) {
-            // i 位置的数，我想随机和j位置的数做交换
-            int j = (int) (Math.random() * arr.length);// 0 ~ N-1
-            int tmp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = tmp;
-        }
-        return arr;
     }
 }
