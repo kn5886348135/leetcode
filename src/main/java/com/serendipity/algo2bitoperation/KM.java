@@ -1,4 +1,4 @@
-package com.serendipity.bitoperation;
+package com.serendipity.algo2bitoperation;
 
 import java.util.HashMap;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package com.serendipity.bitoperation;
+package com.serendipity.algo2bitoperation;
 
 /**
  * @author jack
