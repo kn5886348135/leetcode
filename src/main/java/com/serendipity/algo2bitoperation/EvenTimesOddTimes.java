@@ -3,12 +3,14 @@ package com.serendipity.algo2bitoperation;
 /**
  * @author jack
  * @version 1.0
- * @description
+ * @description 奇数 odd number
+ *              偶数 even number
  * @date 2023/03/30/15:52
  */
 public class EvenTimesOddTimes {
 
     public static void main(String[] args) {
+        // 位运算交换两个整数
         int a = 5;
         int b = 7;
 
@@ -18,62 +20,38 @@ public class EvenTimesOddTimes {
 
         System.out.println(a);
         System.out.println(b);
-
-        int[] arr1 = { 3, 3, 2, 3, 1, 1, 1, 3, 1, 1, 1 };
-        printOddTimesNum1(arr1);
-
-        int[] arr2 = { 4, 3, 4, 2, 2, 2, 4, 1, 1, 1, 3, 3, 1, 1, 1, 4, 2, 2 };
-        printOddTimesNum2(arr2);
-
     }
 
     // arr中，只有一种数，出现奇数次
+    // 运用异或运算的交换律和结合律，数组所有元素异或的结果就是答案
+    // 0 ^ N == N
+    // N ^ N == 0
     public static void printOddTimesNum1(int[] arr) {
-        int eor = 0;
+        int ans = 0;
         for (int i = 0; i < arr.length; i++) {
-            eor ^= arr[i];
+            ans ^= arr[i];
         }
-        System.out.println(eor);
+        System.out.println(ans);
     }
 
     // arr中，有两种数，出现奇数次
     public static void printOddTimesNum2(int[] arr) {
-        int eor = 0;
+        int res = 0;
+        // 拿到奇数次数的异或结果
         for (int i = 0; i < arr.length; i++) {
-            eor ^= arr[i];
+            res ^= arr[i];
         }
-        // a 和 b是两种数
-        // eor != 0
-        // eor最右侧的1，提取出来
-        // eor :     00110010110111000
-        // rightOne :00000000000001000
-        int rightOne = eor & (-eor); // 提取出最右的1
+        // 拿到最右边的1
+        int rightOne = res & (-res);
 
-        int onlyOne = 0; // eor'
+        // 其中一个奇数次的数记为a
+        int a = 0;
         for (int i = 0 ; i < arr.length;i++) {
-            //  arr[1] =  111100011110000
-            // rightOne=  000000000010000
+            // 跳过偶数次的数和b
             if ((arr[i] & rightOne) != 0) {
-                onlyOne ^= arr[i];
+                a ^= arr[i];
             }
         }
-        System.out.println(onlyOne + " " + (eor ^ onlyOne));
-    }
-
-
-    public static int bit1counts(int N) {
-        int count = 0;
-
-        //   011011010000
-        //   000000010000     1
-
-        //   011011000000
-        while(N != 0) {
-            int rightOne = N & ((~N) + 1);
-            count++;
-            N ^= rightOne;
-            // N -= rightOne
-        }
-        return count;
+        System.out.println(a + " " + (res ^ a));
     }
 }

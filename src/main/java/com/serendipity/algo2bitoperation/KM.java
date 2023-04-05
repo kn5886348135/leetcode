@@ -7,7 +7,8 @@ import java.util.Map;
 /**
  * @author jack
  * @version 1.0
- * @description arr中只有一个数出现了K次，其他数都出现了M次，找出出现了K次的数
+ * @description 一个数组中有一种数出现K次，其他数都出现了M次，M > 1,  K < M。找到出现了K次的数。
+ *              要求，额外空间复杂度O(1)，时间复杂度O(N)
  * @date 2023/03/30/15:41
  */
 public class KM {
@@ -72,15 +73,18 @@ public class KM {
         int ans = 0;
         // 异或拿到a的每一位二进制
         for (int i = 0; i < 32; i++) {
+            // a在i这个二进制位是0
             if (t[i] % m == 0) {
                 continue;
             }
+            // a在i这个二进制位是1
             if (t[i] % m == k) {
                 ans |= (1 << i);
             } else {
                 return -1;
             }
         }
+        // 验证a是不是出现了k次
         if (ans == 0) {
             int count = 0;
             for (int num : arr) {
@@ -104,9 +108,9 @@ public class KM {
                 map.put(num, 1);
             }
         }
-        for (Integer integer : map.keySet()) {
-            if (map.get(integer) == k) {
-                return integer;
+        for (Integer num : map.keySet()) {
+            if (map.get(num) == k) {
+                return num;
             }
         }
         return -1;
