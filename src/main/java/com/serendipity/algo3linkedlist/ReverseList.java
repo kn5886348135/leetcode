@@ -1,4 +1,4 @@
-package com.serendipity.linkedlist;
+package com.serendipity.algo3linkedlist;
 
 import java.util.ArrayList;
 import java.util.List;

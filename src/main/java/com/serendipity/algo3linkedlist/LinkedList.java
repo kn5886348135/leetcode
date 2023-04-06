@@ -1,4 +1,4 @@
-package com.serendipity.linkedlist;
+package com.serendipity.algo3linkedlist;
 
 public class LinkedList {
     private static Node head = new Node(0);

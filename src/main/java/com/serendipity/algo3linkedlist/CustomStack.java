@@ -1,47 +1,43 @@
-package com.serendipity.linkedlist;
+package com.serendipity.algo3linkedlist;
 
 import java.util.Objects;
 
-public class CustomQueue<V> {
-
+public class CustomStack<V> {
     private Node<V> head;
-    private Node<V> tail;
     private int size;
 
     public boolean isEmpty(){
         return size == 0;
     }
 
-    public void offer(V value) {
+    public void push(V value){
         Node<V> node = new Node<>(value);
-        if (tail == null) {
+        if (head == null) {
             head = node;
-            tail = node;
         } else {
-            tail.setNext(node);
-            tail = node;
+            node.setNext(head);
+            head = node;
         }
         size++;
     }
 
-    public V poll(){
+    public V pop(){
         if (head == null) {
             return null;
         }
-        V ans = head.getValue();
-        head = head.getNext();
+        V ans = null;
+        ans = head.getValue();
+        head.setNext(head.getNext());
         size--;
         return ans;
     }
 
     public V peek() {
-        if (head == null) {
-            return null;
-        }
-        return head.getValue();
+        return head == null ? null : head.getValue();
     }
 
-    private class Node<V> {
+
+    class Node<V>{
         private V value;
         private Node<V> next;
 

@@ -1,4 +1,4 @@
-package com.serendipity.linkedlist;
+package com.serendipity.algo3linkedlist;
 
 public class DeleteGivenValue {
 
