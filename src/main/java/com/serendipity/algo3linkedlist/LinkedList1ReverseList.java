@@ -1,5 +1,8 @@
 package com.serendipity.algo3linkedlist;
 
+import com.serendipity.common.DoubleNode;
+import com.serendipity.common.Node;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,60 +12,51 @@ import java.util.List;
  * @description 翻转链表
  * @date 2023/03/30/15:28
  */
-public class ReverseList {
+public class LinkedList1ReverseList {
 
     public static void main(String[] args) {
         int len = 50;
         int value = 100;
         int testTime = 100000;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
             Node node1 = generateRandomLinkedList(len, value);
             List<Integer> list1 = getLinkedListOriginOrder(node1);
             node1 = reverseLinkedList(node1);
             if (!checkLinkedListReverse(list1, node1)) {
-                System.out.println("Oops1!");
+                System.out.println("reverseLinkedList failed");
+                success = false;
+                break;
             }
 
             Node node2 = generateRandomLinkedList(len, value);
             List<Integer> list2 = getLinkedListOriginOrder(node2);
             node2 = testReverseLinkedList(node2);
             if (!checkLinkedListReverse(list2, node2)) {
-                System.out.println("Oops2!");
+                System.out.println("testReverseLinkedList failed");
+                success = false;
+                break;
             }
 
             DoubleNode node3 = generateRandomDoubleList(len, value);
             List<Integer> list3 = getDoubleListOriginOrder(node3);
             node3 = reverseDoubleList(node3);
             if (!checkDoubleListReverse(list3, node3)) {
-                System.out.println("Oops3!");
+                System.out.println("reverseDoubleList failed");
+                success = false;
+                break;
             }
 
             DoubleNode node4 = generateRandomDoubleList(len, value);
             List<Integer> list4 = getDoubleListOriginOrder(node4);
             node4 = testReverseDoubleList(node4);
             if (!checkDoubleListReverse(list4, node4)) {
-                System.out.println("Oops4!");
+                System.out.println("testReverseDoubleList failed");
+                success = false;
+                break;
             }
         }
-    }
-
-    public static class Node {
-        public int value;
-        public Node next;
-
-        public Node(int data) {
-            value = data;
-        }
-    }
-
-    public static class DoubleNode {
-        public int value;
-        public DoubleNode last;
-        public DoubleNode next;
-
-        public DoubleNode(int data) {
-            value = data;
-        }
+        System.out.println(success ? "success" : "failed");
     }
 
     //  head
@@ -145,6 +139,7 @@ public class ReverseList {
         return list.get(size - 1);
     }
 
+    // 生成单链表
     public static Node generateRandomLinkedList(int len, int value) {
         int size = (int) (Math.random() * (len + 1));
         while (size == 0) {
@@ -162,6 +157,7 @@ public class ReverseList {
         return head;
     }
 
+    // 生成双链表
     public static DoubleNode generateRandomDoubleList(int len, int value) {
         int size = (int) (Math.random() * (len + 1));
         if (size == 0) {
@@ -225,5 +221,4 @@ public class ReverseList {
         }
         return true;
     }
-
 }
