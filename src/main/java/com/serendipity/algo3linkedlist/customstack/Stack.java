@@ -10,6 +10,8 @@ public interface Stack<E> {
 
      void push(E item);
 
+     E poll();
+
      E pop();
 
      E peek();

@@ -26,6 +26,12 @@ public class SingleNodeStack<E> implements Stack<E> {
     }
 
     @Override
+    public E poll() {
+        // TODO
+        return null;
+    }
+
+    @Override
     public E pop() {
         if (this.head == null) {
             return null;
