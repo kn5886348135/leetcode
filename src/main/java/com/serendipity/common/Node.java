@@ -6,11 +6,11 @@ package com.serendipity.common;
  * @description
  * @date 2023/04/06/18:05
  */
-public class Node {
-    public int value;
-    public Node next;
+public class Node<T> {
+    public T value;
+    public Node<T> next;
 
-    public Node(int value) {
+    public Node(T value) {
         this.value = value;
     }
 }

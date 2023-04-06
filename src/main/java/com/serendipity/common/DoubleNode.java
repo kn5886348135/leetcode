@@ -6,12 +6,12 @@ package com.serendipity.common;
  * @description
  * @date 2023/04/06/18:06
  */
-public class DoubleNode {
-    public int value;
-    public DoubleNode next;
-    public DoubleNode last;
+public class DoubleNode<T> {
+    public T value;
+    public DoubleNode<T> next;
+    public DoubleNode<T> last;
 
-    public DoubleNode(int value) {
+    public DoubleNode(T value) {
         this.value = value;
     }
 }

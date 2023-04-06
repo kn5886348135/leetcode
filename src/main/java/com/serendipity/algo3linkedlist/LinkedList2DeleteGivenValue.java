@@ -4,6 +4,12 @@ import com.serendipity.common.CommonLinkedListUtil;
 import com.serendipity.common.DoubleNode;
 import com.serendipity.common.Node;
 
+/**
+ * @author jack
+ * @version 1.0
+ * @description 删除单链表、双链表中给定值
+ * @date 2023/04/06/20:41
+ */
 public class LinkedList2DeleteGivenValue {
 
     public static void main(String[] args) {
@@ -27,6 +33,7 @@ public class LinkedList2DeleteGivenValue {
             Node node3 = deleteTargetNode(node1, target);
             if (!verifyDeleteSingleNode(node1, node3, target)) {
                 System.out.println("deleteTargetNode failed");
+                System.out.println(target);
                 CommonLinkedListUtil.printSingleNode(node1);
                 CommonLinkedListUtil.printSingleNode(node3);
                 success = false;
@@ -48,7 +55,7 @@ public class LinkedList2DeleteGivenValue {
             target = (int) (Math.random() * (maxValue + 1));
             DoubleNode doubleNode3 = deleteTargetDoubleNode(doubleNode1, target);
             if (!verifyDeleteDoubleNode(doubleNode1, doubleNode3, target)) {
-                System.out.println("verifyDeleteDoubleNode failed");
+                System.out.println("deleteTargetDoubleNode failed");
                 CommonLinkedListUtil.printSingleNode(node1);
                 CommonLinkedListUtil.printSingleNode(node3);
                 success = false;
@@ -59,11 +66,11 @@ public class LinkedList2DeleteGivenValue {
     }
 
     // 单链表删除指定节点
-    private static Node deleteTargetNode(Node head, int target) {
+    private static Node deleteTargetNode(Node head, Integer target) {
         // head来到第一个不需要删的位置
         // 这一步也可以省略
         while (head != null) {
-            if (head.value != target) {
+            if (!head.value.equals(target)) {
                 break;
             }
             head = head.next;
@@ -71,7 +78,7 @@ public class LinkedList2DeleteGivenValue {
         Node pre = head;
         Node cur = head;
         while (cur != null) {
-            if (cur.value == target) {
+            if (cur.value.equals(target)) {
                 // pre指向next节点，直接跳过cur节点
                 pre.next = cur.next;
             } else {
@@ -85,7 +92,7 @@ public class LinkedList2DeleteGivenValue {
     }
 
     // 双链表删除指定节点
-    private static DoubleNode deleteTargetDoubleNode(DoubleNode node, int target) {
+    private static DoubleNode deleteTargetDoubleNode(DoubleNode node, Integer target) {
         while (node != null) {
             if (node.value != target) {
                 break;
@@ -112,12 +119,12 @@ public class LinkedList2DeleteGivenValue {
     }
 
     // 验证两个单链表是否相等
-    public static boolean verifyCopySingleNode(Node node1, Node node2) {
+    public static <T> boolean verifyCopySingleNode(Node<T> node1, Node<T> node2) {
         while (node1 != null || node2 != null) {
             if (node1 == null || node2 == null) {
                 return false;
             }
-            if (node1.value != node2.value) {
+            if (!node1.value.equals(node2.value)) {
                 return false;
             }
             node1 = node1.next;
@@ -127,14 +134,14 @@ public class LinkedList2DeleteGivenValue {
     }
 
     // 验证删除单链表中指定节点
-    public static boolean verifyDeleteSingleNode(Node origin, Node deleted, int target) {
+    public static <T> boolean verifyDeleteSingleNode(Node<T> origin, Node<T> deleted, int target) {
         int count = 0;
         int len1 = 0;
         int len2 = 0;
         // 验证每一个节点，单独处理被删除的节点
         while (origin != null && deleted != null) {
-            if (origin.value != deleted.value) {
-                if (origin.value != target) {
+            if (!origin.value.equals(deleted.value)) {
+                if (!origin.value.equals(target)) {
                     return false;
                 } else {
                     origin = origin.next;

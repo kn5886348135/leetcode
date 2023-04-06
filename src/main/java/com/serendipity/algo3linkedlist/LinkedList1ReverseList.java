@@ -12,7 +12,7 @@ import java.util.List;
  * @description 翻转链表
  * @date 2023/03/30/15:28
  */
-public class LinkedList1ReverseList {
+public class LinkedList1ReverseList<T> {
 
     public static void main(String[] args) {
         int len = 50;
@@ -176,8 +176,8 @@ public class LinkedList1ReverseList {
         return head;
     }
 
-    public static List<Integer> getLinkedListOriginOrder(Node head) {
-        List<Integer> ans = new ArrayList<>();
+    public static <T> List<T> getLinkedListOriginOrder(Node<T> head) {
+        List<T> ans = new ArrayList<>();
         while (head != null) {
             ans.add(head.value);
             head = head.next;

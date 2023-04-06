@@ -40,7 +40,7 @@ public class GetMax {
     private static int process(int[] arr, int left, int right) {
         // 递归终止条件
         if (left == right) {
-            return Math.max(arr[left], arr[right]);
+            return arr[left];
         }
         int middle = left + ((right - left) >> 1);
         int ans1 = process(arr, left, middle);
