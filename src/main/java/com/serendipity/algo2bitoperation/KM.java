@@ -19,8 +19,7 @@ public class KM {
 
     public static void main(String[] args) {
         int kinds = 5;
-        int len = 100;
-        int range = 200;
+        int range = 30;
         int testTime = 100000;
         int max = 9;
 
@@ -36,12 +35,15 @@ public class KM {
             int[] arr = randomArr(kinds, range, k, m);
             int ans1 = verifyOnlyKTimes(arr, k, m);
             int ans2 = onlyKTimes1(arr, k, m);
-            int ans3 = km1(arr, k, m);
+            int ans3 = km(arr, k, m);
             int ans4 = onlyKTimes(arr, k, m);
             if (ans1 != ans2 || ans1 != ans3 || ans1 != ans4) {
                 System.out.println(ans1);
+                System.out.println(ans2);
                 System.out.println(ans3);
+                System.out.println(ans4);
                 System.out.println("出错了！");
+                break;
             }
         }
     }
@@ -81,7 +83,7 @@ public class KM {
         for (int num : arr) {
             if (map.containsKey(num)) {
                 map.put(num, map.get(num) + 1);
-            }else {
+            } else {
                 map.put(num, 1);
             }
         }
@@ -96,6 +98,7 @@ public class KM {
     private static int[] randomArr(int maxKinds, int range, int k, int m) {
         int ktimeNum = randomNumber(range);
         int numKinds = (int) (Math.random() * maxKinds) + 2;
+        // k * 1 + (numKinds - 1) * m
         int[] arr = new int[k + (numKinds - 1) * m];
         int index = 0;
         for (; index < k; index++) {
@@ -124,13 +127,13 @@ public class KM {
     }
 
     private static int randomNumber(int range) {
-        return ((int) (Math.random() * range) + 1) - ((int) (Math.random() * range) + 1);
+        return (int) (Math.random() * (range + 1)) - (int) (Math.random() * (range + 1));
     }
 
     // 请保证arr中，只有一种数出现了K次，其他数都出现了M次
     public static int onlyKTimes1(int[] arr, int k, int m) {
         if (map.size() == 0) {
-            mapCreater1(map);
+            mapCreater(map);
         }
         int[] t = new int[32];
         // t[0] 0位置的1出现了几个
@@ -155,7 +158,7 @@ public class KM {
         return ans;
     }
 
-    public static void mapCreater1(HashMap<Integer, Integer> map) {
+    public static void mapCreater(HashMap<Integer, Integer> map) {
         int value = 1;
         for (int i = 0; i < 32; i++) {
             map.put(value, i);
@@ -164,7 +167,7 @@ public class KM {
     }
 
     // 更简洁的写法
-    public static int km1(int[] arr, int k, int m) {
+    public static int km(int[] arr, int k, int m) {
         int[] help = new int[32];
         for (int num : arr) {
             for (int i = 0; i < 32; i++) {

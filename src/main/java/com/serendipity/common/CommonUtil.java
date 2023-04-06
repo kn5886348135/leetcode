@@ -13,6 +13,10 @@ public class CommonUtil {
 
     // 二进制交换数组的两个位置
     public static void swap(int[] arr, int i, int j) {
+        // i == j时，异或结果为0
+        if (i == j) {
+            return;
+        }
         arr[i] = arr[i] ^ arr[j];
         arr[j] = arr[i] ^ arr[j];
         arr[i] = arr[i] ^ arr[j];

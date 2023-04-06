@@ -39,11 +39,10 @@ public class ReverseList {
 
             DoubleNode node4 = generateRandomDoubleList(len, value);
             List<Integer> list4 = getDoubleListOriginOrder(node4);
-            node4 = reverseDoubleList(node4);
+            node4 = testReverseDoubleList(node4);
             if (!checkDoubleListReverse(list4, node4)) {
                 System.out.println("Oops4!");
             }
-
         }
     }
 
@@ -69,31 +68,43 @@ public class ReverseList {
     //  head
     //   a    ->   b    ->  c  ->  null
     //   c    ->   b    ->  a  ->  null
+    // 反转链表
     public static Node reverseLinkedList(Node head) {
         Node pre = null;
         Node next = null;
         while (head != null) {
+            // 记录下一个节点
             next = head.next;
+            // 指定head的next
             head.next = pre;
+            // 更新pre
             pre = head;
+            // head移动到下一个节点
             head = next;
         }
+        // 此时head为null
         return pre;
     }
 
+    // 反转双链表
     public static DoubleNode reverseDoubleList(DoubleNode head) {
         DoubleNode pre = null;
         DoubleNode next = null;
         while (head != null) {
+            // 记录下一个节点
             next = head.next;
+            // 更新当前节点的next、last
             head.next = pre;
             head.last = next;
+            // 更新pre，移动head
             pre = head;
             head = next;
         }
+        // 此时head为空
         return pre;
     }
 
+    // 对数器，借助list反转链表
     public static Node testReverseLinkedList(Node head) {
         if (head == null) {
             return null;
@@ -104,13 +115,14 @@ public class ReverseList {
             head = head.next;
         }
         list.get(0).next = null;
-        int N = list.size();
-        for (int i = 1; i < N; i++) {
+        int size = list.size();
+        for (int i = 1; i < size; i++) {
             list.get(i).next = list.get(i - 1);
         }
-        return list.get(N - 1);
+        return list.get(size - 1);
     }
 
+    // 借助list反转双向链表
     public static DoubleNode testReverseDoubleList(DoubleNode head) {
         if (head == null) {
             return null;
@@ -122,21 +134,21 @@ public class ReverseList {
         }
         list.get(0).next = null;
         DoubleNode pre = list.get(0);
-        int N = list.size();
-        for (int i = 1; i < N; i++) {
+        int size = list.size();
+        for (int i = 1; i < size; i++) {
             DoubleNode cur = list.get(i);
             cur.last = null;
             cur.next = pre;
             pre.last = cur;
             pre = cur;
         }
-        return list.get(N - 1);
+        return list.get(size - 1);
     }
 
     public static Node generateRandomLinkedList(int len, int value) {
         int size = (int) (Math.random() * (len + 1));
-        if (size == 0) {
-            return null;
+        while (size == 0) {
+            size = (int) (Math.random() * (len + 1));
         }
         size--;
         Node head = new Node((int) (Math.random() * (value + 1)));
