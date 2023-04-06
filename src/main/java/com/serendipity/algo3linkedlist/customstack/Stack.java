@@ -8,7 +8,7 @@ package com.serendipity.algo3linkedlist.customstack;
  */
 public interface Stack<E> {
 
-     E push(E item);
+     void push(E item);
 
      E pop();
 

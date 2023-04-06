@@ -204,14 +204,14 @@ public class LinkedList2DeleteGivenValue {
     }
 
     // 验证删除单链表中指定节点
-    public static boolean verifyDeleteDoubleNode(DoubleNode origin, DoubleNode deleted, int target) {
+    public static <T> boolean verifyDeleteDoubleNode(DoubleNode<T> origin, DoubleNode<T> deleted, int target) {
         int count = 0;
         int len1 = 0;
         int len2 = 0;
         // 验证每一个节点，单独处理被删除的节点
         while (origin != null && deleted != null) {
             if (origin.value != deleted.value) {
-                if (origin.value != target) {
+                if (!origin.value.equals(target)) {
                     return false;
                 } else {
                     origin = origin.next;

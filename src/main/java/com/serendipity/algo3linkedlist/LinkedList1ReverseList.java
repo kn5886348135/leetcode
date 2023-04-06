@@ -81,9 +81,9 @@ public class LinkedList1ReverseList<T> {
     }
 
     // 反转双链表
-    public static DoubleNode reverseDoubleList(DoubleNode head) {
-        DoubleNode pre = null;
-        DoubleNode next = null;
+    public static <T> DoubleNode<T> reverseDoubleList(DoubleNode<T> head) {
+        DoubleNode<T> pre = null;
+        DoubleNode<T> next = null;
         while (head != null) {
             // 记录下一个节点
             next = head.next;
@@ -195,8 +195,8 @@ public class LinkedList1ReverseList<T> {
         return true;
     }
 
-    public static List<Integer> getDoubleListOriginOrder(DoubleNode head) {
-        List<Integer> ans = new ArrayList<>();
+    public static <T> List<T> getDoubleListOriginOrder(DoubleNode<T> head) {
+        List<T> ans = new ArrayList<>();
         while (head != null) {
             ans.add(head.value);
             head = head.next;

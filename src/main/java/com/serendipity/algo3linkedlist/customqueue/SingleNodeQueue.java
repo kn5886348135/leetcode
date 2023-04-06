@@ -15,9 +15,9 @@ public class SingleNodeQueue<E> implements Queue<E> {
     private int size;
 
     @Override
-    public boolean offer(E e) {
-        Node<E> node = new Node<>(e);
-        if (this.head == null) {
+    public boolean offer(E value) {
+        Node<E> node = new Node<>(value);
+        if (this.tail == null) {
             this.head = node;
             this.tail = node;
         } else {
@@ -30,28 +30,25 @@ public class SingleNodeQueue<E> implements Queue<E> {
 
     @Override
     public E poll() {
-        if (this.head != null) {
-            this.size--;
-            Node<E> next = this.head.next;
-            Node<E> cur = this.head;
-            this.head = next;
-            if (next == null) {
-                this.tail = null;
-            }
-            return cur.value;
-        } else {
+        if (this.head == null) {
             return null;
         }
-
+        E ans = this.head.value;
+        this.head = this.head.next;
+        this.size--;
+        return ans;
     }
 
     @Override
     public E peek() {
-        if (this.head != null) {
-            Node<E> cur = this.head;
-            return cur.value;
-        } else {
+        if (this.head == null) {
             return null;
         }
+        return this.head.value;
     }
+
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
 }

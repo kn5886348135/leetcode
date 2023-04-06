@@ -11,59 +11,35 @@ import com.serendipity.common.Node;
 public class SingleNodeStack<E> implements Stack<E> {
 
     private Node<E> head;
-    private Node<E> tail;
     private int size;
 
     @Override
-    public E push(E item) {
-        Node<E> node = new Node<>(item);
+    public void push(E value) {
+        Node<E> node = new Node<>(value);
         if (this.head == null) {
             this.head = node;
-            this.tail = node;
         } else {
-            this.tail.next = node;
-            this.tail = node;
+            node.next = this.head;
+            this.head = node;
         }
         this.size++;
-        return null;
     }
 
     @Override
     public E pop() {
         if (this.head == null) {
             return null;
-        } else {
-            Node<E> pre = this.head;
-            Node<E> cur = this.head;
-            E ans = null;
-            while (cur != null) {
-                if (cur.next != null) {
-                    pre = cur;
-                    cur = cur.next;
-                } else {
-                    pre.next = null;
-                    ans = cur.value;
-                }
-            }
-            return ans;
         }
+        E ans = null;
+        ans = this.head.value;
+        this.head.next = this.head.next;
+        this.size--;
+        return ans;
     }
 
     @Override
     public E peek() {
-        if (this.head == null) {
-            return null;
-        } else {
-            Node<E> cur = this.head;
-            E ans = null;
-            while (cur != null) {
-                if (cur.next == null) {
-                    ans = cur.value;
-                }
-                cur = cur.next;
-            }
-            return ans;
-        }
+        return this.head == null ? null : this.head.value;
     }
 
     @Override
@@ -73,7 +49,7 @@ public class SingleNodeStack<E> implements Stack<E> {
 
     @Override
     public int search(E item) {
-        Node cur = this.head;
+        Node<E> cur = this.head;
         int ans = 0;
         while (cur != null) {
             if (cur.value.equals(item)) {
