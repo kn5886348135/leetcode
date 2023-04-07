@@ -1,5 +1,8 @@
 package com.serendipity.algo3linkedlist;
 
+import com.serendipity.common.CommonLinkedListUtil;
+import com.serendipity.common.Node;
+
 /**
  * @author jack
  * @version 1.0
@@ -11,41 +14,36 @@ package com.serendipity.algo3linkedlist;
 public class LeetCode25 {
 
     public static void main(String[] args) {
-        ListNode listNode = new ListNode(0);
-        int n = 13;
-        int k = 1;
-        ListNode tmp = listNode;
+        int maxSize = 30;
+        int maxValue = 200;
+        int testTimes = 5;
 
-        for (int i = 0; i < n; i++) {
-            ListNode node = new ListNode(i + 1);
-            tmp.next = node;
-            tmp = node;
-        }
-        tmp = listNode;
-        while (tmp != null) {
-            System.out.println(tmp);
-            tmp = tmp.next;
-        }
-
-        listNode = reverseKGroup(listNode, k);
-
-        tmp = listNode;
-        while (tmp != null) {
-            System.out.println(tmp);
-            tmp = tmp.next;
+        for (int i = 0; i < testTimes; i++) {
+            int k = (int) (Math.random() * maxSize);
+            while (k == 0) {
+                k = (int) (Math.random() * maxSize);
+            }
+            Node<Integer> node = CommonLinkedListUtil.generateRandomLinkedList(maxSize, maxValue);
+            CommonLinkedListUtil.printSingleNode(node);
+            reverseKGroup(node, k);
+            CommonLinkedListUtil.printSingleNode(node);
         }
     }
 
-    public static ListNode reverseKGroup(ListNode head, int k) {
-        ListNode start = head;
-        ListNode end = getKGroupEnd(start, k);
+    // k个一组翻转链表
+    public static <T> Node<T> reverseKGroup(Node<T> head, int k) {
+        // 获取第一组的起始和结束节点
+        Node<T> start = head;
+        Node<T> end = getKGroupEnd(start, k);
         if (end == null) {
             return head;
         }
         head = end;
 
+        // 翻转k个节点
         reverseKGroup(start, end);
-        ListNode lastEnd = start;
+        // k个一组的结尾节点
+        Node<T> lastEnd = start;
         while (lastEnd.next != null) {
             start = lastEnd.next;
             end = getKGroupEnd(start, k);
@@ -59,11 +57,12 @@ public class LeetCode25 {
         return head;
     }
 
-    public static void reverseKGroup(ListNode start, ListNode end) {
+    // 翻转链表
+    public static <T> void reverseKGroup(Node<T> start, Node<T> end) {
         end = end.next;
-        ListNode pre = null;
-        ListNode cur = start;
-        ListNode next = null;
+        Node<T> pre = null;
+        Node<T> cur = start;
+        Node<T> next = null;
         while (cur != end) {
             next = cur.next;
             cur.next = pre;
@@ -73,35 +72,11 @@ public class LeetCode25 {
         start.next = end;
     }
 
-    public static ListNode getKGroupEnd(ListNode listNode, int k) {
+    // 返回k个一组的最后一个节点，不足k个返回null
+    public static <T> Node<T> getKGroupEnd(Node<T> listNode, int k) {
         while (--k != 0 && listNode != null) {
             listNode = listNode.next;
         }
         return listNode;
     }
-
-    static class ListNode {
-        int value;
-        ListNode next;
-
-        public ListNode() {
-        }
-
-        public ListNode(int value) {
-            this.value = value;
-        }
-
-        public ListNode(int value, ListNode next) {
-            this.value = value;
-            this.next = next;
-        }
-
-        @Override
-        public String toString() {
-            return "ListNode{" +
-                    "value=" + value +
-                    '}';
-        }
-    }
-
 }
