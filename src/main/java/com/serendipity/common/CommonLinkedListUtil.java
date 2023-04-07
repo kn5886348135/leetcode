@@ -1,5 +1,9 @@
 package com.serendipity.common;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * @author jack
  * @version 1.0
@@ -22,6 +26,32 @@ public class CommonLinkedListUtil {
             pre.next = cur;
             pre = cur;
             size--;
+        }
+        return head;
+    }
+
+    // 生成升序链表
+    public static Node<Integer> generateASCLinkedList(int maxSize, int maxValue) {
+        Node<Integer> node = generateRandomLinkedList(maxSize, maxValue);
+        List<Integer> list = new ArrayList<>();
+        while (node != null) {
+            list.add(node.value);
+            node = node.next;
+        }
+
+        list = list.stream().sorted().collect(Collectors.toList());
+        Node<Integer> head = null;
+        int index = 0;
+        while (index < list.size()) {
+            Node<Integer> tmp = new Node<>(list.get(index));
+            if (node == null) {
+                node = tmp;
+                head = node;
+            } else {
+                node.next = tmp;
+                node = node.next;
+            }
+            index++;
         }
         return head;
     }

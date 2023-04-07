@@ -21,8 +21,8 @@ public class LeetCode21 {
         int testTimes = 500000;
         boolean success = true;
         for (int i = 0; i < testTimes; i++) {
-            Node<Integer> node1 = generateASCListNode(CommonLinkedListUtil.generateRandomLinkedList(maxSize, maxValue));
-            Node<Integer> node2 = generateASCListNode(CommonLinkedListUtil.generateRandomLinkedList(maxSize, maxValue));
+            Node<Integer> node1 = CommonLinkedListUtil.generateASCLinkedList(maxSize, maxValue);
+            Node<Integer> node2 = CommonLinkedListUtil.generateASCLinkedList(maxSize, maxValue);
             Node<Integer> node3 = CommonLinkedListUtil.copySingleNode(node1);
             Node<Integer> node4 = CommonLinkedListUtil.copySingleNode(node2);
             Node<Integer> ans1 = mergeTwoSortedListNode(node1, node2);
@@ -68,20 +68,9 @@ public class LeetCode21 {
         return head;
     }
 
-    // 对数器
+    // 对数器，将所有元素放到list里面排序，然后生成链表
     public static Node<Integer> verifyMergeTwoSortedListNode(Node<Integer> node1, Node<Integer> node2) {
         List<Integer> list = new ArrayList<>();
-        Node<Integer> node = null;
-        Node<Integer> head = null;
-        while (node1 != null && node2 != null) {
-            if (node1.value <= node2.value) {
-                list.add(node1.value);
-                node1 = node1.next;
-            } else {
-                list.add(node2.value);
-                node2 = node2.next;
-            }
-        }
         while (node1 != null) {
             list.add(node1.value);
             node1 = node1.next;
@@ -90,31 +79,8 @@ public class LeetCode21 {
             list.add(node2.value);
             node2 = node2.next;
         }
-
-        int index = 0;
-        while (index < list.size()) {
-            Node<Integer> tmp = new Node<>(list.get(index));
-            if (node == null) {
-                node = tmp;
-                head = node;
-            } else {
-                node.next = tmp;
-                node = node.next;
-            }
-            index++;
-        }
-        return head;
-    }
-
-    // 生成升序链表
-    public static Node<Integer> generateASCListNode(Node<Integer> node) {
-        List<Integer> list = new ArrayList<>();
-        while (node != null) {
-            list.add(node.value);
-            node = node.next;
-        }
-
         list = list.stream().sorted().collect(Collectors.toList());
+        Node<Integer> node = null;
         Node<Integer> head = null;
         int index = 0;
         while (index < list.size()) {
