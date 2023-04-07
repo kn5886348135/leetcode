@@ -95,7 +95,7 @@ public class CommonLinkedListUtil {
         Node cur1 = copySingleNode(node1);
         Node cur2 = copySingleNode(node2);
         while (cur1 != null && cur2 != null) {
-            if (cur1.value != cur2.value) {
+            if (cur1.value.equals(cur2.value)) {
                 return false;
             }
             cur1 = cur1.next;
