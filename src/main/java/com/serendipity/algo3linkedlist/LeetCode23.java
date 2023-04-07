@@ -44,20 +44,27 @@ public class LeetCode23 {
         System.out.println(success ? "success" : "failed");
     }
 
+    // 使用PriorityQueue保存链表的头结点
     public static Node<Integer> mergeKSortedListNode(Node<Integer>[] lists) {
+        // 链表头结点放到优先级队列中
         PriorityQueue<Node<Integer>> heap = new PriorityQueue<>(Comparator.comparingInt(o -> o.value));
         for (Node<Integer> list : lists) {
-            heap.add(list);
+            if (list != null) {
+                heap.add(list);
+            }
         }
         if (heap.isEmpty()) {
             return null;
         }
+
+        // 拿到头结点，头结点的next重新放回优先级队列
         Node<Integer> head = heap.poll();
         Node<Integer> pre = head;
         if (pre.next != null) {
             heap.add(pre.next);
         }
 
+        // 递归
         while (!heap.isEmpty()) {
             Node<Integer> cur = heap.poll();
             pre.next = cur;

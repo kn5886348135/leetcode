@@ -1,11 +1,26 @@
 package com.serendipity.algo3linkedlist;
 
-/**
- * 前缀和
- */
-public class PreSum {
-    public static void main(String[] args) {
+import java.util.HashSet;
+import java.util.Set;
 
+/**
+ * @author jack
+ * @version 1.0
+ * @description 前缀和
+ * @date 2023/04/07/23:13
+ */
+public class LinkedList3PreSum {
+
+    public static void main(String[] args) {
+        int count = 1000000;
+        Set set = new HashSet();
+        while (count > 0) {
+            set.add(f1());
+            count--;
+        }
+        for (Object o : set) {
+            System.out.println(o + "\t");
+        }
     }
 
     private static int preSum(int[] arr, int left,int right) {
@@ -21,10 +36,12 @@ public class PreSum {
         return left == 0 ? preSum[right] : preSum[right] - preSum[left];
     }
 
+    // 随机返回1 2 3 4 5
     private static int f1(){
         return (int) (Math.random() * 5) + 1;
     }
 
+    // 等概率返回0或者1
     private static int f2(){
         int ans = 0;
         do {
@@ -51,6 +68,4 @@ public class PreSum {
         } while (ans == x());
         return ans;
     }
-
-
 }
