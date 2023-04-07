@@ -63,9 +63,9 @@ public class LinkedList1ReverseList<T> {
     //   a    ->   b    ->  c  ->  null
     //   c    ->   b    ->  a  ->  null
     // 反转链表
-    public static Node reverseLinkedList(Node head) {
-        Node pre = null;
-        Node next = null;
+    public static <T> Node<T> reverseLinkedList(Node<T> head) {
+        Node<T> pre = null;
+        Node<T> next = null;
         while (head != null) {
             // 记录下一个节点
             next = head.next;

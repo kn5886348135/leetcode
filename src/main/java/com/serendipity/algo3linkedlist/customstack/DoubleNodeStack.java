@@ -15,7 +15,12 @@ public class DoubleNodeStack<E> implements Stack<E> {
     private int size;
 
     @Override
-    public E push(E item) {
+    public void push(E item) {
+        // TODO
+    }
+
+    @Override
+    public E poll() {
         // TODO
         return null;
     }
