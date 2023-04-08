@@ -53,6 +53,8 @@ public class LeetCode138 {
         // 复制原链表节点并拼接在对应节点后面
         Node cur = head;
         Node next = null;
+        // 1 -> 2 -> 3 -> null
+        // 1 -> 1' -> 2 -> 2' -> 3 -> 3' -> null
         while (cur != null) {
             next = cur.next;
             cur.next = new Node(cur.val);
@@ -62,12 +64,12 @@ public class LeetCode138 {
         // 设置新链表的random
         cur = head;
         Node copy = null;
-        copy = cur.next;
-        Node copyCur = copy;
+        // 1 1' 2 2' 3 3'
+        // 依次设置 1' 2' 3' random指针
         while (cur != null) {
             next = cur.next.next;
             copy = cur.next;
-            copyCur.random = cur.random != null ? cur.random.next : null;
+            copy.random = cur.random != null ? cur.random.next : null;
             cur = next;
         }
         // 将新链表从原链表中拆出来
