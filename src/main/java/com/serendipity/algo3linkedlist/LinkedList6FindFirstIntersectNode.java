@@ -1,5 +1,7 @@
 package com.serendipity.algo3linkedlist;
 
+import com.serendipity.common.Node;
+
 /**
  * @author jack
  * @version 1.0
@@ -8,14 +10,7 @@ package com.serendipity.algo3linkedlist;
  */
 public class LinkedList6FindFirstIntersectNode {
 
-    public static class Node {
-        public int value;
-        public Node next;
 
-        public Node(int value) {
-            this.value = value;
-        }
-    }
 
     public static Node getIntersectNode(Node head1, Node head2) {
         if (head1 == null || head2 == null) {
@@ -33,6 +28,7 @@ public class LinkedList6FindFirstIntersectNode {
     }
 
     // 找到链表第一个入环节点，如果无环，返回null
+    // 快慢指针
     public static Node getLoopNode(Node head) {
         if (head == null || head.next == null || head.next.next == null) {
             return null;
@@ -41,6 +37,7 @@ public class LinkedList6FindFirstIntersectNode {
         Node slow = head.next;
         // 快指针
         Node fast = head.next.next;
+        // 有环则相遇、无环则返回null
         while (slow != fast) {
             // 无环，快指针走到链表结尾
             if (fast.next == null || fast.next.next == null) {
@@ -49,9 +46,9 @@ public class LinkedList6FindFirstIntersectNode {
             fast = fast.next.next;
             slow = slow.next;
         }
-        // slow fast 相遇
+
+        // 快慢指针相遇后，fast从头结点出发，每次走一步，fast、slow相遇则是入环点
         fast = head;
-        // n2 -> walk again from head
         while (slow != fast) {
             slow = slow.next;
             fast = fast.next;
@@ -84,7 +81,7 @@ public class LinkedList6FindFirstIntersectNode {
         cur1 = n > 0 ? head1 : head2;
         cur2 = cur1 == head1 ? head2 : head1;
         n = Math.abs(n);
-        while (n != 0) {
+        while (n > 0) {
             n--;
             cur1 = cur1.next;
         }
@@ -99,6 +96,7 @@ public class LinkedList6FindFirstIntersectNode {
     public static Node bothLoop(Node head1, Node loop1, Node head2, Node loop2) {
         Node cur1 = null;
         Node cur2 = null;
+        // 环外相交
         if (loop1 == loop2) {
             cur1 = head1;
             cur2 = head2;
@@ -114,7 +112,7 @@ public class LinkedList6FindFirstIntersectNode {
             cur1 = n > 0 ? head1 : head2;
             cur2 = cur1 == head1 ? head2 : head1;
             n = Math.abs(n);
-            while (n != 0) {
+            while (n > 0) {
                 n--;
                 cur1 = cur1.next;
             }
@@ -124,6 +122,7 @@ public class LinkedList6FindFirstIntersectNode {
             }
             return cur1;
         } else {
+            // 环内相交
             cur1 = loop1.next;
             while (cur1 != loop1) {
                 if (cur1 == loop2) {
