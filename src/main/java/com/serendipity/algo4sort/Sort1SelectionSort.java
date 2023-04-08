@@ -10,7 +10,7 @@ import java.util.Arrays;
  * @description 选择排序
  * @date 2023/03/30/13:22
  */
-public class SelectionSort {
+public class Sort1SelectionSort {
 
     public static void main(String[] args) {
         int testTime = 500000;

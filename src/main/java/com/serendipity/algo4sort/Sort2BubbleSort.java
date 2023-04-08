@@ -10,7 +10,7 @@ import java.util.Arrays;
  * @description 冒泡排序
  * @date 2023/03/30/13:31
  */
-public class BubbleSort {
+public class Sort2BubbleSort {
 
     public static void main(String[] args) {
         int testTime = 500000;
