@@ -3,10 +3,10 @@ package com.serendipity.algo3linkedlist;
 /**
  * @author jack
  * @version 1.0
- * @description
+ * @description 两个链表是否相交
  * @date 2022/12/21/22:54
  */
-public class FindFirstIntersectNode {
+public class LinkedList6FindFirstIntersectNode {
 
     public static class Node {
         public int value;
@@ -60,7 +60,7 @@ public class FindFirstIntersectNode {
         return slow;
     }
 
-    // 如果两个链表都无环，返回第一个相交节点，如果不想交，返回null
+    // 如果两个链表都无环，返回第一个相交节点，如果不相交，返回null
     public static Node noLoop(Node head1, Node head2) {
         if (head1 == null || head2 == null) {
             return null;
@@ -76,6 +76,7 @@ public class FindFirstIntersectNode {
             n--;
             cur2 = cur2.next;
         }
+        // 如果两个链表相交，尾结点一定是相同的
         if (cur1 != cur2) {
             return null;
         }
