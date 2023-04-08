@@ -28,16 +28,17 @@ public class Sort4MergeSort {
 
             mergeSort1(arr1);
             mergeSort2(arr2);
-            Arrays.sort(arr3);
-            if (!CommonUtil.isEqual(arr1, arr3) || !CommonUtil.isEqual(arr2, arr3)) {
+            mergeSort3(arr3);
+            Arrays.sort(arr4);
+            if (!CommonUtil.isEqual(arr1, arr4) || !CommonUtil.isEqual(arr2, arr4) || !CommonUtil.isEqual(arr3, arr4)) {
                 System.out.println("mergeSort failed");
                 System.out.println("mergeSort1 result");
                 CommonUtil.printArray(arr1);
                 System.out.println("mergeSort2 result");
                 CommonUtil.printArray(arr2);
-                System.out.println("Arrays.sort() result");
+                System.out.println("mergeSort3 result");
                 CommonUtil.printArray(arr3);
-                System.out.println("original");
+                System.out.println("Arrays.sort result");
                 CommonUtil.printArray(arr4);
                 success = false;
                 break;
@@ -47,6 +48,10 @@ public class Sort4MergeSort {
     }
 
     // 归并排序 递归版本
+    // 分而治之(divide - conquer);每个递归过程涉及三个步骤
+    // 第一, 分解: 把待排序的 n 个元素的序列分解成两个子序列, 每个子序列包括 n/2 个元素.
+    // 第二, 治理: 对每个子序列分别调用归并排序MergeSort, 进行递归操作
+    // 第三, 合并: 合并两个排好序的子序列,生成排序结果.
     public static void mergeSort1(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
@@ -119,6 +124,49 @@ public class Sort4MergeSort {
             }
             // 步长左移
             mergeSize <<= 1;
+        }
+    }
+
+    // 非递归版本，可以简化成mergeSort2
+    private static void mergeSort3(int[] arr) {
+        if (arr == null || arr.length < 2) {
+            return;
+        }
+
+        int step = 1;
+        int length = arr.length;
+        while (step < length) {
+            int left = 0;
+            while (left < length) {
+                int middle = 0;
+                // length+step可能溢出
+                if (length - left >= step) {
+                    middle = left + step - 1;
+                } else {
+                    middle = length - 1;
+                }
+                if (middle == length - 1) {
+                    break;
+                }
+                int right = 0;
+                if (length - 1 - middle >= step) {
+                    right = middle + step;
+                } else {
+                    right = length - 1;
+                }
+                merge1(arr, left, middle, right);
+                if (right == length - 1) {
+                    break;
+                } else {
+                    left = right + 1;
+                }
+            }
+
+            if (step > (length >> 1)) {
+                break;
+            } else {
+                step <<= 2;
+            }
         }
     }
 }
