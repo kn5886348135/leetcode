@@ -1,11 +1,13 @@
 package com.serendipity.algo4sort;
 
+import com.serendipity.common.CommonUtil;
+
 import java.util.Arrays;
 
 /**
  * @author jack
  * @version 1.0
- * @description
+ * @description 选择排序
  * @date 2023/03/30/13:22
  */
 public class SelectionSort {
@@ -16,86 +18,37 @@ public class SelectionSort {
         int maxValue = 100;
         boolean succeed = true;
         for (int i = 0; i < testTime; i++) {
-            int[] arr1 = generateRandomArray(maxSize, maxValue);
+            int[] arr1 = CommonUtil.generateRandomArray(maxSize, maxValue);
             int[] arr2 = new int[arr1.length];
             System.arraycopy(arr1, 0, arr2, 0, arr1.length);
             selectionSort(arr1);
             Arrays.sort(arr2);
-            if (!isEqual(arr1, arr2)) {
+            if (!CommonUtil.isEqual(arr1, arr2)) {
                 succeed = false;
-                printArray(arr1);
-                printArray(arr2);
+                CommonUtil.printArray(arr1);
+                CommonUtil.printArray(arr2);
                 break;
             }
         }
         System.out.println(succeed ? "success" : "failed");
-
-        int[] arr = generateRandomArray(maxSize, maxValue);
-        printArray(arr);
-        selectionSort(arr);
-        printArray(arr);
     }
 
+    // 选择排序
+    // 0 ~ i-1是有序的，i ~ N-1是原始数据
+    // 遍历右边找到最小值，放到左边的最后一个位置
+    // 不稳定的排序，比如
+    // 8 8 1 21 22 23
+    // arr[2]和arr[0]交换以后，arr[1]并不会交换，两个8的顺序就变了
     public static void selectionSort(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
         }
-        // 0 ~ N-1  找到最小值，在哪，放到0位置上
-        // 1 ~ n-1  找到最小值，在哪，放到1 位置上
-        // 2 ~ n-1  找到最小值，在哪，放到2 位置上
-        for (int i = 0; i < arr.length - 1; i++) {
+        for (int i = 0; i < arr.length; i++) {
             int minIndex = i;
             for (int j = i + 1; j < arr.length; j++) {
-                // i ~ N-1 上找最小值的下标
                 minIndex = arr[j] < arr[minIndex] ? j : minIndex;
             }
-            swap(arr, i, minIndex);
+            CommonUtil.swap(arr, i, minIndex);
         }
-    }
-
-    public static void swap(int[] arr, int i, int j) {
-        int tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
-    }
-
-    public static int[] generateRandomArray(int maxSize, int maxValue) {
-        // Math.random()   [0,1)
-        // Math.random() * N  [0,N)
-        // (int)(Math.random() * N)  [0, N-1]
-        int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
-        for (int i = 0; i < arr.length; i++) {
-            // [-? , +?]
-            arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
-        }
-        return arr;
-    }
-
-    public static boolean isEqual(int[] arr1, int[] arr2) {
-        if ((arr1 == null && arr2 != null) || (arr1 != null && arr2 == null)) {
-            return false;
-        }
-        if (arr1 == null && arr2 == null) {
-            return true;
-        }
-        if (arr1.length != arr2.length) {
-            return false;
-        }
-        for (int i = 0; i < arr1.length; i++) {
-            if (arr1[i] != arr2[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static void printArray(int[] arr) {
-        if (arr == null) {
-            return;
-        }
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
     }
 }
