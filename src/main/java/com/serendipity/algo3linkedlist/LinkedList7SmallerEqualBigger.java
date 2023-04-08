@@ -1,5 +1,7 @@
 package com.serendipity.algo3linkedlist;
 
+import com.serendipity.common.Node;
+
 /**
  * @author jack
  * @version 1.0
@@ -8,25 +10,19 @@ package com.serendipity.algo3linkedlist;
  */
 public class LinkedList7SmallerEqualBigger {
 
-    public static class Node {
-        public int value;
-        public Node next;
-
-        public Node(int value) {
-            this.value = value;
-        }
-    }
-
     public static Node listPartition1(Node head, int pivot) {
         if (head == null) {
             return head;
         }
+
+        // 拿到链表长度
         Node cur = head;
         int i = 0;
         while (cur != null) {
             i++;
             cur = cur.next;
         }
+        // 新建数组，将链表节点按照顺序放到数组中
         Node[] nodeArr = new Node[i];
         i = 0;
         cur = head;
@@ -34,7 +30,9 @@ public class LinkedList7SmallerEqualBigger {
             nodeArr[i] = cur;
             cur = cur.next;
         }
+        // 荷兰国旗问题
         arrPartition(nodeArr, pivot);
+        // 将链表拼接
         for (i = 1; i != nodeArr.length; i++) {
             nodeArr[i - 1].next = nodeArr[i];
         }
@@ -42,7 +40,7 @@ public class LinkedList7SmallerEqualBigger {
         return nodeArr[0];
     }
 
-    public static void arrPartition(Node[] nodeArr, int pivot) {
+    public static void arrPartition(Node<Integer>[] nodeArr, int pivot) {
         int small = -1;
         int big = nodeArr.length;
         int index = 0;
@@ -63,7 +61,7 @@ public class LinkedList7SmallerEqualBigger {
         nodeArr[b] = tmp;
     }
 
-    public static Node listPartition2(Node head, int pivot) {
+    public static Node listPartition2(Node<Integer> head, int pivot) {
         Node sH = null; // small head
         Node sT = null; // small tail
         Node eH = null; // equal head
@@ -124,6 +122,34 @@ public class LinkedList7SmallerEqualBigger {
             node = node.next;
         }
         System.out.println();
+    }
+
+    // 对数器
+    public static boolean verifyListPartition(Node<Integer> node, int pivot) {
+        boolean ans = true;
+        Node<Integer> cur = node;
+        Node<Integer> smallLast = null;
+        Node<Integer> equalLast = null;
+
+//        Node<Integer> last = null;
+//        while (cur != null) {
+//            smallLast = cur;
+//            if (cur.next != null && cur.next.value >= pivot) {
+//                break;
+//            }
+//            cur = cur.next;
+//        }
+//
+//        while (cur != null) {
+//            equalLast = cur;
+//            if (cur.next != null && cur.next.value > pivot) {
+//                break;
+//            }
+//            cur = cur.next;
+//        }
+        // TODO
+
+        return ans;
     }
 
     public static void main(String[] args) {
