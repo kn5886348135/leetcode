@@ -35,6 +35,7 @@ public class EvenTimesOddTimes {
     }
 
     // arr中，有两种数，出现奇数次
+    // offer56
     public static void printOddTimesNum2(int[] arr) {
         int res = 0;
         // 拿到奇数次数的异或结果

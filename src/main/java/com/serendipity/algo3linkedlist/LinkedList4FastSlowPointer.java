@@ -1,25 +1,63 @@
 package com.serendipity.algo3linkedlist;
 
+import com.serendipity.common.CommonLinkedListUtil;
+import com.serendipity.common.Node;
+
 import java.util.ArrayList;
 
 /**
  * @author jack
  * @version 1.0
- * @description 链表的中点
+ * @description 快慢指针找链表的中点
  * @date 2022/12/22/18:09
  */
-public class LinkedListMid {
+public class LinkedList4FastSlowPointer {
 
-    public static class Node {
-        public int value;
-        public Node next;
+    public static void main(String[] args) {
+        int maxSize = 30;
+        int maxValue = 200;
+        int testTimes = 50000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            Node node = CommonLinkedListUtil.generateRandomLinkedList(maxSize, maxValue);
 
-        public Node(int v) {
-            value = v;
+            Node ans1 = midOrUpMidNode(node);
+            Node ans2 = verifyMidOrUpMidNode(node);
+            if (ans1 != ans2) {
+                System.out.println("midOrUpMidNode failed");
+                success = false;
+                break;
+            }
+
+            ans1 = midOrDownMidNode(node);
+            ans2 = verifyMidOrDownMidNode(node);
+            if (ans1 != ans2) {
+                System.out.println("midOrDownMidNode failed");
+                success = false;
+                break;
+            }
+
+            ans1 = midOrUpMidPreNode(node);
+            ans2 = verifyMidOrUpMidPreNode(node);
+            if (ans1 != ans2) {
+                System.out.println("midOrUpMidPreNode failed");
+                success = false;
+                break;
+            }
+
+            ans1 = midOrDownMidPreNode(node);
+            ans2 = verifyMidOrDownMidPreNode(node);
+            if (ans1 != ans2) {
+                System.out.println("midOrDownMidPreNode failed");
+                success = false;
+                break;
+            }
         }
+        System.out.println(success ? "success" : "false");
     }
 
     // head 头
+    // 输入链表头节点，奇数长度返回中点，偶数长度返回上中点
     public static Node midOrUpMidNode(Node head) {
         if (head == null || head.next == null || head.next.next == null) {
             return head;
@@ -34,6 +72,7 @@ public class LinkedListMid {
         return slow;
     }
 
+    // 输入链表头节点，奇数长度返回中点，偶数长度返回下中点
     public static Node midOrDownMidNode(Node head) {
         if (head == null || head.next == null) {
             return head;
@@ -47,6 +86,7 @@ public class LinkedListMid {
         return slow;
     }
 
+    // 输入链表头节点，奇数长度返回中点前一个，偶数长度返回上中点前一个
     public static Node midOrUpMidPreNode(Node head) {
         if (head == null || head.next == null || head.next.next == null) {
             return null;
@@ -60,6 +100,7 @@ public class LinkedListMid {
         return slow;
     }
 
+    // 输入链表头节点，奇数长度返回中点前一个，偶数长度返回下中点前一个
     public static Node midOrDownMidPreNode(Node head) {
         if (head == null || head.next == null) {
             return null;
@@ -76,7 +117,7 @@ public class LinkedListMid {
         return slow;
     }
 
-    public static Node right1(Node head) {
+    public static Node verifyMidOrUpMidNode(Node head) {
         if (head == null) {
             return null;
         }
@@ -89,7 +130,7 @@ public class LinkedListMid {
         return arr.get((arr.size() - 1) / 2);
     }
 
-    public static Node right2(Node head) {
+    public static Node verifyMidOrDownMidNode(Node head) {
         if (head == null) {
             return null;
         }
@@ -102,7 +143,7 @@ public class LinkedListMid {
         return arr.get(arr.size() / 2);
     }
 
-    public static Node right3(Node head) {
+    public static Node verifyMidOrUpMidPreNode(Node head) {
         if (head == null || head.next == null || head.next.next == null) {
             return null;
         }
@@ -115,7 +156,7 @@ public class LinkedListMid {
         return arr.get((arr.size() - 3) / 2);
     }
 
-    public static Node right4(Node head) {
+    public static Node verifyMidOrDownMidPreNode(Node head) {
         if (head == null || head.next == null) {
             return null;
         }
@@ -127,41 +168,4 @@ public class LinkedListMid {
         }
         return arr.get((arr.size() - 2) / 2);
     }
-
-    public static void main(String[] args) {
-        Node test = null;
-        test = new Node(0);
-        test.next = new Node(1);
-        test.next.next = new Node(2);
-        test.next.next.next = new Node(3);
-        test.next.next.next.next = new Node(4);
-        test.next.next.next.next.next = new Node(5);
-        test.next.next.next.next.next.next = new Node(6);
-        test.next.next.next.next.next.next.next = new Node(7);
-        test.next.next.next.next.next.next.next.next = new Node(8);
-
-        Node ans1 = null;
-        Node ans2 = null;
-
-        ans1 = midOrUpMidNode(test);
-        ans2 = right1(test);
-        System.out.println(ans1 != null ? ans1.value : "无");
-        System.out.println(ans2 != null ? ans2.value : "无");
-
-        ans1 = midOrDownMidNode(test);
-        ans2 = right2(test);
-        System.out.println(ans1 != null ? ans1.value : "无");
-        System.out.println(ans2 != null ? ans2.value : "无");
-
-        ans1 = midOrUpMidPreNode(test);
-        ans2 = right3(test);
-        System.out.println(ans1 != null ? ans1.value : "无");
-        System.out.println(ans2 != null ? ans2.value : "无");
-
-        ans1 = midOrDownMidPreNode(test);
-        ans2 = right4(test);
-        System.out.println(ans1 != null ? ans1.value : "无");
-        System.out.println(ans2 != null ? ans2.value : "无");
-    }
-
 }
