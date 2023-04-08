@@ -1,4 +1,4 @@
-package com.serendipity.sort;
+package com.serendipity.algo4sort;
 
 /**
  * 区间和的个数

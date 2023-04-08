@@ -1,4 +1,4 @@
-package com.serendipity.sort;
+package com.serendipity.algo4sort;
 
 /**
  * 排序算法

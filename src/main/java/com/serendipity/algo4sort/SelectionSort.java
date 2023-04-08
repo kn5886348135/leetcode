@@ -1,4 +1,4 @@
-package com.serendipity.sort;
+package com.serendipity.algo4sort;
 
 import java.util.Arrays;
 

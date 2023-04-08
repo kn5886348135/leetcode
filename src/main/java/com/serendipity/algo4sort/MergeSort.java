@@ -1,6 +1,4 @@
-package com.serendipity.sort;
-
-import java.util.Arrays;
+package com.serendipity.algo4sort;
 
 /**
  * 合并排序

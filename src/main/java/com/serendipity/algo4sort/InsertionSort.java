@@ -1,28 +1,36 @@
-package com.serendipity.sort;
+package com.serendipity.algo4sort;
 
 import java.util.Arrays;
 
 /**
  * @author jack
  * @version 1.0
- * @description 冒泡排序
- * @date 2023/03/30/13:31
+ * @description 插入排序
+ * @date 2023/03/30/13:38
  */
-public class BubbleSort {
+public class InsertionSort {
 
     public static void main(String[] args) {
         int testTime = 500000;
-        int maxSize = 100;
-        int maxValue = 100;
+        int maxSize = 100; // 随机数组的长度0～100
+        int maxValue = 100;// 值：-100～100
         boolean succeed = true;
         for (int i = 0; i < testTime; i++) {
-            int[] arr1 = generateRandomArray(maxSize, maxValue);
-            int[] arr2 = new int[arr1.length];
-            System.arraycopy(arr1, 0, arr2, 0, arr1.length);
-            bubbleSort(arr1);
+            int[] arr = generateRandomArray(maxSize, maxValue);
+            int[] arr1 = new int[arr.length];
+            System.arraycopy(arr, 0, arr1, 0, arr.length);
+            int[] arr2 = new int[arr.length];
+            System.arraycopy(arr, 0, arr2, 0, arr.length);
+            insertionSort(arr1);
             Arrays.sort(arr2);
             if (!isEqual(arr1, arr2)) {
+                // 打印arr1
+                // 打印arr2
                 succeed = false;
+                for (int j = 0; j < arr.length; j++) {
+                    System.out.print(arr[j] + " ");
+                }
+                System.out.println();
                 break;
             }
         }
@@ -30,33 +38,38 @@ public class BubbleSort {
 
         int[] arr = generateRandomArray(maxSize, maxValue);
         printArray(arr);
-        bubbleSort(arr);
+        insertionSort(arr);
         printArray(arr);
     }
 
-    public static void bubbleSort(int[] arr) {
+    public static void insertionSort(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
         }
-
-        for (int i = arr.length - 1; i > 0; i--) {
-            for (int j = 0; j < i; j++) {
-                if (arr[j] > arr[j + 1]) {
-                    swap(arr, j, j + 1);
-                }
+        // 不只1个数
+        for (int i = 1; i < arr.length; i++) {
+            // 0 ~ i 做到有序
+            for (int j = i - 1; j >= 0 && arr[j] > arr[j + 1]; j--) {
+                swap(arr, j, j + 1);
             }
         }
     }
 
-    // 交换arr的i和j位置上的值
+    // i和j是一个位置的话，会出错
     public static void swap(int[] arr, int i, int j) {
+        if (i==j) {
+            return;
+        }
         arr[i] = arr[i] ^ arr[j];
         arr[j] = arr[i] ^ arr[j];
         arr[i] = arr[i] ^ arr[j];
     }
 
     public static int[] generateRandomArray(int maxSize, int maxValue) {
-        int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
+        // Math.random() -> [0,1) 所有的小数，等概率返回一个
+        // Math.random() * N -> [0,N) 所有小数，等概率返回一个
+        // (int)(Math.random() * N) -> [0,N-1] 所有的整数，等概率返回一个
+        int[] arr = new int[(int) ((maxSize + 1) * Math.random())]; // 长度随机
         for (int i = 0; i < arr.length; i++) {
             arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
         }
