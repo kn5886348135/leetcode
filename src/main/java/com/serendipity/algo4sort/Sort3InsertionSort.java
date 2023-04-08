@@ -14,8 +14,8 @@ public class Sort3InsertionSort {
 
     public static void main(String[] args) {
         int testTime = 500000;
-        int maxSize = 100; // 随机数组的长度0～100
-        int maxValue = 100;// 值：-100～100
+        int maxSize = 100;
+        int maxValue = 100;
         boolean succeed = true;
         for (int i = 0; i < testTime; i++) {
             int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue);
