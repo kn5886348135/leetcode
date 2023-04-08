@@ -6,7 +6,7 @@ package com.serendipity.algo3linkedlist;
  * @description 将单向链表按某值划分成左边小、中间相等、右边大的形式
  * @date 2022/12/22/17:33
  */
-public class SmallerEqualBigger {
+public class LinkedList7SmallerEqualBigger {
 
     public static class Node {
         public int value;
