@@ -48,7 +48,7 @@ public class Sort4MergeSort {
 
     // 归并排序 递归版本
     public static void mergeSort1(int[] arr) {
-        if (arr == null || arr.length == 0) {
+        if (arr == null || arr.length < 2) {
             return;
         }
         process1(arr, 0, arr.length - 1);
@@ -92,7 +92,7 @@ public class Sort4MergeSort {
 
     // 非递归版本
     public static void mergeSort2(int[] arr) {
-        if (arr == null || arr.length == 0) {
+        if (arr == null || arr.length < 2) {
             return;
         }
         int mergeSize = 1;
@@ -100,22 +100,25 @@ public class Sort4MergeSort {
         int right;
         int middle;
         while (mergeSize < arr.length) {
+            // 下一个mergeSize，从数组头部开始合并
             left = 0;
             while (left < arr.length) {
-                if (mergeSize > arr.length - left) {
+                if (mergeSize >= arr.length - left) {
                     break;
                 }
-                middle = left + mergeSize;
+                // middle = left + mergeSize; 为什么排序结果就不对
+                // 下一轮mergeSize << 1，left、right必须刚好覆盖这一次的left、right
+                middle = left + mergeSize - 1;
                 right = middle + Math.min(mergeSize, arr.length - middle - 1);
                 merge1(arr, left, middle, right);
                 left = right + 1;
             }
+            // 防止溢出
             if (mergeSize > (arr.length >> 1)) {
                 break;
             }
+            // 步长左移
             mergeSize <<= 1;
         }
     }
-
-
 }
