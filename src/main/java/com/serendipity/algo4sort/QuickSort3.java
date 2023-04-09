@@ -13,9 +13,9 @@ import java.util.Arrays;
 public class QuickSort3 {
 
     public static void main(String[] args) {
-        int maxSize = 30;
-        int maxValue = 200;
-        int testTimes = 50000;
+        int maxSize = 100;
+        int maxValue = 100;
+        int testTimes = 500000;
         boolean success = true;
         for (int i = 0; i < testTimes; i++) {
             int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue);
@@ -29,13 +29,13 @@ public class QuickSort3 {
             System.arraycopy(arr, 0, arr4, 0, arr.length);
             int[] arr5 = new int[arr.length];
             System.arraycopy(arr, 0, arr5, 0, arr.length);
-            Arrays.sort(arr);
             quickSort1(arr1);
             quickSort2(arr2);
             quickSort3(arr3);
             quickSort4(arr4);
-            Arrays.sort(arr5);
-            if (!CommonUtil.isEqual(arr, arr1) || !CommonUtil.isEqual(arr, arr2) || !CommonUtil.isEqual(arr, arr2)) {
+            quickSort5(arr5);
+            Arrays.sort(arr);
+            if (!CommonUtil.isEqual(arr, arr1) || !CommonUtil.isEqual(arr, arr2) || !CommonUtil.isEqual(arr, arr3) || !CommonUtil.isEqual(arr, arr4) || !CommonUtil.isEqual(arr, arr5)) {
                 System.out.println("quickSort failed");
                 System.out.println("quickSort1 result");
                 CommonUtil.printArray(arr1);
@@ -128,7 +128,7 @@ public class QuickSort3 {
     }
 
     // 用arr[right]对该范围做partition，< arr[right]的数在左部分，== arr[right]的数中间，>arr[right]的数在右部分。
-    // 假设== arr[right]的数所在范围是[a,b]
+    // 假设== arr[right]的数所在范围是[a,b]，[a,b]初始值是[left,right]
     public static int[] netherlandsFlag(int[] arr, int left, int right) {
         if (left > right) {
             return new int[]{-1, -1};
@@ -157,6 +157,7 @@ public class QuickSort3 {
             }
         }
         CommonUtil.swap(arr, scopeRight, right);
+        // arr[scopeLeft] < arr[right]，所以要+1
         return new int[]{scopeLeft + 1, scopeRight};
     }
 
@@ -180,7 +181,7 @@ public class QuickSort3 {
             return;
         }
         // 将随机位置交换到right，变成荷兰国旗问题
-        CommonUtil.swap(arr, left + (int) Math.random() * (right - left + 1), right);
+        CommonUtil.swap(arr, left + (int) (Math.random() * (right - left + 1)), right);
         int[] scope = netherlandsFlag(arr, left, right);
         process3(arr, left, scope[0] - 1);
         process3(arr, scope[1] + 1, right);
