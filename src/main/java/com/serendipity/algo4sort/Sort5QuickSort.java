@@ -106,6 +106,38 @@ public class Sort5QuickSort {
         return pre;
     }
 
+    // 在arr上以arr[len-1]进行分片，小于等于在左边，大于在右边
+    private static void splitNum1(int[] arr) {
+        int le = -1;
+        int index = 0;
+        int length = arr.length;
+        while (index < length) {
+            if (arr[index] <= arr[length-1]) {
+                CommonUtil.swap(arr, index, ++le);
+            }
+            index++;
+        }
+        CommonUtil.swap(arr, le, arr.length - 1);
+    }
+
+    // 按照<arr[len-1] == arr[len-1] > arr[len-1]分片
+    private static void splitNum2(int[] arr) {
+        int length = arr.length;
+        int left = -1;
+        int index = 0;
+        int right = arr.length - 1;
+        while (index < right) {
+            if (arr[index]==arr[right]){
+                index++;
+            } else if (arr[index] < arr[length - 1]) {
+                CommonUtil.swap(arr, index++, ++left);
+            } else {
+                CommonUtil.swap(arr, index, --right);
+            }
+        }
+        CommonUtil.swap(arr, right, length - 1);
+    }
+
     // 快速排序2.0
     // 在arr[left...right]范围进行快速排序
     // 1）用arr[right]对该范围做partition，< arr[right]的数在左部分，== arr[right]的数中间，>arr[right]的数在右部分。
