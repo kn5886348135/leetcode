@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @description 双向链表的随机快排
  * @date 2023/03/29/21:57
  */
-public class DoubleLinkedListQuickSort {
+public class Sort6DoubleLinkedListQuickSort {
 
     public static void main(String[] args) {
         int len = 500;
