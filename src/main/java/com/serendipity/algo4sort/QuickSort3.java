@@ -73,14 +73,14 @@ public class QuickSort3 {
         if (left >= right) {
             return;
         }
-        int middle = partition1(arr, left, right);
+        int middle = partition(arr, left, right);
         process1(arr, left, middle - 1);
         process1(arr, middle + 1, right);
     }
 
     // 用arr[right]对该范围做partition，<= arr[right]的数在左部分并且保证arr[right]最后来到
     // 左部分的最后一个位置，记为middle， > arr[right]的数在右部分（arr[middle+1...right]）
-    public static int partition1(int[] arr, int left, int right) {
+    public static int partition(int[] arr, int left, int right) {
         if (left > right) {
             return -1;
         }
@@ -122,14 +122,14 @@ public class QuickSort3 {
         if (left >= right) {
             return;
         }
-        int[] scope = partition2(arr, left, right);
+        int[] scope = netherlandsFlag(arr, left, right);
         process2(arr, left, scope[0] - 1);
         process2(arr, scope[1] + 1, right);
     }
 
     // 用arr[right]对该范围做partition，< arr[right]的数在左部分，== arr[right]的数中间，>arr[right]的数在右部分。
     // 假设== arr[right]的数所在范围是[a,b]
-    public static int[] partition2(int[] arr, int left, int right) {
+    public static int[] netherlandsFlag(int[] arr, int left, int right) {
         if (left > right) {
             return new int[]{-1, -1};
         }
@@ -181,42 +181,10 @@ public class QuickSort3 {
         }
         // 将随机位置交换到right，变成荷兰国旗问题
         CommonUtil.swap(arr, left + (int) Math.random() * (right - left + 1), right);
-        int[] scope = partition3(arr, left, right);
+        int[] scope = netherlandsFlag(arr, left, right);
         process3(arr, left, scope[0] - 1);
         process3(arr, scope[1] + 1, right);
     }
-
-    private static int[] partition3(int[] arr, int left, int right) {
-        if (left > right) {
-            return new int[]{-1, -1};
-        }
-
-        if (left == right) {
-            return new int[]{left, right};
-        }
-        // = arr[right]的位置
-        int scopeLeft = left - 1;
-        int scopeRight = right;
-        // left...right的任意一个位置
-        int index = left;
-        while (index < scopeRight) {
-            // index右移
-            if (arr[index] == arr[right]) {
-                index++;
-            } else if (arr[index] < arr[right]) {
-                // < arr[right] 交换到左边
-                // scopeLeft...index-1都是=arr[right]
-                CommonUtil.swap(arr, index++, ++scopeLeft);
-            } else {
-                // > arr[right]交换到右边
-                // arr[--scopeRight]的大小不确定，所以index不动
-                CommonUtil.swap(arr, index, --scopeRight);
-            }
-        }
-        CommonUtil.swap(arr, scopeRight, right);
-        return new int[]{scopeLeft + 1, scopeRight};
-    }
-
 
     public static void quickSort4(int[] arr) {
         if (arr == null || arr.length < 2) {
