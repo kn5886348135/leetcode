@@ -10,7 +10,7 @@ import java.util.Arrays;
  * @description 随机快排
  * @date 2023/04/09/1:33
  */
-public class QuickSort3 {
+public class Sort5QuickSort {
 
     public static void main(String[] args) {
         int maxSize = 100;
