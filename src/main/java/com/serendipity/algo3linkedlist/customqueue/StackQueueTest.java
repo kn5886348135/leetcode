@@ -7,6 +7,7 @@ package com.serendipity.algo3linkedlist.customqueue;
  * @date 2023/04/06/23:42
  */
 public class StackQueueTest {
+
     public static void main(String[] args) {
         StackQueue test = new StackQueue();
         test.offer(1);

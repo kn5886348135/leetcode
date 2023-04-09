@@ -1,4 +1,4 @@
-package com.serendipity.algo3linkedlist;
+package com.serendipity.algo4sort;
 
 import com.serendipity.common.CommonUtil;
 
