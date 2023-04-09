@@ -17,7 +17,8 @@ public class LeetCode493 {
         int maxValue = 100;
         boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int[] arr1 = CommonUtil.generateRandomArray(maxSize, maxValue);
+//            int[] arr1 = CommonUtil.generateRandomArray(maxSize, maxValue);
+            int[] arr1 = new int[]{2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647};
             int[] arr2 = new int[arr1.length];
             System.arraycopy(arr1, 0, arr2, 0, arr1.length);
             if (reversePairs(arr1) != verifyReversePairs(arr2)) {
@@ -55,7 +56,7 @@ public class LeetCode493 {
         int ans = 0;
         int index = middle + 1;
         for (int i = left; i <= middle; i++) {
-            while (index <= right && (long) arr[i] > (long) (arr[index] * 2)) {
+            while (index <= right && (long) arr[i] > (long) arr[index] * 2) {
                 index++;
             }
             ans += index - middle - 1;
@@ -90,41 +91,5 @@ public class LeetCode493 {
             }
         }
         return ans;
-    }
-
-    public static int[] generateRandomArray(int maxSize, int maxValue) {
-        int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) ((maxValue + 1) * Math.random());
-        }
-        return arr;
-    }
-
-    public static boolean isEqual(int[] arr1, int[] arr2) {
-        if ((arr1 == null && arr2 != null) || (arr1 != null && arr2 == null)) {
-            return false;
-        }
-        if (arr1 == null && arr2 == null) {
-            return true;
-        }
-        if (arr1.length != arr2.length) {
-            return false;
-        }
-        for (int i = 0; i < arr1.length; i++) {
-            if (arr1[i] != arr2[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static void printArray(int[] arr) {
-        if (arr == null) {
-            return;
-        }
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
     }
 }
