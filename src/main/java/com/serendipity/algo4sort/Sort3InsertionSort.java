@@ -38,6 +38,7 @@ public class Sort3InsertionSort {
 
     // 插入排序
     // 0~i-1有序，将i位置两两交换到正确位置
+    // 前半部分有序，每次拿后半部分第一个数据依次交换到正确位置。
     public static void insertionSort(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
