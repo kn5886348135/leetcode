@@ -3,6 +3,9 @@ package com.serendipity.algo4sort;
 import com.serendipity.common.CommonUtil;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
 
 /**
  * @author jack
@@ -80,7 +83,7 @@ public class Sort5QuickSort {
 
     // 用arr[right]对该范围做partition，<= arr[right]的数在左部分并且保证arr[right]最后来到
     // 左部分的最后一个位置，记为middle， > arr[right]的数在右部分（arr[middle+1...right]）
-    public static int partition(int[] arr, int left, int right) {
+    private static int partition(int[] arr, int left, int right) {
         if (left > right) {
             return -1;
         }
@@ -129,7 +132,7 @@ public class Sort5QuickSort {
 
     // 用arr[right]对该范围做partition，< arr[right]的数在左部分，== arr[right]的数中间，>arr[right]的数在右部分。
     // 假设== arr[right]的数所在范围是[a,b]，[a,b]初始值是[left,right]
-    public static int[] netherlandsFlag(int[] arr, int left, int right) {
+    private static int[] netherlandsFlag(int[] arr, int left, int right) {
         if (left > right) {
             return new int[]{-1, -1};
         }
@@ -187,16 +190,67 @@ public class Sort5QuickSort {
         process3(arr, scope[1] + 1, right);
     }
 
+    // 快排非递归版本，栈代替递归
     public static void quickSort4(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
         }
+        int len = arr.length;
+        CommonUtil.swap(arr, (int) (Math.random() * len), len - 1);
+        int[] scope = netherlandsFlag(arr, 0, len - 1);
+        int scopeLeft = scope[0];
+        int scopeRight = scope[1];
+        Stack<Help> stack = new Stack<>();
+        stack.push(new Help(0, scopeLeft - 1));
+        stack.push(new Help(scopeRight + 1, len - 1));
+        while (!stack.isEmpty()) {
+            // op.l ... op.r
+            Help help = stack.pop();
+            if (help.left < help.right) {
+                CommonUtil.swap(arr, help.left + (int) (Math.random() * (help.right - help.left + 1)), help.right);
+                scope = netherlandsFlag(arr, help.left, help.right);
+                scopeLeft = scope[0];
+                scopeRight = scope[1];
+                stack.push(new Help(help.left, scopeLeft - 1));
+                stack.push(new Help(scopeRight + 1, help.right));
+            }
+        }
     }
 
+    // 快排非递归版本，队列代替递归
     public static void quickSort5(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
         }
+        int len = arr.length;
+        CommonUtil.swap(arr, (int) (Math.random() * len), len - 1);
+        int[] scope = netherlandsFlag(arr, 0, len - 1);
+        int scopeLeft = scope[0];
+        int scopeRight = scope[1];
+        Queue<Help> queue = new LinkedList<>();
+        queue.offer(new Help(0, scopeLeft - 1));
+        queue.offer(new Help(scopeRight + 1, len - 1));
+        while (!queue.isEmpty()) {
+            Help op = queue.poll();
+            if (op.left < op.right) {
+                CommonUtil.swap(arr, op.left + (int) (Math.random() * (op.right - op.left + 1)), op.right);
+                scope = netherlandsFlag(arr, op.left, op.right);
+                scopeLeft = scope[0];
+                scopeRight = scope[1];
+                queue.offer(new Help(op.left, scopeLeft - 1));
+                queue.offer(new Help(scopeRight + 1, op.right));
+            }
+        }
     }
 
+    // 辅助类，保存迭代过程中等于区域的左右边界
+    public static class Help {
+        public int left;
+        public int right;
+
+        public Help(int left, int right) {
+            this.left = left;
+            this.right = right;
+        }
+    }
 }
