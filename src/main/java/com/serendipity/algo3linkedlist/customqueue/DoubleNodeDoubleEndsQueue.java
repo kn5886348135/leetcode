@@ -163,19 +163,5 @@ public class DoubleNodeDoubleEndsQueue {
         }
 
     }
-//
-//    public static boolean isEqual(Integer o1, Integer o2) {
-//        if (o1 == null && o2 != null) {
-//            return false;
-//        }
-//        if (o1 != null && o2 == null) {
-//            return false;
-//        }
-//        if (o1 == null && o2 == null) {
-//            return true;
-//        }
-//        return o1.equals(o2);
-//    }
-
 
 }

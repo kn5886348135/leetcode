@@ -60,9 +60,11 @@ public class Sort4MergeSort {
     }
 
     // 递归排序
-    public static int[] process1(int[] arr, int left, int right) {
+    // T(N) = 2 * T(N / 2) + O(N)
+    // 时间复杂度 O(N * logN)
+    public static void process1(int[] arr, int left, int right) {
         if (left == right) {
-            return arr;
+            return;
         }
         int middle = left + ((right - left) >> 1);
         // 左边排序
@@ -70,11 +72,11 @@ public class Sort4MergeSort {
         // 右边排序
         process1(arr, middle + 1, right);
         // 合并
-        return merge1(arr, left, middle, right);
+        merge1(arr, left, middle, right);
     }
 
     // 合并左右两个有序数组
-    private static int[] merge1(int[] arr, int left, int middle, int right) {
+    private static void merge1(int[] arr, int left, int middle, int right) {
         int[] help = new int[right - left + 1];
         int p = left;
         int q = middle + 1;
@@ -92,7 +94,6 @@ public class Sort4MergeSort {
             help[index++] = arr[q++];
         }
         System.arraycopy(help, 0, arr, left, help.length);
-        return arr;
     }
 
     // 非递归版本
