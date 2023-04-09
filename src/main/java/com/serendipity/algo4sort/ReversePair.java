@@ -24,7 +24,7 @@ public class ReversePair {
             int[] arr2 = new int[arr1.length];
             System.arraycopy(arr1, 0, arr2, 0, arr1.length);
             if (reverPairNumber(arr1) != verifyReversePair(arr2)) {
-                System.out.println("Oops!");
+                System.out.println("reverPairNumber failed");
                 CommonUtil.printArray(arr1);
                 CommonUtil.printArray(arr2);
                 break;

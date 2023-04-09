@@ -1,5 +1,7 @@
 package com.serendipity.algo4sort;
 
+import com.serendipity.common.CommonUtil;
+
 /**
  * @author jack
  * @version 1.0
@@ -13,19 +15,24 @@ public class LeetCode493 {
         int testTime = 500000;
         int maxSize = 100;
         int maxValue = 100;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int[] arr1 = generateRandomArray(maxSize, maxValue);
+            int[] arr1 = CommonUtil.generateRandomArray(maxSize, maxValue);
             int[] arr2 = new int[arr1.length];
             System.arraycopy(arr1, 0, arr2, 0, arr1.length);
-            if (reversePairs(arr1) != comparator(arr2)) {
-                System.out.println("Oops!");
-                printArray(arr1);
-                printArray(arr2);
+            if (reversePairs(arr1) != verifyReversePairs(arr2)) {
+                System.out.println("reversePairs failed");
+                CommonUtil.printArray(arr1);
+                CommonUtil.printArray(arr2);
+                success = false;
                 break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
+    // 大于两倍
+    // 递归处理
     public static int reversePairs(int[] arr) {
         if (arr == null || arr.length < 2) {
             return 0;
@@ -33,46 +40,47 @@ public class LeetCode493 {
         return process(arr, 0, arr.length - 1);
     }
 
-    public static int process(int[] arr, int l, int r) {
-        if (l == r) {
+    public static int process(int[] arr, int left, int right) {
+        if (left == right) {
             return 0;
         }
-        // l < r
-        int mid = l + ((r - l) >> 1);
-        return process(arr, l, mid) + process(arr, mid + 1, r) + merge(arr, l, mid, r);
+
+        int middle = left + ((right - left) >> 1);
+        return process(arr, left, middle) + process(arr, middle + 1, right) + merge(arr, left, middle, right);
     }
 
-    public static int merge(int[] arr, int L, int m, int r) {
-        // [L....M] [M+1....R]
+    // 合并
+    public static int merge(int[] arr, int left, int middle, int right) {
+        // 合并前统计大于两倍
         int ans = 0;
-        // 目前囊括进来的数，是从[M+1, windowR)
-        int windowR = m + 1;
-        for (int i = L; i <= m; i++) {
-            while (windowR <= r && (long) arr[i] > (long) arr[windowR] * 2) {
-                windowR++;
+        int index = middle + 1;
+        for (int i = left; i <= middle; i++) {
+            while (index <= right && (long) arr[i] > (long) (arr[index] * 2)) {
+                index++;
             }
-            ans += windowR - m - 1;
+            ans += index - middle - 1;
         }
-        int[] help = new int[r - L + 1];
-        int i = 0;
-        int p1 = L;
-        int p2 = m + 1;
-        while (p1 <= m && p2 <= r) {
-            help[i++] = arr[p1] <= arr[p2] ? arr[p1++] : arr[p2++];
+
+        // 简单合并
+        int[] help = new int[right - left + 1];
+        index = 0;
+        int p = left;
+        int q = middle + 1;
+        while (p <= middle && q <= right) {
+            help[index++] = arr[p] <= arr[q] ? arr[p++] : arr[q++];
         }
-        while (p1 <= m) {
-            help[i++] = arr[p1++];
+        while (p <= middle) {
+            help[index++] = arr[p++];
         }
-        while (p2 <= r) {
-            help[i++] = arr[p2++];
+        while (q <= right) {
+            help[index++] = arr[q++];
         }
-        for (i = 0; i < help.length; i++) {
-            arr[L + i] = help[i];
-        }
+        System.arraycopy(help, 0, arr, left, help.length);
         return ans;
     }
 
-    public static int comparator(int[] arr) {
+    // 对数器
+    public static int verifyReversePairs(int[] arr) {
         int ans = 0;
         for (int i = 0; i < arr.length; i++) {
             for (int j = i + 1; j < arr.length; j++) {
