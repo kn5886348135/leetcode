@@ -1,6 +1,10 @@
 package com.serendipity.algo4sort;
 
+import com.serendipity.common.CommonLinkedListUtil;
+import com.serendipity.common.DoubleNode;
+
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * @author jack
@@ -14,49 +18,42 @@ public class Sort6DoubleLinkedListQuickSort {
         int len = 500;
         int value = 500;
         int testTime = 10000;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
             int size = (int) (Math.random() * len);
-            Node head1 = generateRandomDoubleLinkedList(size, value);
-            Node head2 = cloneDoubleLinkedList(head1);
-            Node sort1 = quickSort(head1);
-            Node sort2 = sort(head2);
+            DoubleNode head1 = CommonLinkedListUtil.generateRandomDoubleList(size, value);
+            DoubleNode head2 = CommonLinkedListUtil.copyDoubleNode(head1);
+            DoubleNode sort1 = quickSort(head1);
+            DoubleNode sort2 = sort(head2);
             if (!equal(sort1, sort2)) {
-                System.out.println("出错了!");
+                System.out.println("quickSort failed");
+                success = false;
                 break;
             }
         }
+        System.out.println(success ? "success" : "false");
     }
 
-    public static class Node {
-        public int value;
-        public Node last;
-        public Node next;
-
-        public Node(int value) {
-            this.value = value;
-        }
-    }
-
-    public static Node quickSort(Node node) {
-        if (node == null) {
+    public static DoubleNode quickSort(DoubleNode doubleNode) {
+        if (doubleNode == null) {
             return null;
         }
         int len = 0;
-        Node c = node;
-        Node e = null;
+        DoubleNode c = doubleNode;
+        DoubleNode e = null;
         while (c != null) {
             len++;
             e = c;
             c = c.next;
         }
-        return process(node, e, len).head;
+        return process(doubleNode, e, len).head;
     }
 
     public static class HeadTail {
-        public Node head;
-        public Node tail;
+        public DoubleNode head;
+        public DoubleNode tail;
 
-        public HeadTail(Node head, Node tail) {
+        public HeadTail(DoubleNode head, DoubleNode tail) {
             this.head = head;
             this.tail = tail;
         }
@@ -65,7 +62,7 @@ public class Sort6DoubleLinkedListQuickSort {
     // left...right是一个双向链表的头和尾，长度为len
     // left的last指针指向null，left左边没有节点，right的next指针指向null，right右边没有节点
     // 返回排好序之后的双向链表的头和尾(HeadTail)
-    public static HeadTail process(Node left, Node right, int len) {
+    public static HeadTail process(DoubleNode left, DoubleNode right, int len) {
         if (left == null) {
             return null;
         }
@@ -75,28 +72,28 @@ public class Sort6DoubleLinkedListQuickSort {
         // left...right不止一个节点，拿到一个随机节点
         int randomIndex = (int) (Math.random() * len);
         // 根据随机下标得到随机节点
-        Node randomNode = left;
+        DoubleNode randomDoubleNode = left;
         while (randomIndex-- != 0) {
-            randomNode = randomNode.next;
+            randomDoubleNode = randomDoubleNode.next;
         }
         // 把随机节点从原来的环境里分离出来
         // 比如 a(L) -> b -> c -> d(R), 如果randomNode = c，那么调整之后
         // a(L) -> b -> d(R), c会被挖出来，randomNode = c
-        if (randomNode == left || randomNode == right) {
-            if (randomNode == left) {
-                left = randomNode.next;
+        if (randomDoubleNode == left || randomDoubleNode == right) {
+            if (randomDoubleNode == left) {
+                left = randomDoubleNode.next;
                 left.last = null;
             } else {
-                randomNode.last.next = null;
+                randomDoubleNode.last.next = null;
             }
         } else {
             // randomNode一定是中间的节点
-            randomNode.last.next = randomNode.next;
-            randomNode.next.last = randomNode.last;
+            randomDoubleNode.last.next = randomDoubleNode.next;
+            randomDoubleNode.next.last = randomDoubleNode.last;
         }
-        randomNode.last = null;
-        randomNode.next = null;
-        Info info = partition(left, randomNode);
+        randomDoubleNode.last = null;
+        randomDoubleNode.next = null;
+        Info info = partition(left, randomDoubleNode);
         // <randomNode的部分去排序
         HeadTail lht = process(info.leftHead, info.leftTail, info.leftSize);
         // >randomNode的部分去排序
@@ -112,22 +109,22 @@ public class Sort6DoubleLinkedListQuickSort {
             rht.head.last = info.equalTail;
         }
         // 返回排好序之后总的头和总的尾
-        Node head = lht != null ? lht.head : info.equalHead;
-        Node tail = rht != null ? rht.tail : info.equalTail;
+        DoubleNode head = lht != null ? lht.head : info.equalHead;
+        DoubleNode tail = rht != null ? rht.tail : info.equalTail;
         return new HeadTail(head, tail);
     }
 
     public static class Info {
-        public Node leftHead;
-        public Node leftTail;
+        public DoubleNode leftHead;
+        public DoubleNode leftTail;
         public int leftSize;
-        public Node rightHead;
-        public Node rightTail;
+        public DoubleNode rightHead;
+        public DoubleNode rightTail;
         public int rightSize;
-        public Node equalHead;
-        public Node equalTail;
+        public DoubleNode equalHead;
+        public DoubleNode equalTail;
 
-        public Info(Node leftHead, Node leftTail, int leftSize, Node rightHead, Node rightTail, int rightSize, Node equalHead, Node equalTail) {
+        public Info(DoubleNode leftHead, DoubleNode leftTail, int leftSize, DoubleNode rightHead, DoubleNode rightTail, int rightSize, DoubleNode equalHead, DoubleNode equalTail) {
             this.leftHead = leftHead;
             this.leftTail = leftTail;
             this.leftSize = leftSize;
@@ -153,16 +150,16 @@ public class Sort6DoubleLinkedListQuickSort {
     // 小于部分的头、尾、节点个数 : lh,lt,ls
     // 大于部分的头、尾、节点个数 : rh,rt,rs
     // 等于部分的头、尾 : eh,et
-    public static Info partition(Node left, Node pivot) {
-        Node leftHead = null;
-        Node leftTail = null;
+    public static Info partition(DoubleNode<Integer> left, DoubleNode<Integer> pivot) {
+        DoubleNode leftHead = null;
+        DoubleNode leftTail = null;
         int leftSize = 0;
-        Node rightHead = null;
-        Node rightTail = null;
+        DoubleNode rightHead = null;
+        DoubleNode rightTail = null;
         int rightSize = 0;
-        Node equalHead = pivot;
-        Node equalTail = pivot;
-        Node tmp = null;
+        DoubleNode equalHead = pivot;
+        DoubleNode equalTail = pivot;
+        DoubleNode tmp = null;
         while (left != null) {
             tmp = left.next;
             left.next = null;
@@ -197,21 +194,21 @@ public class Sort6DoubleLinkedListQuickSort {
         return new Info(leftHead, leftTail, leftSize, rightHead, rightTail, rightSize, equalHead, equalTail);
     }
 
-    public static Node sort(Node head) {
+    public static DoubleNode sort(DoubleNode head) {
         if (head == null) {
             return null;
         }
-        ArrayList<Node> arr = new ArrayList<>();
+        ArrayList<DoubleNode<Integer>> arr = new ArrayList<>();
         while (head != null) {
             arr.add(head);
             head = head.next;
         }
-        arr.sort((o1, o2) -> o1.value - o2.value);
-        Node h = arr.get(0);
+        arr.sort(Comparator.comparingInt(o -> o.value));
+        DoubleNode h = arr.get(0);
         h.last = null;
-        Node p = h;
+        DoubleNode p = h;
         for (int i = 1; i < arr.size(); i++) {
-            Node c = arr.get(i);
+            DoubleNode c = arr.get(i);
             p.next = c;
             c.last = p;
             c.next = null;
@@ -220,48 +217,13 @@ public class Sort6DoubleLinkedListQuickSort {
         return h;
     }
 
-    public static Node generateRandomDoubleLinkedList(int n, int v) {
-        if (n == 0) {
-            return null;
-        }
-        Node[] arr = new Node[n];
-        for (int i = 0; i < n; i++) {
-            arr[i] = new Node((int) (Math.random() * v));
-        }
-        Node head = arr[0];
-        Node pre = head;
-        for (int i = 1; i < n; i++) {
-            pre.next = arr[i];
-            arr[i].last = pre;
-            pre = arr[i];
-        }
-        return head;
-    }
-
-    public static Node cloneDoubleLinkedList(Node head) {
-        if (head == null) {
-            return null;
-        }
-        Node h = new Node(head.value);
-        Node p = h;
-        head = head.next;
-        while (head != null) {
-            Node c = new Node(head.value);
-            p.next = c;
-            c.last = p;
-            p = c;
-            head = head.next;
-        }
-        return h;
-    }
-
-    public static boolean equal(Node h1, Node h2) {
+    public static boolean equal(DoubleNode h1, DoubleNode h2) {
         return doubleLinkedListToString(h1).equals(doubleLinkedListToString(h2));
     }
 
-    public static String doubleLinkedListToString(Node head) {
-        Node cur = head;
-        Node end = null;
+    public static String doubleLinkedListToString(DoubleNode head) {
+        DoubleNode cur = head;
+        DoubleNode end = null;
         StringBuilder builder = new StringBuilder();
         while (cur != null) {
             builder.append(cur.value + " ");
