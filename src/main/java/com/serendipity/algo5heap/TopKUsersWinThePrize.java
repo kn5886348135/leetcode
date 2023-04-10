@@ -103,15 +103,15 @@ public class TopKUsersWinThePrize {
         // 有购买记录的客户
         private HashMap<Integer, Customer> customers;
         // 候选者堆
-        private HeapGenerator<Customer> candHeap;
+        private CustomHeap<Customer> candHeap;
         // 中奖区
-        private HeapGenerator<Customer> winnerHeap;
+        private CustomHeap<Customer> winnerHeap;
         private final int daddyLimit;
 
         public Jackpot(int limit) {
             this.customers = new HashMap<>();
-            this.candHeap = new HeapGenerator<>((o1, o2) -> o1.buy != o2.buy ? (o2.buy - o1.buy) : (o1.enterTime - o2.enterTime));
-            this.winnerHeap = new HeapGenerator<>((o1, o2) -> o1.buy != o2.buy ? (o1.buy - o2.buy) : (o1.enterTime - o2.enterTime));
+            this.candHeap = new CustomHeap<>((o1, o2) -> o1.buy != o2.buy ? (o2.buy - o1.buy) : (o1.enterTime - o2.enterTime));
+            this.winnerHeap = new CustomHeap<>((o1, o2) -> o1.buy != o2.buy ? (o1.buy - o2.buy) : (o1.enterTime - o2.enterTime));
             this.daddyLimit = limit;
         }
 
