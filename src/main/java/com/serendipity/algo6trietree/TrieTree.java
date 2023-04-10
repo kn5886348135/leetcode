@@ -1,4 +1,4 @@
-package com.serendipity.trietree;
+package com.serendipity.algo6trietree;
 
 import java.util.HashMap;
 
