@@ -45,10 +45,10 @@ public class SortArrayDistanceLessK {
     }
 
     public static void sortedArrDistanceLessK(int[] arr, int k) {
-        if (arr == null || arr.length < 2) {
+        if (arr == null || arr.length < 2 || k < 1) {
             return;
         }
-        PriorityQueue<Integer> priorityQueue = new PriorityQueue();
+        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>();
         int index = 0;
         for (; index < Math.min(arr.length, k); index++) {
             priorityQueue.add(arr[index]);

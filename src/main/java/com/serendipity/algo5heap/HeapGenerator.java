@@ -1,4 +1,4 @@
-package com.serendipity.heap;
+package com.serendipity.algo5heap;
 
 import java.util.ArrayList;
 import java.util.Comparator;
