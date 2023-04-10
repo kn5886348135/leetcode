@@ -270,7 +270,7 @@ public class TopKUsersWinThePrize {
             daddy.add(customer);
             cands.remove(0);
         } else {
-            // 中奖满了，候选区有东西
+            // 中奖区满了，候选区有东西
             if (cands.get(0).buy > daddy.get(0).buy) {
                 Customer oldDaddy = daddy.get(0);
                 daddy.remove(0);
