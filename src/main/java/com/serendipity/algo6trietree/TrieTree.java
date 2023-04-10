@@ -58,6 +58,8 @@ public class TrieTree {
         public Node1() {
             this.pass = 0;
             this.end = 0;
+            // nexts[i] == null   i方向的路不存在
+            // nexts[i] != null   i方向的路存在
             this.nexts = new Node1[26];
         }
     }
@@ -304,7 +306,7 @@ public class TrieTree {
 
         public int prefixNumber(String pre) {
             int count = 0;
-            for (String cur : box.keySet()) {
+            for (String cur : this.box.keySet()) {
                 if (cur.startsWith(pre)) {
                     count += this.box.get(cur);
                 }
