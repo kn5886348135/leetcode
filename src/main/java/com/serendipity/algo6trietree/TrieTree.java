@@ -1,6 +1,7 @@
 package com.serendipity.algo6trietree;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class TrieTree {
 
@@ -62,58 +63,70 @@ public class TrieTree {
             this.root = new Node1();
         }
 
+        // 新增
         public void insert(String word) {
             if (word == null) {
                 return;
             }
             char[] chs = word.toCharArray();
-            Node1 node = root;
+            Node1 node = this.root;
+            // 字符串非空，一定会经过root节点
             node.pass++;
             int index = 0;
-            // 从左往右遍历字符
+            // 深度优先搜索遍历每一个字符
             for (int i = 0; i < chs.length; i++) {
                 // 由字符，对应成走向哪条路
                 index = chs[i] - 'a';
+                // 不存在则创建
                 if (node.nexts[index] == null) {
                     node.nexts[index] = new Node1();
                 }
+                // 下一层节点
                 node = node.nexts[index];
                 node.pass++;
             }
             node.end++;
         }
 
+        // 删除
         public void delete(String word) {
             if (search(word) != 0) {
                 char[] chs = word.toCharArray();
-                Node1 node = root;
+                Node1 node = this.root;
+                // 字符串非空，一定会经过root节点
                 node.pass--;
                 int index = 0;
+                // 深度优先搜索遍历每一个字符
                 for (int i = 0; i < chs.length; i++) {
                     index = chs[i] - 'a';
+                    // 最后一个则赋值null，并结束遍历
                     if (--node.nexts[index].pass == 0) {
                         node.nexts[index] = null;
                         return;
                     }
+                    // 下一层节点
                     node = node.nexts[index];
                 }
                 node.end--;
             }
         }
 
-        // word这个单词之前加入过几次
+        // 查找word这个单词之前加入过几次
         public int search(String word) {
             if (word == null) {
                 return 0;
             }
             char[] chs = word.toCharArray();
-            Node1 node = root;
+            Node1 node = this.root;
             int index = 0;
+            // 深度优先搜索遍历每一个字符
             for (int i = 0; i < chs.length; i++) {
                 index = chs[i] - 'a';
+                // 还没有遍历完就出现空节点，证明不存在
                 if (node.nexts[index] == null) {
                     return 0;
                 }
+                // 下一层节点
                 node = node.nexts[index];
             }
             return node.end;
@@ -125,13 +138,16 @@ public class TrieTree {
                 return 0;
             }
             char[] chs = pre.toCharArray();
-            Node1 node = root;
+            Node1 node = this.root;
             int index = 0;
+            // 深度优先搜索遍历每一个字符
             for (int i = 0; i < chs.length; i++) {
                 index = chs[i] - 'a';
+                // 还没有遍历完就出现空节点，证明不存在
                 if (node.nexts[index] == null) {
                     return 0;
                 }
+                // 下一层节点
                 node = node.nexts[index];
             }
             return node.pass;
@@ -141,7 +157,7 @@ public class TrieTree {
     public static class Node2 {
         public int pass;
         public int end;
-        public HashMap<Integer, Node2> nexts;
+        public Map<Integer, Node2> nexts;
 
         public Node2() {
             this.pass = 0;
@@ -157,74 +173,90 @@ public class TrieTree {
             this.root = new Node2();
         }
 
+        // 新增
         public void insert(String word) {
             if (word == null) {
                 return;
             }
             char[] chs = word.toCharArray();
-            Node2 node = root;
+            Node2 node = this.root;
+            // 字符串非空，一定会经过root节点
             node.pass++;
             int index = 0;
+            // 深度优先搜索遍历每一个字符
             for (int i = 0; i < chs.length; i++) {
                 index = chs[i];
+                // 不存在则创建
                 if (!node.nexts.containsKey(index)) {
                     node.nexts.put(index, new Node2());
                 }
+                // 下一层节点
                 node = node.nexts.get(index);
                 node.pass++;
             }
             node.end++;
         }
 
+        // 删除
         public void delete(String word) {
             if (search(word) != 0) {
                 char[] chs = word.toCharArray();
-                Node2 node = root;
+                Node2 node = this.root;
+                // 字符串非空，一定会经过root节点
                 node.pass--;
                 int index = 0;
+                // 深度优先搜索遍历每一个字符
                 for (int i = 0; i < chs.length; i++) {
                     index = chs[i];
+                    // 最后一个则赋值null，并结束遍历
                     if (--node.nexts.get(index).pass == 0) {
                         node.nexts.remove(index);
                         return;
                     }
+                    // 下一层节点
                     node = node.nexts.get(index);
                 }
                 node.end--;
             }
         }
 
-        // word这个单词之前加入过几次
+        // 查找
         public int search(String word) {
             if (word == null) {
                 return 0;
             }
             char[] chs = word.toCharArray();
-            Node2 node = root;
+            Node2 node = this.root;
             int index = 0;
+            // 深度优先搜索遍历每一个字符
             for (int i = 0; i < chs.length; i++) {
                 index = chs[i];
+                // 还没有遍历完就出现空节点，证明不存在
                 if (!node.nexts.containsKey(index)) {
                     return 0;
                 }
+                // 下一层节点
                 node = node.nexts.get(index);
             }
             return node.end;
         }
 
-        // 所有加入的字符串中，有几个是以pre这个字符串作为前缀的
+        // 以pre作为前缀的字符串个数
         public int prefixNumber(String pre) {
             if (pre == null) {
                 return 0;
             }
             char[] chs = pre.toCharArray();
-            Node2 node = root;
+            Node2 node = this.root;
             int index = 0;
+            // 深度优先搜索遍历每一个字符
             for (int i = 0; i < chs.length; i++) {
                 index = chs[i];
+                // 还没有遍历完就出现空节点，证明不存在
                 if (!node.nexts.containsKey(index)) {
                     return 0;
                 }
+                // 下一层节点
                 node = node.nexts.get(index);
             }
             return node.pass;
