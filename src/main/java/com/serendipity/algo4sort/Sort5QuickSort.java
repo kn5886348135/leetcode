@@ -263,14 +263,14 @@ public class Sort5QuickSort {
         queue.offer(new Help(0, scopeLeft - 1));
         queue.offer(new Help(scopeRight + 1, len - 1));
         while (!queue.isEmpty()) {
-            Help op = queue.poll();
-            if (op.left < op.right) {
-                CommonUtil.swap(arr, op.left + (int) (Math.random() * (op.right - op.left + 1)), op.right);
-                scope = netherlandsFlag(arr, op.left, op.right);
+            Help help = queue.poll();
+            if (help.left < help.right) {
+                CommonUtil.swap(arr, help.left + (int) (Math.random() * (help.right - help.left + 1)), help.right);
+                scope = netherlandsFlag(arr, help.left, help.right);
                 scopeLeft = scope[0];
                 scopeRight = scope[1];
-                queue.offer(new Help(op.left, scopeLeft - 1));
-                queue.offer(new Help(scopeRight + 1, op.right));
+                queue.offer(new Help(help.left, scopeLeft - 1));
+                queue.offer(new Help(scopeRight + 1, help.right));
             }
         }
     }

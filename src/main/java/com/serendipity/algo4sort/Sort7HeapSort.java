@@ -59,8 +59,9 @@ public class Sort7HeapSort {
         // O(N * logN)
         // while循环的时间复杂度 O(N)
         while (heapSize > 0) {
-            // O(logN))
+            // O(logN)
             heapify(arr, 0, heapSize);
+            // O(1)
             CommonUtil.swap(arr, 0, --heapSize);
         }
     }
