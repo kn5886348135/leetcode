@@ -111,7 +111,7 @@ public class Heap {
         // 从index位置往下调整，拿到一个全局最大值
         private void heapify(int[] arr, int index, int heapSize) {
             int left = index * 2 + 1;
-            // 如果有左子节点，可能有右子节点也可能没有
+            // 如果有左节点，右节点不一定存在
             while (left < heapSize) {
                 // 把较大孩子的下标，给largest
                 int largest = left + 1 < heapSize && arr[left + 1] > arr[left] ? left + 1 : left;

@@ -1,6 +1,7 @@
 package com.serendipity.algo5heap;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
@@ -17,40 +18,23 @@ import java.util.PriorityQueue;
 public class CoverMax {
 
     public static void main(String[] args) {
-        Line l1 = new Line(4, 9);
-        Line l2 = new Line(1, 4);
-        Line l3 = new Line(7, 15);
-        Line l4 = new Line(2, 4);
-        Line l5 = new Line(4, 6);
-        Line l6 = new Line(3, 7);
-
-        // 底层堆结构，heap
-        PriorityQueue<Line> heap = new PriorityQueue<>((o1, o2) -> o1.start - o2.start);
-        heap.add(l1);
-        heap.add(l2);
-        heap.add(l3);
-        heap.add(l4);
-        heap.add(l5);
-        heap.add(l6);
-
-        while (!heap.isEmpty()) {
-            Line cur = heap.poll();
-            System.out.println(cur.start + "," + cur.end);
-        }
-
-        int n = 100;
-        int left = 0;
-        int right = 200;
+        int maxSize = 200;
+        int min = 0;
+        int max = 500;
         int testTimes = 200000;
+        boolean success = true;
         for (int i = 0; i < testTimes; i++) {
-            int[][] lines = generateLines(n, left, right);
+            int[][] lines = generateLines(maxSize, min, max);
             int ans1 = maxCover1(lines);
             int ans2 = maxCover2(lines);
             int ans3 = maxCover3(lines);
             if (ans1 != ans2 || ans1 != ans3) {
-                System.out.println("Oops!");
+                System.out.println("maxCover1 failed");
+                success = false;
+                break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 对数器 时间复杂度 O(N2)
@@ -61,30 +45,30 @@ public class CoverMax {
             min = Math.min(min, lines[i][0]);
             max = Math.max(max, lines[i][1]);
         }
-        int cover = 0;
+        int ans = 0;
         for (double p = min + 0.5; p < max; p++) {
-            int cur = 0;
+            int tmp = 0;
             for (int i = 0; i < lines.length; i++) {
                 if (lines[i][0] < p && lines[i][1] > p) {
-                    cur++;
+                    tmp++;
                 }
             }
-            cover = Math.max(cover, cur);
+            ans = Math.max(ans, tmp);
         }
-        return cover;
+        return ans;
     }
 
+    // 将线段数组转化成Line类
     public static int maxCover2(int[][] arr) {
         Line[] lines = new Line[arr.length];
         for (int i = 0; i < arr.length; i++) {
             lines[i] = new Line(arr[i][0], arr[i][1]);
         }
-        Arrays.sort(lines, (o1, o2) -> o1.start - o2.start);
-        // 小根堆，每一条线段的结尾数值，使用默认的
+        Arrays.sort(lines, Comparator.comparingInt(o -> o.start));
+        // 小根堆，每一条线段的结尾数值
         PriorityQueue<Integer> heap = new PriorityQueue<>();
         int max = 0;
         for (int i = 0; i < lines.length; i++) {
-            // lines[i] -> cur 在黑盒中，把<=cur.start 东西都弹出
             while (!heap.isEmpty() && heap.peek() <= lines[i].start) {
                 heap.poll();
             }
@@ -104,18 +88,20 @@ public class CoverMax {
         }
     }
 
-    // 和maxCover2过程是一样的
-    // 只是代码更短
-    // 不使用类定义的写法
+    // 所有线段按照start升序排序
+    // heap保存已经重合的线段end
+    // 遍历数组，当前线段line，弹出heap中所有与line不重合的线段
+    // heap.Size拿到当前重合线段数
     public static int maxCover3(int[][] arr) {
-        Arrays.sort(arr, (o1, o2) -> (o1[0] - o2[0]));
-        // arr是二维数组，可以认为m内部是一个一个的一维数组
-        // 每一个一维数组就是一个对象，也就是线段
-        // 如下的code，就是根据每一个线段的开始位置排序
-        // 比如, m = { {5,7}, {1,4}, {2,6} } 跑完如下的code之后变成：{ {1,4}, {2,6}, {5,7} }
+        // 按照start升序排序
+        Arrays.sort(arr, Comparator.comparingInt(o -> o[0]));
+        // 当前重合的所有线段end
         PriorityQueue<Integer> heap = new PriorityQueue<>();
         int max = 0;
         for (int[] line : arr) {
+            // line不重合，line后面的线段也不可能和对顶元素重合
+            // 所以弹出所有与line不重合的线段
+            // 上一个线段已经统计过重合线段的数量
             while (!heap.isEmpty() && heap.peek() <= line[0]) {
                 heap.poll();
             }
@@ -125,14 +111,15 @@ public class CoverMax {
         return max;
     }
 
-    public static int[][] generateLines(int N, int L, int R) {
-        int size = (int) (Math.random() * N) + 1;
+    // 生成随机线段数组
+    public static int[][] generateLines(int maxSize, int min, int max) {
+        int size = (int) (Math.random() * maxSize) + 1;
         int[][] ans = new int[size][2];
         for (int i = 0; i < size; i++) {
-            int a = L + (int) (Math.random() * (R - L + 1));
-            int b = L + (int) (Math.random() * (R - L + 1));
-            if (a == b) {
-                b = a + 1;
+            int a = min + (int) (Math.random() * (max - min + 1));
+            int b = min + (int) (Math.random() * (max - min + 1));
+            while (a == b) {
+                b = min + (int) (Math.random() * (max - min + 1));
             }
             ans[i][0] = Math.min(a, b);
             ans[i][1] = Math.max(a, b);
