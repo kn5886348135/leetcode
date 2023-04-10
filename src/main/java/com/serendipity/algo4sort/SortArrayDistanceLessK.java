@@ -18,7 +18,7 @@ public class SortArrayDistanceLessK {
         int maxSize = 100;
         int maxValue = 100;
         int testTimes = 500000;
-        boolean succeed = true;
+        boolean success = true;
         for (int i = 0; i < testTimes; i++) {
             int k = (int) (Math.random() * maxSize) + 1;
             int[] arr = randomArrayNoMoveMoreK(maxSize, maxValue, k);
@@ -37,11 +37,11 @@ public class SortArrayDistanceLessK {
                 CommonUtil.printArray(arr1);
                 System.out.println("Arrays.sort result");
                 CommonUtil.printArray(arr2);
-                succeed = false;
+                success = false;
                 break;
             }
         }
-        System.out.println(succeed ? "success" : "failed");
+        System.out.println(success ? "success" : "failed");
     }
 
     public static void sortedArrDistanceLessK(int[] arr, int k) {

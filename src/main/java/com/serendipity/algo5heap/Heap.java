@@ -1,7 +1,5 @@
 package com.serendipity.algo5heap;
 
-import java.util.PriorityQueue;
-
 /**
  * @author jack
  * @version 1.0
@@ -11,47 +9,40 @@ import java.util.PriorityQueue;
 public class Heap {
 
     public static void main(String[] args) {
-
-        PriorityQueue<Integer> heap = new PriorityQueue<>((o1, o2) -> o2 - o1);
-        heap.add(5);
-        heap.add(5);
-        heap.add(5);
-        heap.add(3);
-        // 5 , 3
-        System.out.println(heap.peek());
-        heap.add(7);
-        heap.add(0);
-        heap.add(7);
-        heap.add(0);
-        heap.add(7);
-        heap.add(0);
-        System.out.println(heap.peek());
-        while (!heap.isEmpty()) {
-            System.out.println(heap.poll());
-        }
-
         int value = 1000;
         int limit = 100;
         int testTimes = 1000000;
+        boolean success = true;
         for (int i = 0; i < testTimes; i++) {
+            if (!success) {
+                break;
+            }
             int curLimit = (int) (Math.random() * limit) + 1;
             CustmoMaxHeap my = new CustmoMaxHeap(curLimit);
-            RightMaxHeap test = new RightMaxHeap(curLimit);
+            VerifyRightMaxHeap test = new VerifyRightMaxHeap(curLimit);
             int curOpTimes = (int) (Math.random() * limit);
             for (int j = 0; j < curOpTimes; j++) {
                 if (my.isEmpty() != test.isEmpty()) {
-                    System.out.println("Oops!");
+                    System.out.println("Heap isEmpty failed");
+                    success = false;
+                    break;
                 }
                 if (my.isFull() != test.isFull()) {
-                    System.out.println("Oops!");
+                    System.out.println("Heap isEmpty failed");
+                    success = false;
+                    break;
                 }
                 if (my.isEmpty()) {
                     int curValue = (int) (Math.random() * value);
                     my.push(curValue);
                     test.push(curValue);
+                    success = false;
+                    break;
                 } else if (my.isFull()) {
                     if (my.pop() != test.pop()) {
-                        System.out.println("Oops!");
+                        System.out.println("Heap isEmpty failed");
+                        success = false;
+                        break;
                     }
                 } else {
                     if (Math.random() < 0.5) {
@@ -60,12 +51,15 @@ public class Heap {
                         test.push(curValue);
                     } else {
                         if (my.pop() != test.pop()) {
-                            System.out.println("Oops!");
+                            System.out.println("Heap isEmpty failed");
+                            success = false;
+                            break;
                         }
                     }
                 }
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     public static class CustmoMaxHeap {
@@ -142,12 +136,12 @@ public class Heap {
         }
     }
 
-    public static class RightMaxHeap {
+    public static class VerifyRightMaxHeap {
         private int[] arr;
         private final int limit;
         private int size;
 
-        public RightMaxHeap(int limit) {
+        public VerifyRightMaxHeap(int limit) {
             this.arr = new int[limit];
             this.limit = limit;
             this.size = 0;
