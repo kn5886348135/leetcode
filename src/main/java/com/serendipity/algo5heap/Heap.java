@@ -36,8 +36,6 @@ public class Heap {
                     int curValue = (int) (Math.random() * value);
                     my.push(curValue);
                     test.push(curValue);
-                    success = false;
-                    break;
                 } else if (my.isFull()) {
                     if (my.pop() != test.pop()) {
                         System.out.println("Heap isEmpty failed");
