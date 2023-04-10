@@ -18,7 +18,7 @@ public class GetMax {
         int testTimes = 5;
         boolean success = true;
         for (int i = 0; i < testTimes; i++) {
-            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, false);
             int ans1 = getMax(arr);
             Arrays.sort(arr);
             int ans2 = arr[arr.length - 1];

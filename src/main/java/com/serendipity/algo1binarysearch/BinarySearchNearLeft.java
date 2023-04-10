@@ -18,7 +18,7 @@ public class BinarySearchNearLeft {
         int maxValue = 100;
         boolean succeed = true;
         for (int i = 0; i < testTime; i++) {
-            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, false);
             Arrays.sort(arr);
             int value = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
             if (verifyNearestLeft(arr, value) != binarySearchLeft(arr, value)) {

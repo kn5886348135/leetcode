@@ -65,7 +65,7 @@ public class SortArrayDistanceLessK {
 
     // 生成几乎有序的数组，逆序长度不超过k
     public static int[] randomArrayNoMoveMoreK(int maxSize, int maxValue, int k) {
-        int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue);
+        int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, false);
         Arrays.sort(arr);
         boolean[] isSwap = new boolean[arr.length];
         for (int i = 0; i < arr.length; i++) {

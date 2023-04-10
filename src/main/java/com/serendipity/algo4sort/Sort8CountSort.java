@@ -12,7 +12,7 @@ public class Sort8CountSort {
         int maxValue = 150;
         boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
             int[] arr1 = new int[arr.length];
             System.arraycopy(arr, 0, arr1, 0, arr.length);
             int[] arr2 = new int[arr1.length];
@@ -45,11 +45,6 @@ public class Sort8CountSort {
         for (int i = 0; i < arr.length; i++) {
             min = Math.min(min, arr[i]);
         }
-        if (min < 0) {
-            for (int i = 0; i < arr.length; i++) {
-                arr[i] += Math.abs(min);
-            }
-        }
         int max = Integer.MIN_VALUE;
         for (int i = 0; i < arr.length; i++) {
             max = Math.max(max, arr[i]);
@@ -62,11 +57,6 @@ public class Sort8CountSort {
         for (int j = 0; j < bucket.length; j++) {
             while (bucket[j]-- > 0) {
                 arr[i++] = j;
-            }
-        }
-        if (min < 0) {
-            for (int k = 0; k < arr.length; k++) {
-                arr[k] -= Math.abs(min);
             }
         }
     }

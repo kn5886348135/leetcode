@@ -21,7 +21,7 @@ public class Sort5QuickSort {
         int testTimes = 500000;
         boolean success = true;
         for (int i = 0; i < testTimes; i++) {
-            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, false);
             int[] arr1 = new int[arr.length];
             System.arraycopy(arr, 0, arr1, 0, arr.length);
             int[] arr2 = new int[arr.length];

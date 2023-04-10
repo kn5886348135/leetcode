@@ -17,7 +17,7 @@ public class LeetCode493 {
         int maxValue = 100;
         boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int[] arr1 = CommonUtil.generateRandomArray(maxSize, maxValue);
+            int[] arr1 = CommonUtil.generateRandomArray(maxSize, maxValue, false);
             int[] arr2 = new int[arr1.length];
             System.arraycopy(arr1, 0, arr2, 0, arr1.length);
             if (reversePairs(arr1) != verifyReversePairs(arr2)) {

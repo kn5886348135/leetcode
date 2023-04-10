@@ -20,7 +20,7 @@ public class LeetCode327 {
         int maxValue = 100;
         boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, false);
             int[] arr1 = new int[arr.length];
             System.arraycopy(arr, 0, arr1, 0, arr.length);
             int[] arr2 = new int[arr.length];

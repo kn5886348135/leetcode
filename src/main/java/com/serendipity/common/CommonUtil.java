@@ -70,14 +70,20 @@ public class CommonUtil {
     }
 
     // 生成数组，长度随机，最大值随机
-    public static int[] generateRandomArray(int maxSize, int maxValue) {
+    public static int[] generateRandomArray(int maxSize, int maxValue, boolean positive) {
         int len = (int) ((maxSize + 1) * Math.random());
         while (len < 5) {
             len = (int) ((maxSize + 1) * Math.random());
         }
         int[] arr = new int[len];
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
+            // 非负
+            if (positive) {
+                arr[i] = (int) (maxValue * Math.random() + 1);
+            } else {
+                // 可能有负数
+                arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
+            }
         }
         return arr;
     }
