@@ -1,5 +1,7 @@
 package com.serendipity.algo5heap;
 
+import com.serendipity.common.CommonUtil;
+
 /**
  * @author jack
  * @version 1.0
@@ -18,26 +20,26 @@ public class Heap {
                 break;
             }
             int curLimit = (int) (Math.random() * limit) + 1;
-            CustmoMaxHeap my = new CustmoMaxHeap(curLimit);
-            VerifyRightMaxHeap test = new VerifyRightMaxHeap(curLimit);
-            int curOpTimes = (int) (Math.random() * limit);
-            for (int j = 0; j < curOpTimes; j++) {
-                if (my.isEmpty() != test.isEmpty()) {
+            CustomMaxHeap heap = new CustomMaxHeap(curLimit);
+            VerifyMaxHeap test = new VerifyMaxHeap(curLimit);
+            int curOps = (int) (Math.random() * limit);
+            for (int j = 0; j < curOps; j++) {
+                if (heap.isEmpty() != test.isEmpty()) {
                     System.out.println("Heap isEmpty failed");
                     success = false;
                     break;
                 }
-                if (my.isFull() != test.isFull()) {
+                if (heap.isFull() != test.isFull()) {
                     System.out.println("Heap isEmpty failed");
                     success = false;
                     break;
                 }
-                if (my.isEmpty()) {
+                if (heap.isEmpty()) {
                     int curValue = (int) (Math.random() * value);
-                    my.push(curValue);
+                    heap.push(curValue);
                     test.push(curValue);
-                } else if (my.isFull()) {
-                    if (my.pop() != test.pop()) {
+                } else if (heap.isFull()) {
+                    if (heap.pop() != test.pop()) {
                         System.out.println("Heap isEmpty failed");
                         success = false;
                         break;
@@ -45,10 +47,10 @@ public class Heap {
                 } else {
                     if (Math.random() < 0.5) {
                         int curValue = (int) (Math.random() * value);
-                        my.push(curValue);
+                        heap.push(curValue);
                         test.push(curValue);
                     } else {
-                        if (my.pop() != test.pop()) {
+                        if (heap.pop() != test.pop()) {
                             System.out.println("Heap isEmpty failed");
                             success = false;
                             break;
@@ -60,12 +62,12 @@ public class Heap {
         System.out.println(success ? "success" : "failed");
     }
 
-    public static class CustmoMaxHeap {
+    public static class CustomMaxHeap {
         private int[] heap;
         private final int limit;
         private int heapSize;
 
-        public CustmoMaxHeap(int limit) {
+        public CustomMaxHeap(int limit) {
             this.heap = new int[limit];
             this.limit = limit;
             this.heapSize = 0;
@@ -79,37 +81,34 @@ public class Heap {
             return heapSize == limit;
         }
 
+        // 放在最后一个位置，用heapInsert调整
         public void push(int value) {
             if (heapSize == limit) {
                 throw new RuntimeException("heap is full");
             }
             heap[heapSize] = value;
-            // value heapSize
             heapInsert(heap, heapSize++);
         }
 
-        // 用户此时，让你返回最大值，并且在大根堆中，把最大值删掉
-        // 剩下的数，依然保持大根堆组织
+        // 返回最大值并删除
+        // 调整为大根堆
         public int pop() {
             int ans = heap[0];
-            swap(heap, 0, --heapSize);
+            CommonUtil.swap(heap, 0, --heapSize);
             heapify(heap, 0, heapSize);
             return ans;
         }
 
-        // 新加进来的数，现在停在了index位置，请依次往上移动，
-        // 移动到0位置，或者干不掉自己的父亲了，停！
+        // 新加进来的数在index位置，向上调整
         private void heapInsert(int[] arr, int index) {
-            // [index] [index-1]/2
-            // index == 0
+            // index=0时 >> 会溢出
             while (arr[index] > arr[(index - 1) / 2]) {
-                swap(arr, index, (index - 1) / 2);
+                CommonUtil.swap(arr, index, (index - 1) / 2);
                 index = (index - 1) / 2;
             }
         }
 
-        // 从index位置，往下看，不断的下沉
-        // 停：较大的孩子都不再比index位置的数大；已经没孩子了
+        // 从index位置往下调整，拿到一个全局最大值
         private void heapify(int[] arr, int index, int heapSize) {
             int left = index * 2 + 1;
             // 如果有左子节点，可能有右子节点也可能没有
@@ -120,26 +119,20 @@ public class Heap {
                 if (largest == index) {
                     break;
                 }
-                // index和较大孩子，要互换
-                swap(arr, largest, index);
+                // index和较大子节点交换
+                CommonUtil.swap(arr, largest, index);
                 index = largest;
                 left = index * 2 + 1;
             }
         }
-
-        private void swap(int[] arr, int i, int j) {
-            int tmp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = tmp;
-        }
     }
 
-    public static class VerifyRightMaxHeap {
+    public static class VerifyMaxHeap {
         private int[] arr;
         private final int limit;
         private int size;
 
-        public VerifyRightMaxHeap(int limit) {
+        public VerifyMaxHeap(int limit) {
             this.arr = new int[limit];
             this.limit = limit;
             this.size = 0;
