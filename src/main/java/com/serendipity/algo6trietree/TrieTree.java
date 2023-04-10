@@ -9,38 +9,44 @@ public class TrieTree {
         int arrLen = 100;
         int strLen = 20;
         int testTimes = 100000;
+        boolean success = true;
         for (int i = 0; i < testTimes; i++) {
             String[] arr = generateRandomStringArray(arrLen, strLen);
             Trie1 trie1 = new Trie1();
             Trie2 trie2 = new Trie2();
-            Right right = new Right();
+            VerifyTrie verifyTrie = new VerifyTrie();
             for (int j = 0; j < arr.length; j++) {
                 double decide = Math.random();
                 if (decide < 0.25) {
                     trie1.insert(arr[j]);
                     trie2.insert(arr[j]);
-                    right.insert(arr[j]);
+                    verifyTrie.insert(arr[j]);
                 } else if (decide < 0.5) {
                     trie1.delete(arr[j]);
                     trie2.delete(arr[j]);
-                    right.delete(arr[j]);
+                    verifyTrie.delete(arr[j]);
                 } else if (decide < 0.75) {
                     int ans1 = trie1.search(arr[j]);
                     int ans2 = trie2.search(arr[j]);
-                    int ans3 = right.search(arr[j]);
+                    int ans3 = verifyTrie.search(arr[j]);
                     if (ans1 != ans2 || ans2 != ans3) {
-                        System.out.println("Oops!");
+                        System.out.println("trie tree search failed");
+                        success = false;
+                        break;
                     }
                 } else {
                     int ans1 = trie1.prefixNumber(arr[j]);
                     int ans2 = trie2.prefixNumber(arr[j]);
-                    int ans3 = right.prefixNumber(arr[j]);
+                    int ans3 = verifyTrie.prefixNumber(arr[j]);
                     if (ans1 != ans2 || ans2 != ans3) {
-                        System.out.println("Oops!");
+                        System.out.println("trie tree prefixNumber failed");
+                        success = false;
+                        break;
                     }
                 }
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 前缀树节点类型
@@ -263,10 +269,10 @@ public class TrieTree {
         }
     }
 
-    public static class Right {
-        private HashMap<String, Integer> box;
+    public static class VerifyTrie {
+        private Map<String, Integer> box;
 
-        public Right() {
+        public VerifyTrie() {
             this.box = new HashMap<>();
         }
 
