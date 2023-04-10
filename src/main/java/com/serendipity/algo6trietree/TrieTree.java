@@ -277,28 +277,28 @@ public class TrieTree {
         }
 
         public void insert(String word) {
-            if (!box.containsKey(word)) {
-                box.put(word, 1);
+            if (!this.box.containsKey(word)) {
+                this.box.put(word, 1);
             } else {
-                box.put(word, box.get(word) + 1);
+                this.box.put(word, this.box.get(word) + 1);
             }
         }
 
         public void delete(String word) {
-            if (box.containsKey(word)) {
-                if (box.get(word) == 1) {
-                    box.remove(word);
+            if (this.box.containsKey(word)) {
+                if (this.box.get(word) == 1) {
+                    this.box.remove(word);
                 } else {
-                    box.put(word, box.get(word) - 1);
+                    this.box.put(word, this.box.get(word) - 1);
                 }
             }
         }
 
         public int search(String word) {
-            if (!box.containsKey(word)) {
+            if (!this.box.containsKey(word)) {
                 return 0;
             } else {
-                return box.get(word);
+                return this.box.get(word);
             }
         }
 
@@ -306,7 +306,7 @@ public class TrieTree {
             int count = 0;
             for (String cur : box.keySet()) {
                 if (cur.startsWith(pre)) {
-                    count += box.get(cur);
+                    count += this.box.get(cur);
                 }
             }
             return count;
