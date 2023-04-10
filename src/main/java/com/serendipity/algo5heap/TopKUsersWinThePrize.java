@@ -1,5 +1,6 @@
 package com.serendipity.algo5heap;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -44,13 +45,14 @@ import java.util.List;
  *          请遍历arr数组和op数组，遍历每一步输出一个得奖名单
  * @date 2023/03/29/20:32
  */
-public class EveryStepShowBoss {
+public class TopKUsersWinThePrize {
 
     public static void main(String[] args) {
         int maxValue = 10;
         int maxLen = 100;
         int maxK = 6;
         int testTimes = 100000;
+        boolean success = true;
         for (int i = 0; i < testTimes; i++) {
             Data testData = randomData(maxValue, maxLen);
             int k = (int) (Math.random() * maxK) + 1;
@@ -58,17 +60,30 @@ public class EveryStepShowBoss {
             boolean[] op = testData.op;
             List<List<Integer>> ans1 = topK(arr, op, k);
             List<List<Integer>> ans2 = compare(arr, op, k);
-            if (!sameAnswer(ans1, ans2)) {
+            if (!verifyJackpot(ans1, ans2)) {
                 for (int j = 0; j < arr.length; j++) {
-                    System.out.println(arr[j] + " , " + op[j]);
+                    System.out.println(MessageFormat.format("arr[j] {0} , op[j] {1}",
+                            new String[]{String.valueOf(arr[j]), String.valueOf(op[j])}));
                 }
                 System.out.println(k);
-                System.out.println(ans1);
-                System.out.println(ans2);
-                System.out.println("出错了！");
+                for (List<Integer> list : ans1) {
+                    for (Integer item : list) {
+                        System.out.print(item + "\t");
+                    }
+                    System.out.println();
+                }
+                for (List<Integer> list : ans2) {
+                    for (Integer item : list) {
+                        System.out.print(item + "\t");
+                    }
+                    System.out.println();
+                }
+                System.out.println("topK failed");
+                success = false;
                 break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     public static class Customer {
@@ -76,69 +91,82 @@ public class EveryStepShowBoss {
         public int buy;
         public int enterTime;
 
-        public Customer(int id, int buy, int enterTime) {
+        public Customer(int id, int buy) {
             this.id = id;
             this.buy = buy;
             this.enterTime = 0;
         }
     }
 
-    public static class WhosYourDaddy {
+    // Jackpot中奖区
+    public static class Jackpot {
+        // 有购买记录的客户
         private HashMap<Integer, Customer> customers;
+        // 候选者堆
         private HeapGenerator<Customer> candHeap;
-        private HeapGenerator<Customer> daddyHeap;
+        // 中奖区
+        private HeapGenerator<Customer> winnerHeap;
         private final int daddyLimit;
 
-        public WhosYourDaddy(int limit) {
+        public Jackpot(int limit) {
             this.customers = new HashMap<>();
             this.candHeap = new HeapGenerator<>((o1, o2) -> o1.buy != o2.buy ? (o2.buy - o1.buy) : (o1.enterTime - o2.enterTime));
-            this.daddyHeap = new HeapGenerator<>((o1, o2) -> o1.buy != o2.buy ? (o1.buy - o2.buy) : (o1.enterTime - o2.enterTime));
+            this.winnerHeap = new HeapGenerator<>((o1, o2) -> o1.buy != o2.buy ? (o1.buy - o2.buy) : (o1.enterTime - o2.enterTime));
             this.daddyLimit = limit;
         }
 
         // 当前处理i号事件，arr[i] -> id, buyOrRefund
         public void operate(int time, int id, boolean buyOrRefund) {
+            // 没有购买就退货
             if (!buyOrRefund && !customers.containsKey(id)) {
                 return;
             }
             if (!customers.containsKey(id)) {
-                customers.put(id, new Customer(id, 0, 0));
+                customers.put(id, new Customer(id, 0));
             }
             Customer customer = customers.get(id);
+            // 购买或者退货
             if (buyOrRefund) {
                 customer.buy++;
             } else {
                 customer.buy--;
             }
+            // 购买数量为0，移除
             if (customer.buy == 0) {
                 customers.remove(id);
             }
-            if (!candHeap.contains(customer) && !daddyHeap.contains(customer)) {
-                if (daddyHeap.size() < daddyLimit) {
-                    customer.enterTime = time;
-                    daddyHeap.push(customer);
+            // 不在候选区也不在中奖区
+            if (!candHeap.contains(customer) && !winnerHeap.contains(customer)) {
+                customer.enterTime = time;
+                if (winnerHeap.size() < daddyLimit) {
+                    winnerHeap.push(customer);
                 } else {
-                    customer.enterTime = time;
                     candHeap.push(customer);
                 }
             } else if (candHeap.contains(customer)) {
+                // 在候选区
                 if (customer.buy == 0) {
                     candHeap.remove(customer);
                 } else {
+                    // 调整候选区堆
                     candHeap.resign(customer);
                 }
             } else {
+                // 在中奖区
                 if (customer.buy == 0) {
-                    daddyHeap.remove(customer);
+                    winnerHeap.remove(customer);
                 } else {
-                    daddyHeap.resign(customer);
+                    // 调整中奖区堆
+                    winnerHeap.resign(customer);
                 }
             }
-            daddyMove(time);
+            // 移动一个用户到中奖区
+            moveToWinnerFromCand(time);
         }
 
-        public List<Integer> getDaddies() {
-            List<Customer> customers = daddyHeap.getAllElements();
+        // 获取中奖区所有用户
+        public List<Integer> getWinners() {
+            List<Customer> customers = winnerHeap.getAllElements();
             List<Integer> ans = new ArrayList<>();
             for (Customer customer : customers) {
                 ans.add(customer.id);
@@ -146,21 +174,24 @@ public class EveryStepShowBoss {
             return ans;
         }
 
-        private void daddyMove(int time) {
+        private void moveToWinnerFromCand(int time) {
+            // 候选区为空
             if (candHeap.isEmpty()) {
                 return;
             }
-            if (daddyHeap.size() < daddyLimit) {
+            // 中奖区没满
+            if (winnerHeap.size() < daddyLimit) {
                 Customer customer = candHeap.pop();
                 customer.enterTime = time;
-                daddyHeap.push(customer);
+                winnerHeap.push(customer);
             } else {
-                if (candHeap.peek().buy > daddyHeap.peek().buy) {
-                    Customer oldDaddy = daddyHeap.pop();
+                // 中奖区满了
+                if (candHeap.peek().buy > winnerHeap.peek().buy) {
+                    Customer oldDaddy = winnerHeap.pop();
                     Customer newDaddy = candHeap.pop();
                     oldDaddy.enterTime = time;
                     newDaddy.enterTime = time;
-                    daddyHeap.push(newDaddy);
+                    winnerHeap.push(newDaddy);
                     candHeap.push(oldDaddy);
                 }
             }
@@ -169,10 +200,10 @@ public class EveryStepShowBoss {
 
     public static List<List<Integer>> topK(int[] arr, boolean[] op, int k) {
         List<List<Integer>> ans = new ArrayList<>();
-        WhosYourDaddy whoDaddies = new WhosYourDaddy(k);
+        Jackpot jackpot = new Jackpot(k);
         for (int i = 0; i < arr.length; i++) {
-            whoDaddies.operate(i, arr[i], op[i]);
-            ans.add(whoDaddies.getDaddies());
+            jackpot.operate(i, arr[i], op[i]);
+            ans.add(jackpot.getWinners());
         }
         return ans;
     }
@@ -181,13 +212,13 @@ public class EveryStepShowBoss {
     public static List<List<Integer>> compare(int[] arr, boolean[] op, int k) {
         HashMap<Integer, Customer> map = new HashMap<>();
         ArrayList<Customer> cands = new ArrayList<>();
-        ArrayList<Customer> daddy = new ArrayList<>();
+        ArrayList<Customer> winners = new ArrayList<>();
         List<List<Integer>> ans = new ArrayList<>();
         for (int i = 0; i < arr.length; i++) {
             int id = arr[i];
             boolean buyOrRefund = op[i];
             if (!buyOrRefund && !map.containsKey(id)) {
-                ans.add(getCurAns(daddy));
+                ans.add(getCurAns(winners));
                 continue;
             }
             // 没有发生， 用户购买数为0并且又退货了
@@ -195,7 +226,7 @@ public class EveryStepShowBoss {
             // 用户之前购买数>0，此时买货事件
             // 用户之前购买数>0，此时退货
             if (!map.containsKey(id)) {
-                map.put(id, new Customer(id, 0, 0));
+                map.put(id, new Customer(id, 0));
             }
             // 买、卖
             Customer customer = map.get(id);
@@ -209,21 +240,21 @@ public class EveryStepShowBoss {
             }
             // c
             // 下面做
-            if (!cands.contains(customer) && !daddy.contains(customer)) {
-                if (daddy.size() < k) {
+            if (!cands.contains(customer) && !winners.contains(customer)) {
+                if (winners.size() < k) {
                     customer.enterTime = i;
-                    daddy.add(customer);
+                    winners.add(customer);
                 } else {
                     customer.enterTime = i;
                     cands.add(customer);
                 }
             }
             cleanZeroBuy(cands);
-            cleanZeroBuy(daddy);
+            cleanZeroBuy(winners);
             cands.sort((o1, o2) -> o1.buy != o2.buy ? (o2.buy - o1.buy) : (o1.enterTime - o2.enterTime));
-            daddy.sort((o1, o2) -> o1.buy != o2.buy ? (o1.buy - o2.buy) : (o1.enterTime - o2.enterTime));
-            move(cands, daddy, k, i);
-            ans.add(getCurAns(daddy));
+            winners.sort((o1, o2) -> o1.buy != o2.buy ? (o1.buy - o2.buy) : (o1.enterTime - o2.enterTime));
+            move(cands, winners, k, i);
+            ans.add(getCurAns(winners));
         }
         return ans;
     }
@@ -232,14 +263,14 @@ public class EveryStepShowBoss {
         if (cands.isEmpty()) {
             return;
         }
-        // 候选区不为空
+        // 中奖区不为空
         if (daddy.size() < k) {
             Customer customer = cands.get(0);
             customer.enterTime = time;
             daddy.add(customer);
             cands.remove(0);
         } else {
-            // 等奖区满了，候选区有东西
+            // 中奖满了，候选区有东西
             if (cands.get(0).buy > daddy.get(0).buy) {
                 Customer oldDaddy = daddy.get(0);
                 daddy.remove(0);
@@ -295,7 +326,7 @@ public class EveryStepShowBoss {
         return new Data(arr, op);
     }
 
-    public static boolean sameAnswer(List<List<Integer>> ans1, List<List<Integer>> ans2) {
+    public static boolean verifyJackpot(List<List<Integer>> ans1, List<List<Integer>> ans2) {
         if (ans1.size() != ans2.size()) {
             return false;
         }
