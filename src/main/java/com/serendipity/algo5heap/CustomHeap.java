@@ -49,19 +49,20 @@ public class CustomHeap<T> {
         heapInsert(heapSize++);
     }
 
-    public void pop(T obj) {
+    public T pop() {
         T ans = heap.get(0);
         swap(0, heapSize - 1);
         indexMap.remove(ans);
-        heap.remove(obj);
-        heapify(heapSize++);
+        heap.remove(--heapSize);
+        heapify(0);
+        return ans;
     }
 
     public void remove(T obj) {
         T item = heap.get(heapSize - 1);
         int index = indexMap.get(obj);
         indexMap.remove(obj);
-        heap.remove(obj);
+        heap.remove(--heapSize);
         if (obj != item) {
             heap.set(index, item);
             indexMap.put(item, index);
@@ -75,6 +76,7 @@ public class CustomHeap<T> {
         heapify(indexMap.get(obj));
     }
 
+    // 请返回堆上的所有元素
     public List<T> getAllElements() {
         List<T> ans = new ArrayList<>();
         for (T item : heap) {
