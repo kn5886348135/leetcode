@@ -43,6 +43,32 @@ public class CommonUtil {
         return count;
     }
 
+    // 前缀和数组
+    public static long[] preSum(int[] arr) {
+        if (arr == null || arr.length == 0) {
+            return null;
+        }
+        long[] sums = new long[arr.length];
+        sums[0] = arr[0];
+        for (int i = 0; i < arr.length; i++) {
+            if (i == 0) {
+                sums[i] = arr[i];
+            } else {
+                sums[i] = sums[i - 1] + arr[i];
+            }
+        }
+        return sums;
+    }
+
+    // 计算区间的前缀和
+    public static long preSum(int[] arr, int left, int right) {
+        if (left == right) {
+            return 0;
+        }
+        long[] sums = preSum(arr);
+        return left == 0 ? sums[right] : sums[right] - sums[left];
+    }
+
     // 生成数组，长度随机，最大值随机
     public static int[] generateRandomArray(int maxSize, int maxValue) {
         int len = (int) ((maxSize + 1) * Math.random());

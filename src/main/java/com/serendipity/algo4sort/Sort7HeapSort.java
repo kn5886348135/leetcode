@@ -45,47 +45,52 @@ public class Sort7HeapSort {
         if (arr == null || arr.length < 2) {
             return;
         }
-//        // O(N * logN)
+        // O(N * logN)
+        // 从上往下调整堆
 //        for (int i = 0; i < arr.length; i++) {
 //            // O(logN)
 //            heapInsert(arr, i);
 //        }
         // O(N)
+        // 最大值来到根节点，此时不是整体有序
         for (int i = arr.length - 1; i >= 0; i--) {
             heapify(arr, i, arr.length);
         }
         int heapSize = arr.length;
+        // 最大值交换到尾部
         CommonUtil.swap(arr, 0, --heapSize);
         // O(N * logN)
         // while循环的时间复杂度 O(N)
         while (heapSize > 0) {
             // O(logN)
+            // 剩余的最大值调整到根节点
             heapify(arr, 0, heapSize);
             // O(1)
+            // 剩余的最大值交换到尾部
             CommonUtil.swap(arr, 0, --heapSize);
         }
     }
 
     // arr[index]刚来的数，往上
     public static void heapInsert(int[] arr, int index) {
+        // 父节点为(index-1)/2
         while (arr[index] > arr[(index - 1) / 2]) {
             CommonUtil.swap(arr, index, (index - 1) / 2);
             index = (index - 1) / 2;
         }
     }
 
-    // arr[index]位置的数能否往下移动
+    // 大根堆
+    // 最大值放到父节点
+    // left = 2 * index + 1 right = left + 1
     public static void heapify(int[] arr, int index, int heapSize) {
-        // 左边子节点的下标
+        // 拿到左节点
         int left = index * 2 + 1;
+        // 递归终止条件，直到没有子节点
         while (left < heapSize) {
-            // 下方还有孩子的时候
-            // 两个孩子中，谁的值大，把下标给largest
-            // 1）只有左孩子，left -> largest
-            // 2) 同时有左孩子和右孩子，右孩子的值<= 左孩子的值，left -> largest
-            // 3) 同时有左孩子和右孩子并且右孩子的值> 左孩子的值， right -> largest
+            // 左右节点的较大值
             int largest = left + 1 < heapSize && arr[left + 1] > arr[left] ? left + 1 : left;
-            // 父和较大的孩子之间，谁的值大，把下标给largest
+            // 比较index和子节点的最大值
             largest = arr[largest] > arr[index] ? largest : index;
             if (largest == index) {
                 break;
