@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @description 快慢指针找链表的中点
  * @date 2022/12/22/18:09
  */
-public class LinkedList4FastSlowPointer {
+public class LinkedList3FastSlowPointer {
 
     public static void main(String[] args) {
         int maxSize = 30;

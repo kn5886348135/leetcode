@@ -15,7 +15,7 @@ import java.util.Stack;
  * @description 检测是否回文链表
  * @date 2022/12/22/17:53
  */
-public class LinkedList5IsPalindromeList {
+public class LinkedList4IsPalindromeList {
 
     public static void main(String[] args) {
         int maxSize = 30;

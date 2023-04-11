@@ -8,7 +8,7 @@ import com.serendipity.common.Node;
  * @description 两个链表是否相交
  * @date 2022/12/21/22:54
  */
-public class LinkedList6FindFirstIntersectNode {
+public class LinkedList5FindFirstIntersectNode {
 
     public static Node getIntersectNode(Node head1, Node head2) {
         if (head1 == null || head2 == null) {

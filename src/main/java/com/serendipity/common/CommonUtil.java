@@ -156,4 +156,43 @@ public class CommonUtil {
         }
         return true;
     }
+
+    // 随机生成二叉树
+    public static BinaryNode generateBinaryTree(int maxSize, int maxValue) {
+        // TODO
+        return null;
+    }
+
+    // 随机返回1 2 3 4 5
+    private static int func1(){
+        return (int) (Math.random() * 5) + 1;
+    }
+
+    // 等概率返回0或者1
+    private static int func2(){
+        int ans = 0;
+        do {
+            ans = func1();
+        } while (ans == 3);
+        return ans < 3 ? 0 : 1;
+    }
+
+    // 000 - 111 等概率
+    private static int func3(){
+        return func2() << 2 + func2() << 1 + func2();
+    }
+
+    // 固定概率返回0或者1
+    private static int func4(){
+        return Math.random() < 0.84 ? 0 : 1;
+    }
+
+    // 等概率返回0或者1
+    private static int func5() {
+        int ans = 0;
+        do {
+            ans = func4();
+        } while (ans == func4());
+        return ans;
+    }
 }
