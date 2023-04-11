@@ -2,6 +2,7 @@ package com.serendipity.algo7binarytree;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 /**
@@ -22,21 +23,26 @@ public class TreeMaxWidth {
         }
     }
 
+    // map保存节点的层数
+    // 记录当前节点所在的层数和当前遍历的层数，判断换行
+    // queue保存当前层和下一层的节点
     public static int maxWidthUseMap(Node head) {
         if (head == null) {
             return 0;
         }
         Queue<Node> queue = new LinkedList<>();
         queue.add(head);
-        HashMap<Node, Integer> levelMap = new HashMap<>();
+        Map<Node, Integer> levelMap = new HashMap<>();
         levelMap.put(head, 1);
-        // 当前正在统计的那一行
+        // 当前行
         int curLevel = 1;
-        // 当前统计行的宽度
+        // 当前行宽度
         int curLevelNodes = 0;
         int max = 0;
         while (!queue.isEmpty()) {
+            // 下一层入队
             Node cur = queue.poll();
+            // 当前节点所在行
             int curNodeLevel = levelMap.get(cur);
             if (cur.left != null) {
                 levelMap.put(cur.left, curNodeLevel + 1);
@@ -46,9 +52,11 @@ public class TreeMaxWidth {
                 levelMap.put(cur.right, curNodeLevel + 1);
                 queue.add(cur.right);
             }
+            // 还在同一行
             if (curNodeLevel == curLevel) {
                 curLevelNodes++;
             } else {
+                // 跨行
                 max = Math.max(max, curLevelNodes);
                 curLevel++;
                 curLevelNodes = 1;
@@ -58,6 +66,8 @@ public class TreeMaxWidth {
         return max;
     }
 
+    // 不借助map计算二叉树最大宽度
+    // 记住上一层的最后一个节点，判断换行
     public static int maxWidthNoMap(Node head) {
         if (head == null) {
             return 0;
@@ -66,12 +76,13 @@ public class TreeMaxWidth {
         queue.add(head);
         // 当前层最右节点
         Node curEnd = head;
-        // 下一层最右节点是谁
+        // 下一层最右节点
         Node nextEnd = null;
         int max = 0;
         // 当前层的节点数
         int curLevelNodes = 0;
         while (!queue.isEmpty()) {
+            // 下一层入队
             Node cur = queue.poll();
             if (cur.left != null) {
                 queue.add(cur.left);
@@ -81,7 +92,9 @@ public class TreeMaxWidth {
                 queue.add(cur.right);
                 nextEnd = cur.right;
             }
+            // 更新当前宽度
             curLevelNodes++;
+            // 当前层结束
             if (cur == curEnd) {
                 max = Math.max(max, curLevelNodes);
                 curLevelNodes = 0;

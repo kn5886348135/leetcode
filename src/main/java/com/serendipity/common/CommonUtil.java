@@ -230,6 +230,7 @@ public class CommonUtil {
         return isSameValueStructure(head1.left, head2.left) && isSameValueStructure(head1.right, head2.right);
     }
 
+    // 打印二叉树
     public static void printTree(BinaryNode head) {
         printInOrder(head, 0, "H", 17);
         System.out.println();
@@ -251,7 +252,7 @@ public class CommonUtil {
 
     public static String getSpace(int num) {
         String space = " ";
-        StringBuffer buf = new StringBuffer("");
+        StringBuffer buf = new StringBuffer();
         for (int i = 0; i < num; i++) {
             buf.append(space);
         }

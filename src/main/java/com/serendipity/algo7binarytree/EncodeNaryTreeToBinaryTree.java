@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class EncodeNaryTreeToBinaryTree {
 
+    // 多叉树节点
     public static class Node {
         public int value;
         public List<Node> children;
@@ -29,6 +30,7 @@ public class EncodeNaryTreeToBinaryTree {
         }
     }
 
+    // 二叉树节点
     public static class TreeNode {
         int value;
         TreeNode left;
