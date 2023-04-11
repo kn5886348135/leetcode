@@ -1,5 +1,11 @@
-package com.serendipity.binarytree;
+package com.serendipity.algo7binarytree;
 
+/**
+ * @author jack
+ * @version 1.0
+ * @description 二叉树的前序、中序、后序遍历
+ * @date 2023/04/11/18:24
+ */
 public class BinaryTree {
 
     public static void main(String[] args) {
@@ -26,6 +32,7 @@ public class BinaryTree {
         postOrderTraversal(head);
         System.out.println("=======================");
     }
+
     public static class Node {
         public int val;
         public Node left;

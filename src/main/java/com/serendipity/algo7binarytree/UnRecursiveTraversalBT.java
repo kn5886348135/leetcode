@@ -1,4 +1,4 @@
-package com.serendipity.binarytree;
+package com.serendipity.algo7binarytree;
 
 import java.util.Stack;
 

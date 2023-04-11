@@ -1,6 +1,4 @@
-package com.serendipity.binarytree;
-
-import com.sun.javaws.progress.PreloaderPostEventListener;
+package com.serendipity.algo7binarytree;
 
 import java.util.LinkedList;
 import java.util.Queue;
