@@ -10,7 +10,7 @@ import java.util.Stack;
  * @description 二叉树的先序、中序、后序遍历
  * @date 2023/04/11/18:58
  */
-public class BinaryTree {
+public class BinaryTreeTraversal {
 
     public static void main(String[] args) {
         BinaryNode root = null;
@@ -125,7 +125,7 @@ public class BinaryTree {
             }
             // 左 右 头
             while (!stack2.isEmpty()) {
-                System.out.print(stack2.pop().value + " ");
+                System.out.print(stack2.pop().value + "\t");
             }
         }
         System.out.println();
@@ -144,7 +144,7 @@ public class BinaryTree {
                 } else if (node.right != null && root != node.right) {
                     stack.push(node.right);
                 } else {
-                    System.out.print(stack.pop().value + " ");
+                    System.out.print(stack.pop().value + "\t");
                     root = node;
                 }
             }
