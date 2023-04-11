@@ -6,12 +6,12 @@ package com.serendipity.common;
  * @description 二叉树节点
  * @date 2023/04/11/19:39
  */
-public class BinaryNode {
-    public int value;
-    public BinaryNode left;
-    public BinaryNode right;
+public class BinaryNode<E> {
+    public E value;
+    public BinaryNode<E> left;
+    public BinaryNode<E> right;
 
-    public BinaryNode(int value) {
+    public BinaryNode(E value) {
         this.value = value;
     }
 }

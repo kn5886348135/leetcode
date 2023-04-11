@@ -1,5 +1,7 @@
 package com.serendipity.common;
 
+import com.serendipity.algo7binarytree.SerializeAndReconstructTree;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -194,5 +196,65 @@ public class CommonUtil {
             ans = func4();
         } while (ans == func4());
         return ans;
+    }
+
+    // 随机生成二叉树
+    public static BinaryNode generateRandomBST(int maxLevel, int maxValue) {
+        return generate(1, maxLevel, maxValue);
+    }
+
+    public static BinaryNode generate(int level, int maxLevel, int maxValue) {
+        if (level > maxLevel || Math.random() < 0.5) {
+            return null;
+        }
+        BinaryNode head = new BinaryNode((int) (Math.random() * maxValue));
+        head.left = generate(level + 1, maxLevel, maxValue);
+        head.right = generate(level + 1, maxLevel, maxValue);
+        return head;
+    }
+
+    // 判断两颗树是否相同
+    public static boolean isSameValueStructure(BinaryNode head1, BinaryNode head2) {
+        if (head1 == null && head2 != null) {
+            return false;
+        }
+        if (head1 != null && head2 == null) {
+            return false;
+        }
+        if (head1 == null && head2 == null) {
+            return true;
+        }
+        if (!head1.value.equals(head2.value)) {
+            return false;
+        }
+        return isSameValueStructure(head1.left, head2.left) && isSameValueStructure(head1.right, head2.right);
+    }
+
+    public static void printTree(BinaryNode head) {
+        printInOrder(head, 0, "H", 17);
+        System.out.println();
+    }
+
+    public static void printInOrder(BinaryNode head, int height, String to, int len) {
+        if (head == null) {
+            return;
+        }
+        printInOrder(head.right, height + 1, "v", len);
+        String val = to + head.value + to;
+        int lenM = val.length();
+        int lenL = (len - lenM) / 2;
+        int lenR = len - lenM - lenL;
+        val = getSpace(lenL) + val + getSpace(lenR);
+        System.out.println(getSpace(height * len) + val);
+        printInOrder(head.left, height + 1, "^", len);
+    }
+
+    public static String getSpace(int num) {
+        String space = " ";
+        StringBuffer buf = new StringBuffer("");
+        for (int i = 0; i < num; i++) {
+            buf.append(space);
+        }
+        return buf.toString();
     }
 }
