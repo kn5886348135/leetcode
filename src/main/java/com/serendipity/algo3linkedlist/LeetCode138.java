@@ -23,7 +23,7 @@ import java.util.Map;
 public class LeetCode138 {
 
     // map保存新链表和原链表的对应关系
-    public Node copyRandomList1(Node head) {
+    public static Node copyRandomList1(Node head) {
         if (head == null) {
             return null;
         }
@@ -46,7 +46,7 @@ public class LeetCode138 {
 
     // 新链表复制在原链表中，然后拆开
     // A -> B -> C...   A -> a -> B -> b -> C -> c...
-    public Node copyRandomList2(Node head) {
+    public static Node copyRandomList2(Node head) {
         if (head == null) {
             return null;
         }
@@ -85,7 +85,7 @@ public class LeetCode138 {
         return res;
     }
 
-    public class Node {
+    public static class Node {
         int val;
         Node next;
         Node random;

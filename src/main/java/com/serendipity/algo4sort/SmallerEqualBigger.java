@@ -1,4 +1,4 @@
-package com.serendipity.algo3linkedlist;
+package com.serendipity.algo4sort;
 
 import com.serendipity.common.Node;
 
@@ -6,9 +6,24 @@ import com.serendipity.common.Node;
  * @author jack
  * @version 1.0
  * @description 将单向链表按某值划分成左边小、中间相等、右边大的形式
+ *              单链表荷兰国旗问题
  * @date 2022/12/22/17:33
  */
-public class LinkedList7SmallerEqualBigger {
+public class SmallerEqualBigger {
+
+    public static void main(String[] args) {
+        Node head1 = new Node(7);
+        head1.next = new Node(9);
+        head1.next.next = new Node(1);
+        head1.next.next.next = new Node(8);
+        head1.next.next.next.next = new Node(5);
+        head1.next.next.next.next.next = new Node(2);
+        head1.next.next.next.next.next.next = new Node(5);
+        printLinkedList(head1);
+        // head1 = listPartition1(head1, 4);
+        head1 = listPartition2(head1, 5);
+        printLinkedList(head1);
+    }
 
     public static Node listPartition1(Node head, int pivot) {
         if (head == null) {
@@ -152,17 +167,4 @@ public class LinkedList7SmallerEqualBigger {
         return ans;
     }
 
-    public static void main(String[] args) {
-        Node head1 = new Node(7);
-        head1.next = new Node(9);
-        head1.next.next = new Node(1);
-        head1.next.next.next = new Node(8);
-        head1.next.next.next.next = new Node(5);
-        head1.next.next.next.next.next = new Node(2);
-        head1.next.next.next.next.next.next = new Node(5);
-        printLinkedList(head1);
-        // head1 = listPartition1(head1, 4);
-        head1 = listPartition2(head1, 5);
-        printLinkedList(head1);
-    }
 }

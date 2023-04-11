@@ -133,6 +133,7 @@ public class LinkedList6FindFirstIntersectNode {
     }
 
     public static void main(String[] args) {
+        // TODO 随机生成带环链表，随机相交，写对数器
         // 1->2->3->4->5->6->7->null
         Node head1 = new Node(1);
         head1.next = new Node(2);
