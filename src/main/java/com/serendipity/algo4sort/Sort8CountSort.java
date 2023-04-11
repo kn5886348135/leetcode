@@ -4,6 +4,12 @@ import com.serendipity.common.CommonUtil;
 
 import java.util.Arrays;
 
+/**
+ * @author jack
+ * @version 1.0
+ * @description 计数排序
+ * @date 2023/04/11/17:00
+ */
 public class Sort8CountSort {
 
     public static void main(String[] args) {
@@ -15,7 +21,7 @@ public class Sort8CountSort {
             int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
             int[] arr1 = new int[arr.length];
             System.arraycopy(arr, 0, arr1, 0, arr.length);
-            int[] arr2 = new int[arr1.length];
+            int[] arr2 = new int[arr.length];
             System.arraycopy(arr, 0, arr2, 0, arr.length);
             countSort(arr1);
             Arrays.sort(arr2);
@@ -40,11 +46,7 @@ public class Sort8CountSort {
         if (arr == null || arr.length < 2) {
             return;
         }
-        // 拿到最小值
-        int min = Integer.MAX_VALUE;
-        for (int i = 0; i < arr.length; i++) {
-            min = Math.min(min, arr[i]);
-        }
+        // 拿到最大值
         int max = Integer.MIN_VALUE;
         for (int i = 0; i < arr.length; i++) {
             max = Math.max(max, arr[i]);

@@ -4,7 +4,13 @@ import com.serendipity.common.CommonUtil;
 
 import java.util.Arrays;
 
-public class Sort9RedixSort {
+/**
+ * @author jack
+ * @version 1.0
+ * @description 基数排序
+ * @date 2023/04/11/17:01
+ */
+public class Sort9RadixSort {
 
     public static void main(String[] args) {
         int maxSize = 100;
