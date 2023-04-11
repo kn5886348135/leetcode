@@ -13,12 +13,13 @@ import java.util.Stack;
 public class BinaryTreeTraversal {
 
     public static void main(String[] args) {
+        // TODO 生成随机二叉树
         BinaryNode root = null;
         preOrderTraversal(root);
         System.out.println("=======================");
         inOrderTraversal(root);
         System.out.println("=======================");
-        postOrderTraversal(root);
+        posOrderTraversal(root);
         System.out.println("=======================");
     }
 
@@ -30,7 +31,7 @@ public class BinaryTreeTraversal {
             return;
         }
         // 前序
-        System.out.println(head.value);
+        System.out.print(head.value + "\t");
         traversal(head.left);
         // 中序
         // System.out.print(head.val + "\t");
@@ -60,12 +61,12 @@ public class BinaryTreeTraversal {
     }
 
     // 递归后序遍历
-    public static void postOrderTraversal(BinaryNode head) {
+    public static void posOrderTraversal(BinaryNode head) {
         if (head == null) {
             return;
         }
-        postOrderTraversal(head.left);
-        postOrderTraversal(head.right);
+        posOrderTraversal(head.left);
+        posOrderTraversal(head.right);
         System.out.print(head.value + "\t");
     }
 

@@ -12,17 +12,6 @@ import java.util.Queue;
  * @date 2022/12/21/22:26
  */
 public class BinaryTreeTraversalLevel {
-
-    public static class Node {
-        public int value;
-        public Node left;
-        public Node right;
-
-        public Node(int value) {
-            this.value = value;
-        }
-    }
-
     // 按层遍历
     public static void levelTraversal(BinaryNode head) {
         if (head == null) {
