@@ -72,85 +72,83 @@ public class BinaryTree {
     // 非递归先序遍历
     public static void preOrderTraversalUnRecursive(BinaryNode root) {
         if (root != null) {
+            Stack<BinaryNode> stack = new Stack<>();
+            stack.add(root);
+            while (!stack.isEmpty()) {
+                root = stack.pop();
+                System.out.print(root.value + "\t");
+                if (root.right != null) {
+                    stack.push(root.right);
+                }
+                if (root.left != null) {
+                    stack.push(root.left);
+                }
+            }
+        }
+        System.out.println();
+    }
+
+    // 非递归中序遍历
+    public static void inOrderTraversalUnRecursive(BinaryNode cur) {
+        if (cur != null) {
+            Stack<BinaryNode> stack = new Stack<>();
+            while (!stack.isEmpty() || cur != null) {
+                if (cur != null) {
+                    stack.push(cur);
+                    cur = cur.left;
+                } else {
+                    cur = stack.pop();
+                    System.out.print(cur.value + " ");
+                    cur = cur.right;
+                }
+            }
+        }
+        System.out.println();
+    }
+
+    // 两个栈非递归后序遍历
+    public static void posOrderTraversalUnRecursive1(BinaryNode head) {
+        if (head != null) {
             Stack<BinaryNode> stack1 = new Stack<>();
             Stack<BinaryNode> stack2 = new Stack<>();
-            stack1.push(root);
+            stack1.push(head);
             while (!stack1.isEmpty()) {
                 // 头 右 左
-                BinaryNode node = stack1.pop();
-                stack2.push(node);
-                if (node.left != null) {
-                    stack1.push(node.left);
+                head = stack1.pop();
+                stack2.push(head);
+                if (head.left != null) {
+                    stack1.push(head.left);
                 }
-                // left后入栈，先遍历
-                if (node.right != null) {
-                    stack1.push(node.right);
+                if (head.right != null) {
+                    stack1.push(head.right);
                 }
             }
             // 左 右 头
             while (!stack2.isEmpty()) {
-                System.out.print(stack2.pop() + "\t");
+                System.out.print(stack2.pop().value + " ");
             }
         }
-    }
-
-    // 非递归中序遍历
-    public static void inOrderTraversalUnRecursive(BinaryNode root) {
-        if (root != null) {
-            Stack<BinaryNode> stack = new Stack<>();
-            stack.push(root);
-            while (!stack.isEmpty()) {
-                BinaryNode node = stack.pop();
-                if (node.right != null) {
-                    stack.push(node.right);
-                }
-                System.out.print(node.value + "\t");
-                // left后入栈，先遍历
-                if (node.left != null) {
-                    stack.push(node.left);
-                }
-                stack.push(node.right);
-            }
-        }
-    }
-
-    // 两个栈非递归后序遍历
-    public static void postOrderTraversalUnRecursive1(BinaryNode root) {
-        if (root != null) {
-            Stack<BinaryNode> stack = new Stack<>();
-            stack.push(root);
-            while (!stack.isEmpty()) {
-                BinaryNode node = stack.pop();
-                if (node.right != null) {
-                    stack.push(node.right);
-                }
-                // left后入栈，先遍历
-                if (node.left != null) {
-                    stack.push(node.left);
-                }
-                stack.push(node.right);
-                System.out.print(node.value + "\t");
-            }
-        }
+        System.out.println();
     }
 
     // 一个栈非递归后序遍历
-    public static void postOrderTraversalUnRecursive2(BinaryNode root) {
+    public static void posOrderTraversalUnRecursive2(BinaryNode root) {
         if (root != null) {
             Stack<BinaryNode> stack = new Stack<>();
             stack.push(root);
             BinaryNode node = null;
             while (!stack.isEmpty()) {
-                node = stack.pop();
+                node = stack.peek();
                 if (node.left != null && root != node.left && root != node.right) {
                     stack.push(node.left);
                 } else if (node.right != null && root != node.right) {
                     stack.push(node.right);
                 } else {
-                    System.out.print(node.value + "\t");
+                    System.out.print(stack.pop().value + " ");
                     root = node;
                 }
             }
         }
+        System.out.println();
     }
 }
