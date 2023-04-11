@@ -89,17 +89,17 @@ public class BinaryTree {
     }
 
     // 非递归中序遍历
-    public static void inOrderTraversalUnRecursive(BinaryNode cur) {
-        if (cur != null) {
+    public static void inOrderTraversalUnRecursive(BinaryNode root) {
+        if (root != null) {
             Stack<BinaryNode> stack = new Stack<>();
-            while (!stack.isEmpty() || cur != null) {
-                if (cur != null) {
-                    stack.push(cur);
-                    cur = cur.left;
+            while (!stack.isEmpty() || root != null) {
+                if (root != null) {
+                    stack.push(root);
+                    root = root.left;
                 } else {
-                    cur = stack.pop();
-                    System.out.print(cur.value + " ");
-                    cur = cur.right;
+                    root = stack.pop();
+                    System.out.print(root.value + "\t");
+                    root = root.right;
                 }
             }
         }
