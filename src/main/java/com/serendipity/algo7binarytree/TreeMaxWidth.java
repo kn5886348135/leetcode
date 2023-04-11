@@ -1,5 +1,8 @@
 package com.serendipity.algo7binarytree;
 
+import com.serendipity.common.BinaryNode;
+import com.serendipity.common.CommonUtil;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -13,77 +16,84 @@ import java.util.Queue;
  */
 public class TreeMaxWidth {
 
-    public static class Node {
-        public int value;
-        public Node left;
-        public Node right;
-
-        public Node(int value) {
-            this.value = value;
+    public static void main(String[] args) {
+        int maxLevel = 10;
+        int maxValue = 100;
+        int testTimes = 1000000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            BinaryNode head = CommonUtil.generateRandomBST(maxLevel, maxValue);
+            if (maxWidthUseMap(head) != maxWidthNoMap(head)) {
+                System.out.println("maxWidth failed");
+                success = false;
+                break;
+            }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     // map保存节点的层数
     // 记录当前节点所在的层数和当前遍历的层数，判断换行
     // queue保存当前层和下一层的节点
-    public static int maxWidthUseMap(Node head) {
+    public static int maxWidthUseMap(BinaryNode head) {
         if (head == null) {
             return 0;
         }
-        Queue<Node> queue = new LinkedList<>();
+        Queue<BinaryNode> queue = new LinkedList<>();
         queue.add(head);
-        Map<Node, Integer> levelMap = new HashMap<>();
+        Map<BinaryNode, Integer> levelMap = new HashMap<>();
         levelMap.put(head, 1);
         // 当前行
-        int curLevel = 1;
+        int level = 1;
         // 当前行宽度
-        int curLevelNodes = 0;
+        int curWidth = 0;
         int max = 0;
         while (!queue.isEmpty()) {
             // 下一层入队
-            Node cur = queue.poll();
+            BinaryNode cur = queue.poll();
             // 当前节点所在行
-            int curNodeLevel = levelMap.get(cur);
+            int curLevel = levelMap.get(cur);
             if (cur.left != null) {
-                levelMap.put(cur.left, curNodeLevel + 1);
+                levelMap.put(cur.left, curLevel + 1);
                 queue.add(cur.left);
             }
             if (cur.right != null) {
-                levelMap.put(cur.right, curNodeLevel + 1);
+                levelMap.put(cur.right, curLevel + 1);
                 queue.add(cur.right);
             }
             // 还在同一行
-            if (curNodeLevel == curLevel) {
-                curLevelNodes++;
+            if (curLevel == level) {
+                curWidth++;
             } else {
-                // 跨行
-                max = Math.max(max, curLevelNodes);
-                curLevel++;
-                curLevelNodes = 1;
+                // 跨行，最后一行不会触发跨行
+                max = Math.max(max, curWidth);
+                level++;
+                curWidth = 1;
             }
         }
-        max = Math.max(max, curLevelNodes);
+        // 最后一行不会触发跨行
+        max = Math.max(max, curWidth);
         return max;
     }
 
     // 不借助map计算二叉树最大宽度
     // 记住上一层的最后一个节点，判断换行
-    public static int maxWidthNoMap(Node head) {
+    public static int maxWidthNoMap(BinaryNode head) {
         if (head == null) {
             return 0;
         }
-        Queue<Node> queue = new LinkedList<>();
+        Queue<BinaryNode> queue = new LinkedList<>();
         queue.add(head);
         // 当前层最右节点
-        Node curEnd = head;
+        BinaryNode curEnd = head;
         // 下一层最右节点
-        Node nextEnd = null;
+        BinaryNode nextEnd = null;
         int max = 0;
         // 当前层的节点数
         int curLevelNodes = 0;
         while (!queue.isEmpty()) {
             // 下一层入队
-            Node cur = queue.poll();
+            BinaryNode cur = queue.poll();
             if (cur.left != null) {
                 queue.add(cur.left);
                 nextEnd = cur.left;
@@ -102,33 +112,5 @@ public class TreeMaxWidth {
             }
         }
         return max;
-    }
-
-    public static Node generateRandomBST(int maxLevel, int maxValue) {
-        return generate(1, maxLevel, maxValue);
-    }
-
-    public static Node generate(int level, int maxLevel, int maxValue) {
-        if (level > maxLevel || Math.random() < 0.5) {
-            return null;
-        }
-        Node head = new Node((int) (Math.random() * maxValue));
-        head.left = generate(level + 1, maxLevel, maxValue);
-        head.right = generate(level + 1, maxLevel, maxValue);
-        return head;
-    }
-
-    public static void main(String[] args) {
-        int maxLevel = 10;
-        int maxValue = 100;
-        int testTimes = 1000000;
-        for (int i = 0; i < testTimes; i++) {
-            Node head = generateRandomBST(maxLevel, maxValue);
-            if (maxWidthUseMap(head) != maxWidthNoMap(head)) {
-                System.out.println("failed");
-            }
-        }
-        System.out.println("success");
-
     }
 }
