@@ -55,6 +55,12 @@ public class SerializeAndReconstructTree {
     }
 
     // 中序遍历
+    // 二叉树无法通过中序遍历的方式实现反序列化
+    // 不同的两棵树，可能得到同样的中序序列
+    // 中序遍历的结果无法拿到root节点
+    // root 2 left 1
+    // root 2 right 2
+    // 补足空位置的中序遍历结果都是{ null, 1, null, 2, null}
     public static Queue<String> inSerial(BinaryNode head) {
         Queue<String> ans = new LinkedList<>();
         ins(head, ans);
@@ -78,7 +84,7 @@ public class SerializeAndReconstructTree {
         return ans;
     }
 
-    public static void poss(BinaryNode head,Queue<String> ans) {
+    public static void poss(BinaryNode head, Queue<String> ans) {
         if (head == null) {
             ans.add(null);
         } else {
