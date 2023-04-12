@@ -1,34 +1,41 @@
 package com.serendipity.algo7binarytree;
 
+import com.serendipity.common.BinaryNode;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 /**
- * 二叉树的层序遍历
- * 给你二叉树的根节点 root ，返回其节点值的 层序遍历 。 （即逐层地，从左到右访问所有节点）。
+ * @author jack
+ * @version 1.0
+ * @description 二叉树的层序遍历
+ *              给你二叉树的根节点 root ，返回其节点值的 层序遍历 。 （即逐层地，从左到右访问所有节点）。
+ * @date 2023/04/12/16:57
  */
 public class LeetCode102 {
+
     public static void main(String[] args) {
-
-
+        // TODO
     }
 
-    private static List<List<Integer>> levelOrder(TreeNode root) {
+    // 返回二叉树层序遍历结果
+    public static List<List<Integer>> levelOrder(BinaryNode<Integer> root) {
         if (root == null) {
             return new LinkedList<>();
         }
-
         List<List<Integer>> ans = new LinkedList<>();
 
-        Queue<TreeNode> queue = new LinkedList<>();
+        Queue<BinaryNode> queue = new LinkedList<>();
         queue.add(root);
         while (!queue.isEmpty()) {
+            // 记录当前层的个数
             int size = queue.size();
             List<Integer> list = new LinkedList<>();
+            // 将当前层的节点出队，并将子节点入队
             for (int i = 0; i < size; i++) {
-                TreeNode node = queue.poll();
-                list.add(node.val);
+                BinaryNode<Integer> node = queue.poll();
+                list.add(node.value);
                 if (node.left != null) {
                     queue.add(node.left);
                 }
@@ -39,31 +46,5 @@ public class LeetCode102 {
             ans.add(list);
         }
         return ans;
-    }
-
-    static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        public TreeNode() {
-        }
-
-        public TreeNode(int val) {
-            this.val = val;
-        }
-
-        public TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
-
-        @Override
-        public String toString() {
-            return "TreeNode{" +
-                    "val=" + val +
-                    '}';
-        }
     }
 }
