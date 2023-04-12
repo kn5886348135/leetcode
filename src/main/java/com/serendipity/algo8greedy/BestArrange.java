@@ -1,4 +1,4 @@
-package com.serendipity.greedyalgorithm;
+package com.serendipity.algo8greedy;
 
 import java.util.Arrays;
 import java.util.Comparator;

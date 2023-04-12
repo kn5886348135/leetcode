@@ -1,4 +1,4 @@
-package com.serendipity.greedyalgorithm;
+package com.serendipity.algo8greedy;
 
 import java.util.Arrays;
 import java.util.TreeSet;
@@ -12,6 +12,28 @@ import java.util.TreeSet;
  */
 public class LowestLexicography {
 
+    public static void main(String[] args) {
+        int arrLen = 6;
+        int strLen = 5;
+        int testTimes = 10000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            String[] arr1 = generateRandomStringArray(arrLen, strLen);
+            String[] arr2 = copyStringArray(arr1);
+            if (!lowestString1(arr1).equals(lowestString2(arr2))) {
+                for (String str : arr1) {
+                    System.out.print(str + "\t");
+                }
+                System.out.println();
+                System.out.println("lowestString failed");
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
+    }
+
+    // 对数器
     public static String lowestString1(String[] strs) {
         if (strs == null || strs.length == 0) {
             return "";
@@ -53,6 +75,7 @@ public class LowestLexicography {
         return result;
     }
 
+    // 贪心算法
     public static String lowestString2(String[] strs) {
         if (strs == null || strs.length == 0) {
             return "";
@@ -67,7 +90,6 @@ public class LowestLexicography {
         return result;
     }
 
-    // --------------------------------test-----------------------------------
     private static String generateRandomString(int length) {
         char[] result = new char[(int) (Math.random() * length) + 1];
         for (int i = 0; i < result.length; i++) {
@@ -92,24 +114,4 @@ public class LowestLexicography {
         }
         return result;
     }
-
-    public static void main(String[] args) {
-        int arrLen = 6;
-        int strLen = 5;
-        int testTimes = 10000;
-        System.out.println("--------------------------start---------------------------------------");
-        for (int i = 0; i < testTimes; i++) {
-            String[] arr1 = generateRandomStringArray(arrLen, strLen);
-            String[] arr2 = copyStringArray(arr1);
-            if (!lowestString1(arr1).equals(lowestString2(arr2))) {
-                for (String str : arr1) {
-                    System.out.print(str + ",");
-                }
-                System.out.println();
-                System.out.println("failed");
-            }
-        }
-        System.out.println("--------------------------finish--------------------------------------");
-    }
-
 }
