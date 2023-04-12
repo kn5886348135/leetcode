@@ -1,5 +1,8 @@
 package com.serendipity.algo7binarytree;
 
+import com.serendipity.common.BinaryNode;
+import com.serendipity.common.CommonUtil;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,23 +15,33 @@ import java.util.HashSet;
  */
 public class MaxDistance {
 
-    public static class Node {
-        public int value;
-        public Node left;
-        public Node right;
-
-        public Node(int value) {
-            this.value = value;
+    public static void main(String[] args) {
+        int maxLevel = 4;
+        int maxValue = 100;
+        int testTimes = 1000000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            BinaryNode head = CommonUtil.generateRandomBST(maxLevel, maxValue);
+            if (maxDistance1(head) != maxDistance2(head)) {
+                System.out.println("maxDistance failed");
+                success = false;
+                break;
+            }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
-    public static int maxDistance1(Node head) {
+    // 对数器
+    // 前序遍历拿到左右节点的集合
+    // 双层循环遍历前序遍历集合
+    // 拿到两个节点的最低公共祖先，计算距离
+    public static int maxDistance1(BinaryNode head) {
         if (head == null) {
             return 0;
         }
 
-        ArrayList<Node> arr = getPreList(head);
-        HashMap<Node, Node> parentMap = getParentMap(head);
+        ArrayList<BinaryNode> arr = getPreList(head);
+        HashMap<BinaryNode, BinaryNode> parentMap = getParentMap(head);
         int max = 0;
         for (int i = 0; i < arr.size(); i++) {
             for (int j = i; j < arr.size(); j++) {
@@ -38,13 +51,14 @@ public class MaxDistance {
         return max;
     }
 
-    public static ArrayList<Node> getPreList(Node head) {
-        ArrayList<Node> arr = new ArrayList<>();
+    // 前序遍历结果
+    private static ArrayList<BinaryNode> getPreList(BinaryNode head) {
+        ArrayList<BinaryNode> arr = new ArrayList<>();
         fillPreList(head, arr);
         return arr;
     }
 
-    public static void fillPreList(Node head, ArrayList<Node> arr) {
+    private static void fillPreList(BinaryNode head, ArrayList<BinaryNode> arr) {
         if (head == null) {
             return;
         }
@@ -53,14 +67,15 @@ public class MaxDistance {
         fillPreList(head.right, arr);
     }
 
-    public static HashMap<Node, Node> getParentMap(Node head) {
-        HashMap<Node, Node> map = new HashMap<>();
+    // 保存每个节点的父节点
+    public static HashMap<BinaryNode, BinaryNode> getParentMap(BinaryNode head) {
+        HashMap<BinaryNode, BinaryNode> map = new HashMap<>();
         map.put(head, null);
         fillParentMap(head, map);
         return map;
     }
 
-    public static void fillParentMap(Node head, HashMap<Node, Node> parentMap) {
+    public static void fillParentMap(BinaryNode head, HashMap<BinaryNode, BinaryNode> parentMap) {
         if (head.left != null) {
             parentMap.put(head.left, head);
             fillParentMap(head.left, parentMap);
@@ -71,9 +86,11 @@ public class MaxDistance {
         }
     }
 
-    public static int distance(HashMap<Node, Node> parentMap, Node node1, Node node2) {
-        HashSet<Node> set = new HashSet<>();
-        Node cur = node1;
+    // 两个节点到最低公共祖先的距离
+    public static int distance(HashMap<BinaryNode, BinaryNode> parentMap, BinaryNode node1, BinaryNode node2) {
+        HashSet<BinaryNode> set = new HashSet<>();
+        BinaryNode cur = node1;
+        // 所有祖先借点的集合
         set.add(cur);
         while (parentMap.get(cur) != null) {
             cur = parentMap.get(cur);
@@ -83,13 +100,16 @@ public class MaxDistance {
         while (!set.contains(cur)) {
             cur = parentMap.get(cur);
         }
-        Node lowestAncestor = cur;
+        // 最低公共祖先
+        BinaryNode lowestAncestor = cur;
+        // node1到最低公共祖先的距离
         cur = node1;
         int distance1 = 1;
         while (cur != lowestAncestor) {
             cur = parentMap.get(cur);
             distance1++;
         }
+        // node2到最低公共祖先的距离
         cur = node2;
         int distance2 = 1;
         while (cur != lowestAncestor) {
@@ -99,7 +119,10 @@ public class MaxDistance {
         return distance1 + distance2 - 1;
     }
 
-    public static int maxDistance2(Node head) {
+    // 递归处理
+    // 左右子树的高度加1是当前子树的最大距离
+    // 后序遍历拿到某一个节点的最大距离和高度
+    public static int maxDistance2(BinaryNode head) {
         return process(head).maxDistance;
     }
 
@@ -113,7 +136,7 @@ public class MaxDistance {
         }
     }
 
-    public static Info process(Node head) {
+    public static Info process(BinaryNode head) {
         if (head == null) {
             return new Info(0, 0);
         }
@@ -125,32 +148,5 @@ public class MaxDistance {
         int p3 = leftInfo.height + rightInfo.height + 1;
         int maxDistance = Math.max(Math.max(p1, p2), p3);
         return new Info(maxDistance, height);
-    }
-
-    public static Node generateRandomBST(int maxLevel, int maxValue) {
-        return generate(1, maxLevel, maxValue);
-    }
-
-    public static Node generate(int level, int maxLevel, int maxValue) {
-        if (level > maxLevel || Math.random() < 0.5) {
-            return null;
-        }
-        Node head = new Node((int) (Math.random() * maxValue));
-        head.left = generate(level + 1, maxLevel, maxValue);
-        head.right = generate(level + 1, maxLevel, maxValue);
-        return head;
-    }
-
-    public static void main(String[] args) {
-        int maxLevel = 4;
-        int maxValue = 100;
-        int testTimes = 1000000;
-        for (int i = 0; i < testTimes; i++) {
-            Node head = generateRandomBST(maxLevel, maxValue);
-            if (maxDistance1(head) != maxDistance2(head)) {
-                System.out.println("failed");
-            }
-        }
-        System.out.println("success");
     }
 }
