@@ -18,6 +18,8 @@ public class UnionFind<V> {
     public Map<V, Node<V>> nodes;
 
     // node和代表节点的映射
+    // key      node
+    // value    parent
     public Map<Node<V>, Node<V>> parents;
 
     // 代表节点的集合大小
@@ -39,7 +41,8 @@ public class UnionFind<V> {
     // 给你一个节点，向上寻找代表节点
     public Node<V> findFather(Node<V> node) {
         Stack<Node<V>> path = new Stack<>();
-        // 递归向上寻找代表节点，node==parents.get(node)表示node是代表节点
+        // 递归向上寻找代表节点
+        // node==parents.get(node)表示node是代表节点
         while (node != parents.get(node)) {
             path.push(node);
             node = parents.get(node);
@@ -57,17 +60,18 @@ public class UnionFind<V> {
     }
 
     // 合并
-    public void union(V a, V b) {
-        Node<V> aHead = findFather(nodes.get(a));
-        Node<V> bHead = findFather(nodes.get(b));
-        if (aHead != bHead) {
-            int aSetSize = sizeMap.get(aHead);
-            int bSetSize = sizeMap.get(bHead);
-            Node<V> big = aSetSize >= bSetSize ? aHead : bHead;
-            Node<V> small = big == aHead ? bHead : aHead;
+    public void union(V item1, V item2) {
+        Node<V> node1 = findFather(nodes.get(item1));
+        Node<V> node2 = findFather(nodes.get(item2));
+        if (node1 != node2) {
+            int size1 = sizeMap.get(node1);
+            int size2 = sizeMap.get(node2);
+            Node<V> big = size1 >= size2 ? node1 : node2;
+            Node<V> small = big == node1 ? node2 : node1;
             // 将小的代表节点映射到大的代表节点上，主要是减少路径压缩
             parents.put(small, big);
-            sizeMap.put(big, aSetSize + bSetSize);
+            // 更新size
+            sizeMap.put(big, size1 + size2);
             sizeMap.remove(small);
         }
     }
@@ -83,5 +87,4 @@ public class UnionFind<V> {
             this.value = value;
         }
     }
-
 }
