@@ -1,23 +1,25 @@
-package com.serendipity.leetcode.middle;
+package com.serendipity.algo7binarytree;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 /**
- * 二叉树的层序遍历 II
- * 给你二叉树的根节点 root ，返回其节点值 自底向上的层序遍历 。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
+ * 二叉树的层序遍历
+ * 给你二叉树的根节点 root ，返回其节点值的 层序遍历 。 （即逐层地，从左到右访问所有节点）。
  */
-public class LeetCode107 {
+public class LeetCode102 {
     public static void main(String[] args) {
+
 
     }
 
-    private static List<List<Integer>> levelOrderBottom(TreeNode root) {
-        List<List<Integer>> ans = new LinkedList<>();
+    private static List<List<Integer>> levelOrder(TreeNode root) {
         if (root == null) {
-            return ans;
+            return new LinkedList<>();
         }
+
+        List<List<Integer>> ans = new LinkedList<>();
 
         Queue<TreeNode> queue = new LinkedList<>();
         queue.add(root);
@@ -34,7 +36,7 @@ public class LeetCode107 {
                     queue.add(node.right);
                 }
             }
-            ans.add(0, list);
+            ans.add(list);
         }
         return ans;
     }

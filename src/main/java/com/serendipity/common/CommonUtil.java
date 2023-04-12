@@ -1,7 +1,5 @@
 package com.serendipity.common;
 
-import com.serendipity.algo7binarytree.SerializeAndReconstructTree;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -213,21 +211,35 @@ public class CommonUtil {
         return head;
     }
 
+    // 获取二叉树的最大高度
+    // 二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
+    public static int maxDepth(BinaryNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+    }
+
     // 判断两颗树是否相同
     public static boolean isSameValueStructure(BinaryNode head1, BinaryNode head2) {
-        if (head1 == null && head2 != null) {
+        if (head1 == null ^ head2 == null) {
             return false;
         }
-        if (head1 != null && head2 == null) {
-            return false;
-        }
-        if (head1 == null && head2 == null) {
+        if (head1 == null & head2 == null) {
             return true;
         }
-        if (!head1.value.equals(head2.value)) {
+        return head1.value == head2.value && isSameValueStructure(head1.left, head2.left) && isSameValueStructure(head1.right, head2.right);
+    }
+
+    // 判断二叉树是否对称
+    public static boolean isSymmetricTree(BinaryNode node1, BinaryNode node2) {
+        if (node1 == null ^ node2 == null) {
             return false;
         }
-        return isSameValueStructure(head1.left, head2.left) && isSameValueStructure(head1.right, head2.right);
+        if (node1 == null & node2 == null) {
+            return true;
+        }
+        return node1.value == node2.value && isSymmetricTree(node1.left, node2.right) && isSymmetricTree(node1.right, node2.left);
     }
 
     // 打印二叉树
