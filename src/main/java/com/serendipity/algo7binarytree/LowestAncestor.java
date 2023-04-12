@@ -1,5 +1,8 @@
 package com.serendipity.algo7binarytree;
 
+import com.serendipity.common.BinaryNode;
+import com.serendipity.common.CommonUtil;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,30 +18,38 @@ import java.util.Set;
  */
 public class LowestAncestor {
 
-    public static class Node {
-        public int value;
-        public Node left;
-        public Node right;
-
-        public Node(int value) {
-            this.value = value;
+    public static void main(String[] args) {
+        int maxLevel = 4;
+        int maxValue = 100;
+        int count = 1000000;
+        boolean success = true;
+        for (int i = 0; i < count; i++) {
+            BinaryNode head = CommonUtil.generateRandomBST(maxLevel, maxValue);
+            BinaryNode node1 = pickRandomOne(head);
+            BinaryNode node2 = pickRandomOne(head);
+            if (lowestAncestor(head, node1, node2) != lowestAncestor2(head, node1, node2)) {
+                System.out.println("lowestAncestor failed");
+                success = false;
+                break;
+            }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     // map保存所有节点的父节点
     // set保存node1的所有父节点
     // 遍历node2的父节点
-    public static Node lowestAncestor(Node head, Node node1, Node node2) {
+    public static BinaryNode lowestAncestor(BinaryNode head, BinaryNode node1, BinaryNode node2) {
         if (head == null) {
             return null;
         }
         // key    node
         // value  node的父节点
-        Map<Node, Node> parentMap = new HashMap<>();
+        Map<BinaryNode, BinaryNode> parentMap = new HashMap<>();
         parentMap.put(head, null);
         fillParentMap(head, parentMap);
-        Set<Node> set = new HashSet<>();
-        Node cur = node1;
+        Set<BinaryNode> set = new HashSet<>();
+        BinaryNode cur = node1;
         set.add(cur);
         // 将node1的所有父节点加入set
         while (parentMap.get(cur) != null) {
@@ -55,7 +66,7 @@ public class LowestAncestor {
     }
 
     // 记录所有节点的父节点
-    public static void fillParentMap(Node head, Map<Node, Node> parentMap) {
+    public static void fillParentMap(BinaryNode head, Map<BinaryNode, BinaryNode> parentMap) {
         if (head.left != null) {
             parentMap.put(head.left, head);
             fillParentMap(head.left, parentMap);
@@ -66,8 +77,8 @@ public class LowestAncestor {
         }
     }
 
-    // ???
-    public static Node lowestAncestor2(Node head, Node node1, Node node2) {
+    // 辅助类，递归处理
+    public static BinaryNode lowestAncestor2(BinaryNode head, BinaryNode node1, BinaryNode node2) {
         return process(head, node1, node2).ans;
     }
 
@@ -77,9 +88,9 @@ public class LowestAncestor {
         // 发现node2
         public boolean findB;
         // 结果
-        public Node ans;
+        public BinaryNode ans;
 
-        public Info(boolean findA, boolean findB, Node ans) {
+        public Info(boolean findA, boolean findB, BinaryNode ans) {
             this.findA = findA;
             this.findB = findB;
             this.ans = ans;
@@ -87,7 +98,7 @@ public class LowestAncestor {
     }
 
     // 递归套路
-    public static Info process(Node head, Node node1, Node node2) {
+    public static Info process(BinaryNode head, BinaryNode node1, BinaryNode node2) {
         // 递归终止条件
         if (head == null) {
             return new Info(false, false, null);
@@ -99,7 +110,7 @@ public class LowestAncestor {
         boolean findA = (head == node1) || leftInfo.findA || rightInfo.findA;
         boolean findB = (head == node2) || leftInfo.findB || rightInfo.findB;
 
-        Node ans = null;
+        BinaryNode ans = null;
         if (leftInfo.ans != null) {
             ans = leftInfo.ans;
         } else if (rightInfo.ans != null) {
@@ -109,55 +120,26 @@ public class LowestAncestor {
                 ans = head;
             }
         }
-        // 返回地柜结果
+        // 返回递归结果
         return new Info(findA, findB, ans);
     }
 
-    public static Node generateRandomBST(int maxLevel, int maxValue) {
-        return generate(1, maxLevel, maxValue);
-    }
-
-    public static Node generate(int level, int maxLevel, int maxValue) {
-        if (level > maxLevel || Math.random() < 0.5) {
-            return null;
-        }
-        Node head = new Node((int) (Math.random() * maxValue));
-        head.left = generate(level + 1, maxLevel, maxValue);
-        head.right = generate(level + 1, maxLevel, maxValue);
-        return head;
-    }
-
-    public static Node pickRandomOne(Node head) {
+    public static BinaryNode pickRandomOne(BinaryNode head) {
         if (head == null) {
             return null;
         }
-        List<Node> arr = new ArrayList<>();
+        List<BinaryNode> arr = new ArrayList<>();
         fillPreList(head, arr);
         int randomIndex = (int) (Math.random() * arr.size());
         return arr.get(randomIndex);
     }
 
-    public static void fillPreList(Node head, List<Node> arr) {
+    public static void fillPreList(BinaryNode head, List<BinaryNode> arr) {
         if (head == null) {
             return;
         }
         arr.add(head);
         fillPreList(head.left, arr);
         fillPreList(head.right, arr);
-    }
-
-    public static void main(String[] args) {
-        int maxLevel = 4;
-        int maxValue = 100;
-        int count = 1000000;
-        for (int i = 0; i < count; i++) {
-            Node head = generateRandomBST(maxLevel, maxValue);
-            Node node1 = pickRandomOne(head);
-            Node node2 = pickRandomOne(head);
-            if (lowestAncestor(head, node1, node2) != lowestAncestor2(head, node1, node2)) {
-                System.out.println("failed");
-            }
-        }
-        System.out.println("success");
     }
 }
