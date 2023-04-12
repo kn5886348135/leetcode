@@ -1,19 +1,23 @@
 package com.serendipity.algo7binarytree;
 
+import com.serendipity.common.BinaryNode;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 路径总和
- * 给你二叉树的根节点 root 和一个整数目标和 targetSum ，找出所有 从根节点到叶子节点 路径总和等于给定目标和的路径。
- *
+ * @author jack
+ * @version 1.0
+ * @description 给你二叉树的根节点 root 和一个整数目标和 targetSum ，找出所有 从根节点到叶子节点 路径总和等于给定目标和的路径。
+ *              叶子节点 是指没有子节点的节点。
+ * @date 2023/04/12/17:26
  */
 public class LeetCode113 {
     public static void main(String[] args) {
-
+       // TODO 对数器
     }
 
-    private static List<List<Integer>> hasPathSum(TreeNode root, int targetSum) {
+    private static List<List<Integer>> hasPathSum(BinaryNode root, int targetSum) {
         List<List<Integer>> list = new ArrayList<>();
         if (root == null) {
             return null;
@@ -24,20 +28,19 @@ public class LeetCode113 {
         return list;
     }
 
-    private static void process(TreeNode node, List<Integer> path, int preSum, int target, List<List<Integer>> list) {
-
+    private static void process(BinaryNode<Integer> node, List<Integer> path, int preSum, int target, List<List<Integer>> list) {
         // 叶子结点
         if (node.left == null && node.right == null) {
-            if (node.val + preSum == target) {
-                path.add(node.val);
+            if (node.value + preSum == target) {
+                path.add(node.value);
                 list.add(copy(path));
                 path.clear();
             }
             return;
         }
         // 非叶子节点
-        preSum += node.val;
-        path.add(node.val);
+        preSum += node.value;
+        path.add(node.value);
         if (node.left != null) {
             process(node.left, path, preSum, target, list);
         }
@@ -53,31 +56,5 @@ public class LeetCode113 {
             ans.add(num);
         }
         return ans;
-    }
-
-    static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        public TreeNode() {
-        }
-
-        public TreeNode(int val) {
-            this.val = val;
-        }
-
-        public TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
-
-        @Override
-        public String toString() {
-            return "TreeNode{" +
-                    "val=" + val +
-                    '}';
-        }
     }
 }
