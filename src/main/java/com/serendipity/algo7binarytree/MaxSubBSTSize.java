@@ -19,6 +19,7 @@ public class MaxSubBSTSize {
         }
     }
 
+    // 辅助类保存最大值最小值、子树的节点数量、最大BST节点数量
     public static int largestBSTSubtree(TreeNode head) {
         if (head == null) {
             return 0;

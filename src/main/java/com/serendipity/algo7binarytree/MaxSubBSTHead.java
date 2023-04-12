@@ -1,5 +1,8 @@
 package com.serendipity.algo7binarytree;
 
+import com.serendipity.common.BinaryNode;
+import com.serendipity.common.CommonUtil;
+
 import java.util.ArrayList;
 
 /**
@@ -10,21 +13,27 @@ import java.util.ArrayList;
  */
 public class MaxSubBSTHead {
 
-    public static class Node {
-        public int value;
-        public Node left;
-        public Node right;
-
-        public Node(int value) {
-            this.value = value;
+    public static void main(String[] args) {
+        int maxLevel = 4;
+        int maxValue = 100;
+        int testTimes = 1000000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            BinaryNode head = CommonUtil.generateRandomBST(maxLevel, maxValue);
+            if (maxSubBSTHead1(head) != maxSubBSTHead2(head)) {
+                System.out.println("maxSubBSTHead failed");
+                success = false;
+                break;
+            }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
-    public static int getBSTSize(Node head) {
+    public static int getBSTSize(BinaryNode<Integer> head) {
         if (head == null) {
             return 0;
         }
-        ArrayList<Node> arr = new ArrayList<>();
+        ArrayList<BinaryNode<Integer>> arr = new ArrayList<>();
         in(head, arr);
         for (int i = 1; i < arr.size(); i++) {
             // 任何一个元素逆序则head不是BST
@@ -36,7 +45,7 @@ public class MaxSubBSTHead {
     }
 
     // 中序遍历
-    public static void in(Node head, ArrayList<Node> arr) {
+    public static void in(BinaryNode head, ArrayList<BinaryNode<Integer>> arr) {
         if (head == null) {
             return;
         }
@@ -46,7 +55,8 @@ public class MaxSubBSTHead {
         in(head.right, arr);
     }
 
-    public static Node maxSubBSTHead1(Node head) {
+    // 中序遍历判断某个子树是否是BST
+    public static BinaryNode maxSubBSTHead1(BinaryNode head) {
         if (head == null) {
             return null;
         }
@@ -54,12 +64,14 @@ public class MaxSubBSTHead {
         if (getBSTSize(head) != 0) {
             return head;
         }
-        Node leftAns = maxSubBSTHead1(head.left);
-        Node rightAns = maxSubBSTHead1(head.right);
+        BinaryNode leftAns = maxSubBSTHead1(head.left);
+        BinaryNode rightAns = maxSubBSTHead1(head.right);
         return getBSTSize(leftAns) >= getBSTSize(rightAns) ? leftAns : rightAns;
     }
 
-    public static Node maxSubBSTHead2(Node head) {
+    // 辅助类保存BST头结点和size
+    // 递归处理
+    public static BinaryNode maxSubBSTHead2(BinaryNode head) {
         if (head == null) {
             return null;
         }
@@ -67,12 +79,12 @@ public class MaxSubBSTHead {
     }
 
     public static class Info {
-        public Node maxSubBSTHead;
+        public BinaryNode maxSubBSTHead;
         public int maxSubBSTSize;
         public int min;
         public int max;
 
-        public Info(Node maxSubBSTHead, int maxSubBSTSize, int min, int max) {
+        public Info(BinaryNode maxSubBSTHead, int maxSubBSTSize, int min, int max) {
             this.maxSubBSTHead = maxSubBSTHead;
             this.maxSubBSTSize = maxSubBSTSize;
             this.min = min;
@@ -80,7 +92,7 @@ public class MaxSubBSTHead {
         }
     }
 
-    public static Info process(Node head) {
+    public static Info process(BinaryNode<Integer> head) {
         if (head == null) {
             return null;
         }
@@ -88,7 +100,7 @@ public class MaxSubBSTHead {
         Info rightInfo = process(head.right);
         int min = head.value;
         int max = head.value;
-        Node maxSubBSTHead = null;
+        BinaryNode maxSubBSTHead = null;
         int maxSubBSTSize = 0;
         if (leftInfo != null) {
             min = Math.min(min, leftInfo.min);
@@ -111,32 +123,5 @@ public class MaxSubBSTHead {
                     + (rightInfo == null ? 0 : rightInfo.maxSubBSTSize) + 1;
         }
         return new Info(maxSubBSTHead, maxSubBSTSize, min, max);
-    }
-
-    public static Node generateRandomBST(int maxLevel, int maxValue) {
-        return generate(1, maxLevel, maxValue);
-    }
-
-    public static Node generate(int level, int maxLevel, int maxValue) {
-        if (level > maxLevel || Math.random() < 0.5) {
-            return null;
-        }
-        Node head = new Node((int) (Math.random() * maxValue));
-        head.left = generate(level + 1, maxLevel, maxValue);
-        head.right = generate(level + 1, maxLevel, maxValue);
-        return head;
-    }
-
-    public static void main(String[] args) {
-        int maxLevel = 4;
-        int maxValue = 100;
-        int count = 1000000;
-        for (int i = 0; i < count; i++) {
-            Node head = generateRandomBST(maxLevel, maxValue);
-            if (maxSubBSTHead1(head) != maxSubBSTHead2(head)) {
-                System.out.println("failed");
-            }
-        }
-        System.out.println("success");
     }
 }
