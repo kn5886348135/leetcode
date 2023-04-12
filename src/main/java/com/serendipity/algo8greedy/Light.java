@@ -1,6 +1,7 @@
 package com.serendipity.algo8greedy;
 
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author jack
@@ -11,15 +12,34 @@ import java.util.HashSet;
  */
 public class Light {
 
-    private static int minLight1(String road) {
+    public static void main(String[] args) {
+        int length = 20;
+        int testTimes = 100000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            String str = randomString(length);
+            int ans1 = minLight1(str);
+            int ans2 = minLight2(str);
+            int ans3 = minLight3(str);
+            if (ans1 != ans2 || ans1 != ans3) {
+                System.out.println("failed");
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
+    }
+
+    public static int minLight1(String road) {
         if (road == null || road.length() == 0) {
             return 0;
         }
         return process(road.toCharArray(), 0, new HashSet<>());
     }
 
-    // chs[0....index-1]位置已经选择是否放灯，chs[index....length-1]位置自由选择是否放灯
-    private static int process(char[] chs, int index, HashSet<Integer> lights) {
+    // chs[0....index-1]位置已经选择是否放灯
+    // chs[index....length-1]位置自由选择是否放灯
+    private static int process(char[] chs, int index, Set<Integer> lights) {
         // 递归终止条件
         if (index == chs.length) {
             for (int i = 0; i < chs.length; i++) {
@@ -45,7 +65,8 @@ public class Light {
         }
     }
 
-    private static int minLight2(String road) {
+    //
+    public static int minLight2(String road) {
         char[] chs = road.toCharArray();
         int i = 0;
         int light = 0;
@@ -91,7 +112,7 @@ public class Light {
         return light;
     }
 
-
+    // 生成随机的灯
     private static String randomString(int length) {
         char[] chs = new char[(int) (Math.random() * length) + 1];
         for (int i = 0; i < chs.length; i++) {
@@ -99,20 +120,4 @@ public class Light {
         }
         return String.valueOf(chs);
     }
-
-    public static void main(String[] args) {
-        int length = 20;
-        int count = 100000;
-        for (int i = 0; i < count; i++) {
-            String str = randomString(length);
-            int ans1 = minLight1(str);
-            int ans2 = minLight2(str);
-            int ans3 = minLight3(str);
-            if (ans1 != ans2 || ans1 != ans3) {
-                System.out.println("failed");
-            }
-        }
-        System.out.println("success");
-    }
-
 }

@@ -6,6 +6,8 @@ package com.serendipity.algo7binarytree;
  * @description 后继节点
  *              前驱节点：对一棵二叉树进行中序遍历，遍历后的顺序，当前节点的前一个节点为该节点的前驱节点；
  *              后继节点：对一棵二叉树进行中序遍历，遍历后的顺序，当前节点的后一个节点为该节点的后继节点；
+ *              给定一个二叉树节点，节点有parent，找出后继节点。中序遍历后，节点右边的节点成为后继节点。
+ *              通过parent找到root，中序遍历然后找到后继节点的时间复杂度O(N)，不考虑。
  * @date 2022/12/21/20:41
  */
 public class SuccessorNode {

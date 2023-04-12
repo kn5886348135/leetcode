@@ -1,5 +1,7 @@
 package com.serendipity.algo8greedy;
 
+import com.serendipity.common.CommonUtil;
+
 import java.util.PriorityQueue;
 
 /**
@@ -21,6 +23,23 @@ import java.util.PriorityQueue;
  */
 public class SplitGold {
 
+    public static void main(String[] args) {
+        int maxSize = 6;
+        int maxValue = 1000;
+        int testTimes = 100000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            if (leastCost1(arr) != leastCost2(arr)) {
+                System.out.println("leastCost failed");
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
+    }
+
+    // 对数器
     private static int leastCost1(int[] arr) {
         if (arr == null || arr.length == 0) {
             return 0;
@@ -60,40 +79,20 @@ public class SplitGold {
         return result;
     }
 
+    // 贪心算法
+    // 每次都分割最小的
     private static int leastCost2(int[] arr) {
         PriorityQueue<Integer> heap = new PriorityQueue<>();
         for (int i = 0; i < arr.length; i++) {
             heap.add(arr[i]);
         }
         int sum = 0;
-        int cur = 0;
+        int cur;
         while (heap.size() > 1) {
             cur = heap.poll() + heap.poll();
             sum += cur;
             heap.add(cur);
         }
         return sum;
-    }
-
-    // -------------------------------test-------------------------------
-    private static int[] generateRandomArray(int maxSize, int maxValue) {
-        int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) (Math.random() * (maxValue + 1));
-        }
-        return arr;
-    }
-
-    public static void main(String[] args) {
-        int count = 100000;
-        int maxSize = 6;
-        int maxValue = 1000;
-        for (int i = 0; i < count; i++) {
-            int[] arr = generateRandomArray(maxSize, maxValue);
-            if (leastCost1(arr) != leastCost2(arr)) {
-                System.out.println("failed");
-            }
-        }
-        System.out.println("success");
     }
 }
