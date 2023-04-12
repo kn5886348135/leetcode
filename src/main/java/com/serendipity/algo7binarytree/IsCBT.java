@@ -1,6 +1,9 @@
 package com.serendipity.algo7binarytree;
 
 
+import com.serendipity.common.BinaryNode;
+import com.serendipity.common.CommonUtil;
+
 import java.util.LinkedList;
 
 /**
@@ -12,26 +15,34 @@ import java.util.LinkedList;
  */
 public class IsCBT {
 
-    public static class Node {
-        public int value;
-        public Node left;
-        public Node right;
-
-        public Node(int value) {
-            this.value = value;
+    public static void main(String[] args) {
+        int maxLevel = 5;
+        int maxValue = 100;
+        int testTimes = 1000000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            BinaryNode head = CommonUtil.generateRandomBST(maxLevel, maxValue);
+            if (isCBT1(head) != isCBT2(head)) {
+                System.out.println("isCBT failed");
+                success = false;
+                break;
+            }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
-    public static boolean isCBT1(Node head) {
+    // 层序遍历
+    // 注意处理叶子节点
+    public static boolean isCBT1(BinaryNode head) {
         if (head == null) {
             return true;
         }
 
-        LinkedList<Node> queue = new LinkedList<>();
+        LinkedList<BinaryNode> queue = new LinkedList<>();
         // 是否叶子节点
         boolean leaf = false;
-        Node left;
-        Node right;
+        BinaryNode left;
+        BinaryNode right;
         queue.add(head);
         while (!queue.isEmpty()) {
             head = queue.poll();
@@ -56,7 +67,7 @@ public class IsCBT {
         return true;
     }
 
-    public static boolean isCBT2(Node head) {
+    public static boolean isCBT2(BinaryNode head) {
         if (head == null) {
             return true;
         }
@@ -78,7 +89,7 @@ public class IsCBT {
     }
 
     // 后序遍历
-    public static Info process(Node head) {
+    public static Info process(BinaryNode head) {
         if (head == null) {
             return new Info(true, true, 0);
         }
@@ -87,20 +98,23 @@ public class IsCBT {
         int height = Math.max(leftInfo.height, rightInfo.height) + 1;
         boolean isFull = leftInfo.isFull && rightInfo.isFull && leftInfo.height == rightInfo.height;
         boolean isCBT = false;
-        // 满二叉树是完全二叉树
+        // 左右都是满二叉树
         if (leftInfo.isFull && rightInfo.isFull && leftInfo.height == rightInfo.height) {
             isCBT = true;
         } else if (leftInfo.isCBT && rightInfo.isFull && leftInfo.height == rightInfo.height + 1) {
+            // 左边是完全二叉树、右边是满二叉树，高度差1
             isCBT = true;
         } else if (leftInfo.isFull && rightInfo.isFull && leftInfo.height == rightInfo.height + 1) {
+            // 左边是满二叉树、右边是满二叉树，高度差1
             isCBT = true;
         } else if (leftInfo.isFull && rightInfo.isCBT && leftInfo.height == rightInfo.height) {
+            // 左边是满二叉树、右边是完全二叉树，高度相等
             isCBT = true;
         }
         return new Info(isFull, isCBT, height);
     }
 
-    public static Info process1(Node head) {
+    public static Info process1(BinaryNode head) {
         if (head == null) {
             return new Info(true, true, 0);
         }
@@ -125,32 +139,5 @@ public class IsCBT {
             }
         }
         return new Info(isFull, isCBT, height);
-    }
-
-    public static Node generateRandomBST(int maxLevel, int maxValue) {
-        return generate(1, maxLevel, maxValue);
-    }
-
-    public static Node generate(int level, int maxLevel, int maxValue) {
-        if (level > maxLevel || Math.random() < 0.5) {
-            return null;
-        }
-        Node head = new Node((int) (Math.random() * maxValue));
-        head.left = generate(level + 1, maxLevel, maxValue);
-        head.right = generate(level + 1, maxLevel, maxValue);
-        return head;
-    }
-
-    public static void main(String[] args) {
-        int maxLevel = 5;
-        int maxValue = 100;
-        int count = 1000000;
-        for (int i = 0; i < count; i++) {
-            Node head = generateRandomBST(maxLevel, maxValue);
-            if (isCBT1(head) != isCBT2(head)) {
-                System.out.println("failed");
-            }
-        }
-        System.out.println("success");
     }
 }
