@@ -1,4 +1,4 @@
-package com.serendipity.unionfind;
+package com.serendipity.algo9unionfind;
 
 import java.util.ArrayList;
 import java.util.HashMap;
