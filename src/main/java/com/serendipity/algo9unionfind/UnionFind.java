@@ -27,9 +27,9 @@ public class UnionFind<V> {
 
     // 并查集初始化
     public UnionFind(List<V> values) {
-        nodes = new HashMap<>();
-        parents = new HashMap<>();
-        sizeMap = new HashMap<>();
+        this.nodes = new HashMap<>();
+        this.parents = new HashMap<>();
+        this.sizeMap = new HashMap<>();
         for (V value : values) {
             Node<V> node = new Node<>(value);
             nodes.put(value, node);
@@ -55,8 +55,8 @@ public class UnionFind<V> {
     }
 
     // 判断代表节点是否相同
-    public boolean isSameSet(V a, V b) {
-        return findFather(nodes.get(a)) == findFather(nodes.get(b));
+    public boolean isSameSet(V item1, V item2) {
+        return findFather(nodes.get(item1)) == findFather(nodes.get(item2));
     }
 
     // 合并
