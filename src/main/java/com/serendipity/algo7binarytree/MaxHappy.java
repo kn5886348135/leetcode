@@ -14,6 +14,23 @@ import java.util.List;
  */
 public class MaxHappy {
 
+    public static void main(String[] args) {
+        int maxLevel = 4;
+        int maxNexts = 7;
+        int maxHappy = 100;
+        int testTimes = 100000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            Employee boss = generateBoss(maxLevel, maxNexts, maxHappy);
+            if (maxHappy1(boss) != maxHappy2(boss)) {
+                System.out.println("maxHappy failed");
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
+    }
+
     public static class Employee {
         public int happy;
         public List<Employee> nexts;
@@ -105,19 +122,5 @@ public class MaxHappy {
             employee.nexts.add(next);
             generateNexts(next, level + 1, maxLevel, maxNexts, maxHappy);
         }
-    }
-
-    public static void main(String[] args) {
-        int maxLevel = 4;
-        int maxNexts = 7;
-        int maxHappy = 100;
-        int count = 100000;
-        for (int i = 0; i < count; i++) {
-            Employee boss = generateBoss(maxLevel, maxNexts, maxHappy);
-            if (maxHappy1(boss) != maxHappy2(boss)) {
-                System.out.println("failed");
-            }
-        }
-        System.out.println("success");
     }
 }
