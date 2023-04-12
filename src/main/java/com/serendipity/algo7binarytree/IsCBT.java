@@ -118,8 +118,8 @@ public class IsCBT {
         if (head == null) {
             return new Info(true, true, 0);
         }
-        Info leftInfo = process(head.left);
-        Info rightInfo = process(head.right);
+        Info leftInfo = process1(head.left);
+        Info rightInfo = process1(head.right);
         int height = Math.max(leftInfo.height, rightInfo.height) + 1;
         boolean isFull = leftInfo.isFull && rightInfo.isFull && leftInfo.height == rightInfo.height;
         boolean isCBT = false;

@@ -21,13 +21,13 @@ public class LowestAncestor {
     public static void main(String[] args) {
         int maxLevel = 4;
         int maxValue = 100;
-        int count = 1000000;
+        int testTimes = 1000000;
         boolean success = true;
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < testTimes; i++) {
             BinaryNode head = CommonUtil.generateRandomBST(maxLevel, maxValue);
             BinaryNode node1 = pickRandomOne(head);
             BinaryNode node2 = pickRandomOne(head);
-            if (lowestAncestor(head, node1, node2) != lowestAncestor2(head, node1, node2)) {
+            if (lowestAncestor1(head, node1, node2) != lowestAncestor2(head, node1, node2)) {
                 System.out.println("lowestAncestor failed");
                 success = false;
                 break;
@@ -39,7 +39,7 @@ public class LowestAncestor {
     // map保存所有节点的父节点
     // set保存node1的所有父节点
     // 遍历node2的父节点
-    public static BinaryNode lowestAncestor(BinaryNode head, BinaryNode node1, BinaryNode node2) {
+    public static BinaryNode lowestAncestor1(BinaryNode head, BinaryNode node1, BinaryNode node2) {
         if (head == null) {
             return null;
         }

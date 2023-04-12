@@ -1,6 +1,7 @@
 package com.serendipity.algo7binarytree;
 
 import com.serendipity.common.BinaryNode;
+import com.serendipity.common.CommonUtil;
 
 /**
  * @author jack
@@ -16,7 +17,7 @@ public class IsFull {
         int testTimes = 1000000;
         boolean success = true;
         for (int i = 0; i < testTimes; i++) {
-            BinaryNode head = generateRandomBST(maxLevel, maxValue);
+            BinaryNode head = CommonUtil.generateRandomBST(maxLevel, maxValue);
             if (isFull1(head) != isFull2(head)) {
                 System.out.println("isFull failed");
                 success = false;
@@ -39,9 +40,9 @@ public class IsFull {
         public int height;
         public int nodes;
 
-        public Info1(int h, int n) {
-            height = h;
-            nodes = n;
+        public Info1(int height, int nodes) {
+            this.height = height;
+            this.nodes = nodes;
         }
     }
 
@@ -84,19 +85,5 @@ public class IsFull {
         boolean isFull = leftInfo.isFull && rightInfo.isFull && leftInfo.height == rightInfo.height;
         int height = Math.max(leftInfo.height, rightInfo.height) + 1;
         return new Info2(isFull, height);
-    }
-
-    public static BinaryNode generateRandomBST(int maxLevel, int maxValue) {
-        return generate(1, maxLevel, maxValue);
-    }
-
-    public static BinaryNode generate(int level, int maxLevel, int maxValue) {
-        if (level > maxLevel || Math.random() < 0.5) {
-            return null;
-        }
-        BinaryNode head = new BinaryNode((int) (Math.random() * maxValue));
-        head.left = generate(level + 1, maxLevel, maxValue);
-        head.right = generate(level + 1, maxLevel, maxValue);
-        return head;
     }
 }

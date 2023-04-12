@@ -1,5 +1,8 @@
 package com.serendipity.algo7binarytree;
 
+import com.serendipity.common.BinaryNode;
+import com.serendipity.common.CommonUtil;
+
 /**
  * @author jack
  * @version 1.0
@@ -8,18 +11,24 @@ package com.serendipity.algo7binarytree;
  */
 public class IsBalanced {
 
-    public static class Node {
-        public int value;
-        public Node left;
-        public Node right;
-
-        public Node(int value) {
-            this.value = value;
+    public static void main(String[] args) {
+        int maxLevel = 5;
+        int maxValue = 100;
+        int testTimes = 1000000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            BinaryNode head = CommonUtil.generateRandomBST(maxLevel, maxValue);
+            if (isBalanced1(head) != isBalanced2(head)) {
+                System.out.println("isBalanced failed");
+                success = false;
+                break;
+            }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 判断是否平衡二叉树
-    public static boolean isBalanced1(Node head) {
+    public static boolean isBalanced1(BinaryNode head) {
         // 需要在递归过程中修改，所有要用容器传递参数
         boolean[] ans = new boolean[1];
         ans[0] = true;
@@ -27,7 +36,7 @@ public class IsBalanced {
         return ans[0];
     }
 
-    public static int process1(Node head, boolean[] ans) {
+    public static int process1(BinaryNode head, boolean[] ans) {
         if (!ans[0] || head == null) {
             return -1;
         }
@@ -41,7 +50,7 @@ public class IsBalanced {
         return Math.max(leftHeight, rightHeight) + 1;
     }
 
-    public static boolean isBalanced2(Node head) {
+    public static boolean isBalanced2(BinaryNode head) {
         return process(head).isBalanced;
     }
 
@@ -56,7 +65,7 @@ public class IsBalanced {
         }
     }
 
-    public static Info process(Node head) {
+    public static Info process(BinaryNode head) {
         if (head == null) {
             return new Info(true, 0);
         }
@@ -75,32 +84,5 @@ public class IsBalanced {
             isBalanced = false;
         }
         return new Info(isBalanced, height);
-    }
-
-    public static Node generateRandomBST(int maxLevel, int maxValue) {
-        return generate(1, maxLevel, maxValue);
-    }
-
-    public static Node generate(int level, int maxLevel, int maxValue) {
-        if (level > maxLevel || Math.random() < 0.5) {
-            return null;
-        }
-        Node head = new Node((int) (Math.random() * maxValue));
-        head.left = generate(level + 1, maxLevel, maxValue);
-        head.right = generate(level + 1, maxLevel, maxValue);
-        return head;
-    }
-
-    public static void main(String[] args) {
-        int maxLevel = 5;
-        int maxValue = 100;
-        int testTimes = 1000000;
-        for (int i = 0; i < testTimes; i++) {
-            Node head = generateRandomBST(maxLevel, maxValue);
-            if (isBalanced1(head) != isBalanced2(head)) {
-                System.out.println("failed");
-            }
-        }
-        System.out.println("success");
     }
 }

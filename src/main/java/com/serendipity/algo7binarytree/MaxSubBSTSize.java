@@ -1,5 +1,7 @@
 package com.serendipity.algo7binarytree;
 
+import com.serendipity.common.BinaryNode;
+
 /**
  * @author jack
  * @version 1.0
@@ -9,18 +11,12 @@ package com.serendipity.algo7binarytree;
  */
 public class MaxSubBSTSize {
 
-    public static class TreeNode {
-        public int value;
-        public TreeNode left;
-        public TreeNode right;
-
-        public TreeNode(int value) {
-            this.value = value;
-        }
+    public static void main(String[] args) {
+        // TODO 对数器
     }
 
     // 辅助类保存最大值最小值、子树的节点数量、最大BST节点数量
-    public static int largestBSTSubtree(TreeNode head) {
+    public static int largestBSTSubtree(BinaryNode head) {
         if (head == null) {
             return 0;
         }
@@ -41,7 +37,7 @@ public class MaxSubBSTSize {
         }
     }
 
-    public static Info process(TreeNode head) {
+    public static Info process(BinaryNode<Integer> head) {
         if (head == null) {
             return null;
         }
