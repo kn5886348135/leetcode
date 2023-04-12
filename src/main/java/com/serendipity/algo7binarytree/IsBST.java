@@ -1,30 +1,40 @@
 package com.serendipity.algo7binarytree;
 
+import com.serendipity.common.BinaryNode;
+import com.serendipity.common.CommonUtil;
+
 import java.util.ArrayList;
 
 /**
  * @author jack
  * @version 1.0
- * @description
+ * @description 判断一棵树是否为搜索二叉树
  * @date 2022/12/21/19:53
  */
 public class IsBST {
 
-    public static class Node {
-        public int value;
-        public Node left;
-        public Node right;
-
-        public Node(int value) {
-            this.value = value;
+    public static void main(String[] args) {
+        int maxLevel = 4;
+        int maxValue = 100;
+        int testTimes = 1000000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            BinaryNode head = CommonUtil.generateRandomBST(maxLevel, maxValue);
+            if (isBST1(head) != isBST2(head)) {
+                CommonUtil.printTree(head);
+                success = false;
+                break;
+            }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
-    public static boolean isBST1(Node head) {
+    // 搜索二叉树的中序遍历结果是升序的
+    public static boolean isBST1(BinaryNode<Integer> head) {
         if (head == null) {
             return true;
         }
-        ArrayList<Node> arr = new ArrayList<>();
+        ArrayList<BinaryNode<Integer>> arr = new ArrayList<>();
         in(head, arr);
         for (int i = 1; i < arr.size(); i++) {
             if (arr.get(i).value <= arr.get(i - 1).value) {
@@ -34,7 +44,7 @@ public class IsBST {
         return true;
     }
 
-    public static void in(Node head, ArrayList<Node> arr) {
+    public static void in(BinaryNode<Integer> head, ArrayList<BinaryNode<Integer>> arr) {
         if (head == null) {
             return;
         }
@@ -44,13 +54,14 @@ public class IsBST {
         in(head.right, arr);
     }
 
-    public static boolean isBST2(Node head) {
+    public static boolean isBST2(BinaryNode head) {
         if (head == null) {
             return true;
         }
         return process(head).isBST;
     }
 
+    // 辅助类
     public static class Info {
         public boolean isBST;
         public int max;
@@ -63,7 +74,7 @@ public class IsBST {
         }
     }
 
-    public static Info process(Node head) {
+    public static Info process(BinaryNode<Integer> head) {
         if (head == null) {
             return null;
         }
@@ -98,32 +109,4 @@ public class IsBST {
         }
         return new Info(isBST, max, min);
     }
-
-    public static Node generateRandomBST(int maxLevel, int maxValue) {
-        return generate(1, maxLevel, maxValue);
-    }
-
-    public static Node generate(int level, int maxLevel, int maxValue) {
-        if (level > maxLevel || Math.random() < 0.5) {
-            return null;
-        }
-        Node head = new Node((int) (Math.random() * maxValue));
-        head.left = generate(level + 1, maxLevel, maxValue);
-        head.right = generate(level + 1, maxLevel, maxValue);
-        return head;
-    }
-
-    public static void main(String[] args) {
-        int maxLevel = 4;
-        int maxValue = 100;
-        int testTimes = 1000000;
-        for (int i = 0; i < testTimes; i++) {
-            Node head = generateRandomBST(maxLevel, maxValue);
-            if (isBST1(head) != isBST2(head)) {
-                System.out.println("failed");
-            }
-        }
-        System.out.println("success");
-    }
-
 }

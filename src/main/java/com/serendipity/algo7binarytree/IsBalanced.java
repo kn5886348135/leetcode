@@ -3,7 +3,7 @@ package com.serendipity.algo7binarytree;
 /**
  * @author jack
  * @version 1.0
- * @description
+ * @description 判断二叉树是否平衡
  * @date 2022/12/21/19:42
  */
 public class IsBalanced {
@@ -18,7 +18,9 @@ public class IsBalanced {
         }
     }
 
+    // 判断是否平衡二叉树
     public static boolean isBalanced1(Node head) {
+        // 需要在递归过程中修改，所有要用容器传递参数
         boolean[] ans = new boolean[1];
         ans[0] = true;
         process1(head, ans);
@@ -29,7 +31,9 @@ public class IsBalanced {
         if (!ans[0] || head == null) {
             return -1;
         }
+        // 左子树高度
         int leftHeight = process1(head.left, ans);
+        // 右子树高度
         int rightHeight = process1(head.right, ans);
         if (Math.abs(leftHeight - rightHeight) > 1) {
             ans[0] = false;
@@ -41,6 +45,7 @@ public class IsBalanced {
         return process(head).isBalanced;
     }
 
+    // 辅助类保存二叉树是否平衡和高度
     public static class Info {
         public boolean isBalanced;
         public int height;
