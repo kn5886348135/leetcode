@@ -23,9 +23,9 @@ public class IPO {
     // w是初始资金
     // profits是收益、capital是投资，两个数组等长
     // 返回最终最大的收益
-    private static int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
-        PriorityQueue<Program> minCostQueue = new PriorityQueue<>(Comparator.comparingInt(pro -> pro.capital));
-        PriorityQueue<Program> maxProfitQueue = new PriorityQueue<>((pro1, pro2) -> pro2.profit - pro1.profit);
+    public static int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+        PriorityQueue<Program> minCostQueue = new PriorityQueue<>(Comparator.comparingInt(o -> o.capital));
+        PriorityQueue<Program> maxProfitQueue = new PriorityQueue<>((o1, o2) -> o2.profit - o1.profit);
         for (int i = 0; i < profits.length; i++) {
             minCostQueue.add(new Program(profits[i], capital[i]));
         }
@@ -41,9 +41,7 @@ public class IPO {
         return w;
     }
 
-    // 有没有不是暴力循环的方法？
-
-    private static class Program {
+    public static class Program {
         public int profit;
         public int capital;
 
