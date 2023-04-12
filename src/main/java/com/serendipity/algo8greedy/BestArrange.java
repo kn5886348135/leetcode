@@ -29,7 +29,7 @@ public class BestArrange {
     }
 
     // 对数器
-    private static int bestArrange1(Program[] programs) {
+    public static int bestArrange1(Program[] programs) {
         if (programs == null || programs.length == 0) {
             return 0;
         }
@@ -51,6 +51,7 @@ public class BestArrange {
         if (programs.length == 0) {
             return done;
         }
+        // 还剩下会议
         int max = done;
         // 当前安排的会议是什么会，每一个都枚举
         for (int i = 0; i < programs.length; i++) {

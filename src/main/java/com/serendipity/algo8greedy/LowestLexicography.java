@@ -19,7 +19,8 @@ public class LowestLexicography {
         boolean success = true;
         for (int i = 0; i < testTimes; i++) {
             String[] arr1 = generateRandomStringArray(arrLen, strLen);
-            String[] arr2 = copyStringArray(arr1);
+            String[] arr2 = new String[arr1.length];
+            System.arraycopy(arr1, 0, arr2, 0, arr1.length);
             if (!lowestString1(arr1).equals(lowestString2(arr2))) {
                 for (String str : arr1) {
                     System.out.print(str + "\t");
@@ -103,14 +104,6 @@ public class LowestLexicography {
         String[] result = new String[(int) (Math.random() * arrLen) + 1];
         for (int i = 0; i < result.length; i++) {
             result[i] = generateRandomString(strLen);
-        }
-        return result;
-    }
-
-    private static String[] copyStringArray(String[] arr) {
-        String[] result = new String[arr.length];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = String.valueOf(arr[i]);
         }
         return result;
     }

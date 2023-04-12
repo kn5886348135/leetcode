@@ -53,7 +53,9 @@ public class Light {
             }
             return lights.size();
         } else {
+            // index位置不放灯
             int no = process(chs, index + 1, lights);
+            // index位置放灯
             int yes = Integer.MAX_VALUE;
             if (chs[index] == '.') {
                 lights.add(index);
@@ -96,7 +98,7 @@ public class Light {
     }
 
     // 两个X之间的.数量除以3向上取整
-    private static int minLight3(String road) {
+    public static int minLight3(String road) {
         char[] chs = road.toCharArray();
         int cur = 0;
         int light = 0;

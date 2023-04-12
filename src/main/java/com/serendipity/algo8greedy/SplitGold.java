@@ -40,7 +40,7 @@ public class SplitGold {
     }
 
     // 对数器
-    private static int leastCost1(int[] arr) {
+    public static int leastCost1(int[] arr) {
         if (arr == null || arr.length == 0) {
             return 0;
         }
@@ -81,7 +81,7 @@ public class SplitGold {
 
     // 贪心算法
     // 每次都分割最小的
-    private static int leastCost2(int[] arr) {
+    public static int leastCost2(int[] arr) {
         PriorityQueue<Integer> heap = new PriorityQueue<>();
         for (int i = 0; i < arr.length; i++) {
             heap.add(arr[i]);
