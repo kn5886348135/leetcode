@@ -8,7 +8,10 @@ import java.util.Map;
 /**
  * @author jack
  * @version 1.0
- * @description LeetCode305 付费，矩阵matrix，每新增一行，要求返回岛的数量
+ * @description LeetCode305 付费
+ *              m 行 n 列的二维网格地图最初充满水。 我们可以执行 addLand 操作，将位置 (row, col) 的水变成陆地。
+ *              给定要操作的位置列表，计算每个 addLand 操作后的岛屿数量。 岛屿四面环水，由相邻陆地水平或垂直连接而成。
+ *              您可以假设网格的所有四个边缘都被水包围。
  * @date 2022/12/16/18:23
  */
 public class LeetCode305 {
@@ -16,6 +19,14 @@ public class LeetCode305 {
     public static void main(String[] args) {
     }
 
+    /**
+     * 每新增一个点，上下左右四个方向连接后的union-find的size
+     *
+     * @param m             行数
+     * @param n             列数
+     * @param positions     依次给出的点位置
+     * @return 每新增一个岛屿后的岛屿列表
+     */
     public static List<Integer> numIslands21(int m, int n, int[][] positions) {
         UnionFind1 unionFind1 = new UnionFind1(m, n);
         List<Integer> ans = new ArrayList<>();
@@ -26,11 +37,15 @@ public class LeetCode305 {
     }
 
     public static class UnionFind1 {
+        // 父节点
         private int[] parent;
+        // 父节点的size
         private int[] size;
+        // 辅助数组
         private int[] help;
         private final int row;
         private final int col;
+        // 代表节点数量
         private int sets;
 
         public UnionFind1(int m, int n) {
@@ -97,8 +112,9 @@ public class LeetCode305 {
         }
     }
 
-    // 当m*n比较大，会经历很重的初始化，k比较小时的优化方法，使用下划线连接row和col
-    public static List<Integer> numIslands22(int m, int n, int[][] positions) {
+    // 当m * n比较大，会经历很重的初始化，k比较小时的优化方法
+    // 使用下划线连接row和col，不需要在初始化的时候分配数组
+    public static List<Integer> numIslands22(int[][] positions) {
         UnionFind2 unionFind2 = new UnionFind2();
         List<Integer> ans = new ArrayList<>();
         for (int[] position : positions) {
