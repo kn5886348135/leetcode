@@ -15,9 +15,12 @@ import java.util.Queue;
  */
 public class TopologySort {
 
-    public static List<Node> sortedTopology(Graph graph){
+    // directed graph and no loop
+    public static List<Node> sortedTopology(Graph graph) {
         // 计算所有节点的入度，拿到入度为0的节点
+        // key 某个节点   value 剩余的入度
         Map<Node, Integer> indegreeMap = new HashMap<>();
+        // 只有剩余入度为0的点，才进入这个队列
         Queue<Node> zeroIndegreeQueue = new LinkedList<>();
         for (Node node : graph.nodes.values()) {
             indegreeMap.put(node, node.in);

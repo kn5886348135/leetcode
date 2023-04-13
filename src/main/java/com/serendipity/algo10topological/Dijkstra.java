@@ -20,12 +20,14 @@ public class Dijkstra {
         Set<Node> selectedNodes = new HashSet<>();
         Node minNode = getMinDistanceAndUnselectedNode(distanceMap, selectedNodes);
         while (minNode != null) {
+            //  原始点  ->  minNode(跳转点)   最小距离distance
             int distance = distanceMap.get(minNode);
             for (Edge edge : minNode.edges) {
                 Node toNode = edge.to;
                 if (!distanceMap.containsKey(toNode)) {
                     distanceMap.put(toNode, distance + edge.weight);
                 } else {
+                    // toNode
                     distanceMap.put(edge.to, Math.min(distanceMap.get(toNode), distance + edge.weight));
                 }
             }
@@ -75,7 +77,6 @@ public class Dijkstra {
             heapIndexMap = new HashMap<>();
             distanceMap = new HashMap<>();
             this.size = 0;
-
         }
 
         public boolean isEmpty() {
@@ -86,13 +87,13 @@ public class Dijkstra {
         public void addOrUpdateOrIgnore(Node node, int distance) {
             if (inHeap(node)) {
                 distanceMap.put(node, Math.min(distanceMap.get(node), distance));
-                insertHeapify(node, heapIndexMap.get(node));
+                insertHeapify(heapIndexMap.get(node));
             }
             if (!isEntered(node)) {
                 nodes[size] = node;
                 heapIndexMap.put(node, size);
                 distanceMap.put(node, distance);
-                insertHeapify(node, size++);
+                insertHeapify(size++);
             }
         }
 
@@ -106,7 +107,7 @@ public class Dijkstra {
             return nodeRecord;
         }
 
-        private void insertHeapify(Node node, Integer index) {
+        private void insertHeapify(Integer index) {
             while (distanceMap.get(nodes[index]) < distanceMap.get(nodes[(index - 1) / 2])) {
                 swap(index, (index - 1) / 2);
                 index = (index - 1) / 2;

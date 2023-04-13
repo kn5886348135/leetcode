@@ -13,6 +13,10 @@ import java.util.Set;
  */
 public class Prim {
 
+    public static void main(String[] args) {
+        // TODO 对数器
+    }
+
     // 可以从任意节点出发来寻找最小生成树
     // 某个点加入到被选取的点中后，解锁这个点出发的所有新的边
     // 在所有解锁的边中选最小的边，然后看看这个边会不会形成环
@@ -27,6 +31,7 @@ public class Prim {
         // 返回的结果集
         Set<Edge> result = new HashSet<>();
 
+        // 任意选择一个节点
         for (Node node : graph.nodes.values()) {
             // 未解锁的点
             if (!nodeSet.contains(node)) {
@@ -36,6 +41,7 @@ public class Prim {
                     priorityQueue.add(edge);
                 }
                 while (!priorityQueue.isEmpty()) {
+                    // 弹出解锁的边中，最小的边
                     Edge edge = priorityQueue.poll();
                     // 弹出解锁的边中，最小的边
                     Node toNode = edge.to;
@@ -56,8 +62,8 @@ public class Prim {
         return result;
     }
 
-    // graph是连通图
-    // graph[i][j]表示i点到j点的距离，无穷大表示无法到达
+    // 请保证graph是连通图
+    // graph[i][j]表示点i到点j的距离，系统最大值代表无法到达
     // 返回值是最小连通图的路径之和
     public static int prim(int[][] graph) {
         int size = graph.length;

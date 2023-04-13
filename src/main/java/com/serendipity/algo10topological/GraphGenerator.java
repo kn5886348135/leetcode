@@ -13,6 +13,7 @@ public class GraphGenerator {
     public static Graph createGraph(int[][] matrix) {
         Graph graph = new Graph();
         for (int i = 0; i < matrix.length; i++) {
+            // 拿到每一条边， matrix[i]
             int weight = matrix[i][0];
             int from = matrix[i][1];
             int to = matrix[i][2];

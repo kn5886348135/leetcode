@@ -18,7 +18,9 @@ import java.util.Stack;
 public class Kruskal {
 
     public static class UnionFind {
+        // key 某一个节点， value key节点往上的节点
         private Map<Node, Node> fatherMap;
+        // key 某一个集合的代表节点, value key所在集合的节点个数
         private Map<Node, Integer> sizeMap;
 
         public UnionFind() {
