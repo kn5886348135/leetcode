@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * @author jack
  * @version 1.0
- * @description
+ * @description 图的表示类
  * @date 2022/12/17/16:53
  */
 public class Graph {

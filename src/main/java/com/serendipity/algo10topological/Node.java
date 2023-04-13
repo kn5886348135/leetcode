@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * @author jack
  * @version 1.0
- * @description
+ * @description 拓扑图的节点
  * @date 2022/12/17/16:49
  */
 public class Node {

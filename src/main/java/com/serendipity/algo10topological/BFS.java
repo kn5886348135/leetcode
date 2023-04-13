@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * @author jack
  * @version 1.0
- * @description 宽度优先搜索
+ * @description 图的宽度优先搜索
  * @date 2022/12/17/16:48
  */
 public class BFS {
@@ -27,7 +27,7 @@ public class BFS {
         set.add(node);
         while (!queue.isEmpty()) {
             Node cur = queue.poll();
-            System.out.println(cur.value);
+            System.out.print(cur.value + "\t");
             // 将当前节点的所有相邻节点入队
             for (Node next : cur.nexts) {
                 if (!set.contains(next)) {

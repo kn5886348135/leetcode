@@ -157,6 +157,5 @@ public class LeetCode743 {
             hIndex[o1[0]] = o2hi;
             hIndex[o2[0]] = o1hi;
         }
-
     }
 }

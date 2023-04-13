@@ -1,5 +1,7 @@
 package com.serendipity.lintcode.middle;
 
+import com.serendipity.algo10topological.DirectedGraphNode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;

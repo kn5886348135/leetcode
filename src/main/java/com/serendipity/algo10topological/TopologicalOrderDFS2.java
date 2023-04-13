@@ -1,7 +1,5 @@
 package com.serendipity.algo10topological;
 
-import com.serendipity.lintcode.middle.DirectedGraphNode;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +24,9 @@ public class TopologicalOrderDFS2 {
         }
     }
 
+    // 任意选取一个节点作为开始
+    // 获取所有节点经过节点的数量
+    // 拓扑排序结果不唯一
     public static List<DirectedGraphNode> topoSort(List<DirectedGraphNode> graph) {
         Map<DirectedGraphNode, Record> order = new HashMap<>();
         for (DirectedGraphNode directedGraphNode : graph) {
@@ -57,5 +58,4 @@ public class TopologicalOrderDFS2 {
         order.put(directedGraphNode, record);
         return record;
     }
-
 }

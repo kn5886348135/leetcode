@@ -14,6 +14,7 @@ import java.util.Queue;
  * @date 2022/12/18/16:30
  */
 public class TopologySort {
+
     public static List<Node> sortedTopology(Graph graph){
         // 计算所有节点的入度，拿到入度为0的节点
         Map<Node, Integer> indegreeMap = new HashMap<>();

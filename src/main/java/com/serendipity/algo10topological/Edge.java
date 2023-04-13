@@ -3,7 +3,7 @@ package com.serendipity.algo10topological;
 /**
  * @author jack
  * @version 1.0
- * @description
+ * @description 图的边
  * @date 2022/12/17/16:51
  */
 public class Edge {
