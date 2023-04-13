@@ -1,4 +1,4 @@
-package com.serendipity.algo11dynamicprogramming.recursion;
+package com.serendipity.algo11dynamicprogramming.recursion1;
 
 import java.util.Stack;
 
@@ -6,10 +6,10 @@ import java.util.Stack;
  * @author jack
  * @version 1.0
  * @description 汉诺塔问题
- * 有三根杆子A，B，C。A杆上有 N 个 (N>1) 穿孔圆盘，盘的尺寸由下到上依次变小。要求按下列规则将所有圆盘移至 C 杆：
+ *              有三根杆子A，B，C。A杆上有 N 个 (N>1) 穿孔圆盘，盘的尺寸由下到上依次变小。要求按下列规则将所有圆盘移至 C 杆：
  *
- * 每次只能移动一个圆盘；
- * 大盘不能叠在小盘上面。
+ *              每次只能移动一个圆盘；
+ *              大盘不能叠在小盘上面。
  * @date 2022/12/19/12:04
  */
 public class Hanoi {

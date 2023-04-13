@@ -1,4 +1,4 @@
-package com.serendipity.algo11dynamicprogramming.recursion;
+package com.serendipity.algo11dynamicprogramming.recursion1;
 
 import java.util.ArrayList;
 import java.util.List;

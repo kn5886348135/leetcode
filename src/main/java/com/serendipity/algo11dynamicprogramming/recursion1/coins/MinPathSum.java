@@ -1,4 +1,4 @@
-package com.serendipity.algo11dynamicprogramming.recursion.coins;
+package com.serendipity.algo11dynamicprogramming.recursion1.coins;
 
 /**
  * @author jack
