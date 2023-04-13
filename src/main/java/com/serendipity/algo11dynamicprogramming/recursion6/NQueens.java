@@ -1,4 +1,4 @@
-package com.serendipity.dynamicprogramming.recursion6;
+package com.serendipity.algo11dynamicprogramming.recursion6;
 
 /**
  * @author jack

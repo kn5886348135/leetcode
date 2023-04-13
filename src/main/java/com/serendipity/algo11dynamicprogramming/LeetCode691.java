@@ -1,4 +1,4 @@
-package com.serendipity.dynamicprogramming;
+package com.serendipity.algo11dynamicprogramming;
 
 import java.util.HashMap;
 

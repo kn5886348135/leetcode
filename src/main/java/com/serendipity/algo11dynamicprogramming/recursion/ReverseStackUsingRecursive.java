@@ -1,4 +1,4 @@
-package com.serendipity.dynamicprogramming.recursion;
+package com.serendipity.algo11dynamicprogramming.recursion;
 
 import java.util.Stack;
 
