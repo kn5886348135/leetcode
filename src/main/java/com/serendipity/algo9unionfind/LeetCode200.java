@@ -102,7 +102,7 @@ public class LeetCode200 {
             }
         }
         // 单独处理第一行
-        UnionFind<Dot> unionFind = new UnionFind(dotList);
+        UnionFind<Dot> unionFind = new UnionFind<>(dotList);
         for (int j = 1; j < col; j++) {
             if (grid[0][j - 1] == '1' && grid[0][j] == '1') {
                 unionFind.union(dots[0][j - 1], dots[0][j]);

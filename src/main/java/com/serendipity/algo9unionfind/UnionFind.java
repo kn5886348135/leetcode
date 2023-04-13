@@ -32,9 +32,9 @@ public class UnionFind<V> {
         this.sizeMap = new HashMap<>();
         for (V value : values) {
             Node<V> node = new Node<>(value);
-            nodes.put(value, node);
-            parents.put(node, node);
-            sizeMap.put(node, 1);
+            this.nodes.put(value, node);
+            this.parents.put(node, node);
+            this.sizeMap.put(node, 1);
         }
     }
 
