@@ -53,9 +53,9 @@ public class LeetCode305 {
             this.col = n;
             this.sets = 0;
             int len = row * col;
-            parent = new int[len];
-            size = new int[len];
-            help = new int[len];
+            this.parent = new int[len];
+            this.size = new int[len];
+            this.help = new int[len];
         }
 
         private int index(int row, int column) {
@@ -182,5 +182,4 @@ public class LeetCode305 {
             return sets;
         }
     }
-
 }

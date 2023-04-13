@@ -1,4 +1,4 @@
-package com.serendipity.graph;
+package com.serendipity.algo10topological;
 
 import java.util.HashSet;
 import java.util.LinkedList;
