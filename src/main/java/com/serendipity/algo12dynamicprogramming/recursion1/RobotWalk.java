@@ -12,7 +12,30 @@ package com.serendipity.algo12dynamicprogramming.recursion1;
  */
 public class RobotWalk {
 
-    private static int ways1(int n, int start, int aim, int k) {
+    public static void main(String[] args) {
+        int maxSize = 500;
+        int maxValue = 500;
+        int testTimes = 10000;
+        int n = maxValue, start, aim ;
+        int k = maxValue;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            start = (int) Math.random() * maxValue;
+            aim = (int) Math.random() * maxValue;
+            int ans1 = ways1(n, start, aim, k);
+            int ans2 = ways2(n, start, aim, k);
+            int ans3 = ways3(n, start, aim, k);
+            if (ans1 != ans2 || ans1 != ans3) {
+                System.out.println("robot walk failed");
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
+    }
+
+    // 递归
+    public static int ways1(int n, int start, int aim, int k) {
         if (n < 2 || start < 1 || start > n || aim < 1 || aim > n || k < 1) {
             return -1;
         }
@@ -20,11 +43,11 @@ public class RobotWalk {
     }
 
     /**
-     * @param cur  机器人当前的位置
-     * @param rest 机器人还有rest步需要走
-     * @param aim  最终目标
-     * @param n    有哪些位置？1-N
-     * @return 机器人从cur出发走过rest步之后最终停在aim的方法数
+     * @param cur   机器人当前的位置
+     * @param rest  机器人还有rest步需要走
+     * @param aim   最终目标
+     * @param n     有哪些位置？1-N
+     * @return      机器人从cur出发走过rest步之后最终停在aim的方法数
      */
     private static int process1(int cur, int rest, int aim, int n) {
         // 递归终止条件
@@ -39,10 +62,12 @@ public class RobotWalk {
         if (cur == n) {
             return process1(n - 1, rest - 1, aim, n);
         }
+        // (cur, rest)
         return process1(cur - 1, rest - 1, aim, n) + process1(cur + 1, rest - 1, aim, n);
     }
 
-    private static int ways2(int n, int start, int aim, int k) {
+    // 用dp数组作为缓存
+    public static int ways2(int n, int start, int aim, int k) {
         if (n < 2 || start < 1 || start > n || aim < 1 || aim > n || k < 1) {
             return -1;
         }
@@ -82,8 +107,8 @@ public class RobotWalk {
         return ans;
     }
 
-    // 根据递归画出图形，拿到状态转移方程
-    private static int ways3(int n, int start, int aim, int k) {
+    // 动态规划
+    public static int ways3(int n, int start, int aim, int k) {
         if (n < 2 || start < 1 || start > n || aim < 1 || aim > n || k < 1) {
             return -1;
         }
@@ -97,11 +122,5 @@ public class RobotWalk {
             dp[n][rest] = dp[n - 1][rest - 1];
         }
         return dp[start][k];
-    }
-
-    public static void main(String[] args) {
-        System.out.println(ways1(5, 2, 4, 6));
-        System.out.println(ways2(5, 2, 4, 6));
-        System.out.println(ways3(5, 2, 4, 6));
     }
 }

@@ -1,5 +1,7 @@
 package com.serendipity.algo12dynamicprogramming.recursion2;
 
+import com.serendipity.common.CommonUtil;
+
 /**
  * @author jack
  * @version 1.0
@@ -8,19 +10,37 @@ package com.serendipity.algo12dynamicprogramming.recursion2;
  */
 public class Knapsack {
 
+    public static void main(String[] args) {
+        int maxSize = 20;
+        int maxValue = 50;
+        int testTimes = 10000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            int[] weights = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            int[] values = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            int bag = (int) Math.random() * 2000;
+            if (maxValue(weights, values, bag) != dp(weights, values, bag)) {
+                System.out.println("knapsack failed");
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
+    }
+
     /**
      * 为了方便没有负数，负数也是可以满足的
      *
-     * @param w 重量数组
-     * @param v 价值数组
-     * @param bag 背包容量，不能超过这个载重
-     * @return 不超重的情况下，能够得到的最大价值
+     * @param w     重量数组
+     * @param v     价值数组
+     * @param bag   背包容量，不能超过这个载重
+     * @return      不超重的情况下，能够得到的最大价值
      */
-    private static int maxValue(int[] w, int[] v, int bag) {
+    public static int maxValue(int[] w, int[] v, int bag) {
         if (w == null || v == null || w.length != v.length || w.length == 0) {
             return 0;
         }
-        // 尝试函数！
+        // 尝试函数
         return process(w, v, 0, bag);
     }
 
@@ -43,7 +63,7 @@ public class Knapsack {
         return Math.max(p1, p2);
     }
 
-    private static int dp(int[] w, int[] v, int bag) {
+    public static int dp(int[] w, int[] v, int bag) {
         if (w == null || v == null || w.length != v.length || w.length == 0) {
             return 0;
         }
@@ -62,13 +82,4 @@ public class Knapsack {
         }
         return dp[0][bag];
     }
-
-    public static void main(String[] args) {
-        int[] weights = { 3, 2, 4, 7, 3, 1, 7 };
-        int[] values = { 5, 6, 3, 19, 12, 4, 2 };
-        int bag = 15;
-        System.out.println(maxValue(weights, values, bag));
-        System.out.println(dp(weights, values, bag));
-    }
-
 }
