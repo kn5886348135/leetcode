@@ -1,4 +1,4 @@
-package com.serendipity.algo11dynamicprogramming;
+package com.serendipity.algo12dynamicprogramming.recursion2;
 
 import java.util.HashMap;
 
@@ -7,15 +7,12 @@ import java.util.HashMap;
  * @version 1.0
  * @description LeetCode691
  *              给定一个字符串str，给定一个字符串类型的数组arr，出现的字符都是小写英文。arr每一个字符串，代表一张
- * 贴纸，你可以把单个字符剪开使用，目的是拼出str来。返回需要至少多少张贴纸可以完成这个任务。
+ *              贴纸，你可以把单个字符剪开使用，目的是拼出str来。返回需要至少多少张贴纸可以完成这个任务。
  *
- * We are given n different types of stickers. Each sticker has a lowercase English word on it.
- *
- * You would like to spell out the given string target by cutting individual letters from your collection of stickers
- * and rearranging them. You can use each sticker more than once if you want, and you have infinite quantities of
- * each sticker.
- *
- * Return the minimum number of stickers that you need to spell out target. If the task is impossible, return -1.
+ *              我们有 n 种不同的贴纸。每个贴纸上都有一个小写的英文单词。
+ *              您想要拼写出给定的字符串 target ，方法是从收集的贴纸中切割单个字母并重新排列它们。如果你愿意，你可以多次使用每个贴纸，每个贴纸的数量是无限的。
+ *              返回你需要拼出 target 的最小贴纸数量。如果任务不可能，则返回 -1 。
+ *              注意：在所有的测试用例中，所有的单词都是从 1000 个最常见的美国英语单词中随机选择的，并且 target 被选择为两个随机单词的连接。
  * @date 2022/12/22/10:06
  */
 public class LeetCode691 {
