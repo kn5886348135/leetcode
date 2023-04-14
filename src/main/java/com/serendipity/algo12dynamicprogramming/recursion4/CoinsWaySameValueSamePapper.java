@@ -1,4 +1,4 @@
-package com.serendipity.algo11dynamicprogramming.recursion1.coins;
+package com.serendipity.algo12dynamicprogramming.recursion4;
 
 import java.util.HashMap;
 import java.util.Map;
