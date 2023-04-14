@@ -1,6 +1,5 @@
-package com.serendipity.algo11dynamicprogramming.recursion1;
+package com.serendipity.algo11recursion;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -73,10 +72,5 @@ public class ReverseStackUsingRecursive {
             queue.add((int) Math.random() * maxValue + 1 - (int) Math.random() * maxValue + 1);
         }
         return queue;
-    }
-
-    public static void verifyReverse(Stack<Integer> stack) {
-        reverse(stack);
-        reverse(stack);
     }
 }

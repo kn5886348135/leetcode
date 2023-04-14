@@ -1,4 +1,4 @@
-package com.serendipity.algo11dynamicprogramming.recursion1;
+package com.serendipity.algo11recursion;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
