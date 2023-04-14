@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  */
 public class PrintAllSubsquences {
 
+    // 字符串的全部子序列，非连续
     public static List<String> subs(String str) {
         char[] chs = str.toCharArray();
         String path = "";
@@ -30,13 +31,14 @@ public class PrintAllSubsquences {
             result.add(path);
             return;
         }
-        // 两个分支，是否拼接index字符
+        // 没有要index位置的字符
         process1(chs, index + 1, result, path);
+        // 要了index位置的字符
         process1(chs, index + 1, result, path + chs[index]);
     }
 
-    // set去重
-    private static List<String> subsNoRepeat(String str) {
+    // 字符串的非连续全部子序列，set去重
+    public static List<String> subsNoRepeat(String str) {
         char[] chs = str.toCharArray();
         String path = "";
         Set<String> set = new HashSet<>();

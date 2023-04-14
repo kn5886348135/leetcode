@@ -107,6 +107,7 @@ public class PrintAllPermutations {
     }
 
     public static void main(String[] args) {
+        // TODO 对数器
         String test = "acc";
         List<String> result1 = permutation1(test);
         String str1 = result1.stream().collect(Collectors.joining(""));
