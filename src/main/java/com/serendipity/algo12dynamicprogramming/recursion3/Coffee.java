@@ -1,5 +1,7 @@
 package com.serendipity.algo12dynamicprogramming.recursion3;
 
+import com.serendipity.common.CommonUtil;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -160,28 +162,13 @@ public class Coffee {
         return dp[0][0];
     }
 
-    public static int[] randomArray(int len, int max) {
-        int[] arr = new int[len];
-        for (int i = 0; i < len; i++) {
-            arr[i] = (int) (Math.random() * max) + 1;
-        }
-        return arr;
-    }
-
-    public static void printArray(int[] arr) {
-        System.out.print("arr : ");
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + ", ");
-        }
-        System.out.println();
-    }
-
     public static void main(String[] args) {
-        int len = 10;
-        int max = 10;
+        int maxSize = 10;
+        int maxValue = 10;
         int testTime = 10;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int[] arr = randomArray(len, max);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
             int n = (int) (Math.random() * 7) + 1;
             int a = (int) (Math.random() * 7) + 1;
             int b = (int) (Math.random() * 10) + 1;
@@ -189,15 +176,16 @@ public class Coffee {
             int ans2 = minTime1(arr, n, a, b);
             int ans3 = minTime2(arr, n, a, b);
             if (ans1 != ans2 || ans2 != ans3) {
-                printArray(arr);
+                CommonUtil.printArray(arr);
                 System.out.println("n " + n);
                 System.out.println("a " + a);
                 System.out.println("b " + b);
                 System.out.println(ans1 + " , " + ans2 + " , " + ans3);
                 System.out.println("===============");
+                success = false;
                 break;
             }
         }
-        System.out.println("success");
+        System.out.println(success ? "success" : "failed");
     }
 }

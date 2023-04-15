@@ -4,7 +4,9 @@ package com.serendipity.algo12dynamicprogramming.recursion3;
  * @author jack
  * @version 1.0
  * @description 最长回文子序列的长度
- *              LeetCode516
+ *              给你一个字符串 s ，找出其中最长的回文子序列，并返回该序列的长度。
+ *              子序列定义为：不改变剩余字符顺序的情况下，删除某些字符或者不删除任何字符形成的一个序列。
+ *              https://leetcode.cn/problems/longest-palindromic-subsequence/
  * @date 2022/12/24/9:49
  */
 public class LeetCode516 {
@@ -15,10 +17,10 @@ public class LeetCode516 {
             return 0;
         }
         char[] chs = str.toCharArray();
-        return func1(chs, 0, str.length() - 1);
+        return func1(chs, 0, chs.length - 1);
     }
 
-    // str[left...right]最长回文子序列长度
+    // str[L..R]最长回文子序列长度返回
     public static int func1(char[] chs, int left, int right) {
         if (left == right) {
             return 1;
@@ -75,10 +77,10 @@ public class LeetCode516 {
     }
 
     public static char[] reverse(char[] str) {
-        int N = str.length;
+        int length = str.length;
         char[] reverse = new char[str.length];
         for (int i = 0; i < str.length; i++) {
-            reverse[--N] = str[i];
+            reverse[--length] = str[i];
         }
         return reverse;
     }

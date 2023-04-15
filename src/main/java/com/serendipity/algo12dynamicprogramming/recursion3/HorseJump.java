@@ -12,7 +12,7 @@ public class HorseJump {
     // 还剩下rest步需要跳
     // 跳完rest步，正好跳到a，b的方法数是多少？
     // 10 * 9
-    public static int jump1(int a, int b, int k) {
+    public static int jump(int a, int b, int k) {
         return process(0, 0, k, a, b);
     }
 
@@ -110,6 +110,6 @@ public class HorseJump {
         System.out.println(ways(x, y, step));
         System.out.println(dp(x, y, step));
 
-        System.out.println(jump1(x, y, step));
+        System.out.println(jump(x, y, step));
     }
 }

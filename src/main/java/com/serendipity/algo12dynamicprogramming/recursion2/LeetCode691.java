@@ -13,6 +13,7 @@ import java.util.HashMap;
  *              您想要拼写出给定的字符串 target ，方法是从收集的贴纸中切割单个字母并重新排列它们。如果你愿意，你可以多次使用每个贴纸，每个贴纸的数量是无限的。
  *              返回你需要拼出 target 的最小贴纸数量。如果任务不可能，则返回 -1 。
  *              注意：在所有的测试用例中，所有的单词都是从 1000 个最常见的美国英语单词中随机选择的，并且 target 被选择为两个随机单词的连接。
+ *              https://leetcode.com/problems/stickers-to-spell-word
  * @date 2022/12/22/10:06
  */
 public class LeetCode691 {
@@ -63,6 +64,7 @@ public class LeetCode691 {
 
     public static int minStickers2(String[] stickers, String target) {
         int length = stickers.length;
+        // 关键优化
         // 用词频代替贴纸数组，不关心字符的顺序
         int[][] counts = new int[length][26];
         for (int i = 0; i < length; i++) {
