@@ -1,4 +1,4 @@
-package com.example.newcoder.newcoder;
+package com.serendipity.newcoder;
 
 public class NC149 {
     public static void main(String[] args) {

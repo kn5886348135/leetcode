@@ -1,4 +1,4 @@
-package com.example.newcoder.newcoder;
+package com.serendipity.newcoder;
 
 import java.util.HashMap;
 import java.util.Map;

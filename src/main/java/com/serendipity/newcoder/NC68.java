@@ -1,4 +1,4 @@
-package com.example.newcoder.newcoder;
+package com.serendipity.newcoder;
 
 public class NC68 {
 
