@@ -13,6 +13,7 @@ package com.serendipity.algo12dynamicprogramming.recursion4;
  * @date 2023/03/13/14:08
  */
 public class CoinsWayEveryPaperDifferent {
+
     public static void main(String[] args) {
         int maxLen = 20;
         int maxValue = 30;
@@ -23,7 +24,6 @@ public class CoinsWayEveryPaperDifferent {
             int ans1 = coinsWay(arr, aim);
             int ans2 = dp(arr, aim);
             if (ans1 != ans2) {
-                System.out.println("Oops!");
                 printArr(arr);
                 System.out.println(aim);
                 System.out.println(ans1);
@@ -42,7 +42,7 @@ public class CoinsWayEveryPaperDifferent {
         return process(arr, 0, aim);
     }
 
-    // 递归获取组成方法
+    // arr[index....] 组成正好rest这么多的钱，有几种方法
     public static int process(int[] arr, int index, int rest) {
         // 边界条件
         if (rest < 0) {

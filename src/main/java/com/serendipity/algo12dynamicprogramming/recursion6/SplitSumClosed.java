@@ -49,8 +49,10 @@ public class SplitSumClosed {
         if (index == arr.length) {
             return 0;
         }
-        // 不取index位置
+        // 还有数，arr[i]这个数
+        // 可能性1，不使用arr[i]
         int ans1 = process(arr, index + 1, rest);
+        // 可能性2，要使用arr[i]
         int ans2 = 0;
         // 取index位置不超过sum/2
         if (arr[index] <= rest) {
@@ -75,7 +77,9 @@ public class SplitSumClosed {
         int[][] dp = new int[len + 1][sum + 1];
         for (int i = len - 1; i >= 0; i--) {
             for (int rest = 0; rest <= sum; rest++) {
+                // 可能性1，不使用arr[i]
                 int ans1 = dp[i + 1][rest];
+                // 可能性2，要使用arr[i]
                 int ans2 = 0;
                 if (arr[i] <= rest) {
                     ans2 = arr[i] + dp[i + 1][rest - arr[i]];

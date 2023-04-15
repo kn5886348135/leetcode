@@ -19,6 +19,7 @@ public class SplitNumber {
         System.out.println(dp2(test));
     }
 
+    // n为正数
     public static int ways(int n) {
         // 等于0没法裂开
         if (n <= 0) {
@@ -30,6 +31,9 @@ public class SplitNumber {
         return process(1, n);
     }
 
+    // 上一个拆出来的数是pre
+    // 还剩rest需要去拆
+    // 返回拆解的方法数
     public static int process(int pre, int rest) {
         if (rest == 0) {
             return 1;

@@ -100,7 +100,6 @@ public class NQueens {
             pos = pos - mostRightOne;
             ans += process2(limit, colLim | mostRightOne, (leftDiaLim | mostRightOne) << 1,
                     (rightDiaLim | mostRightOne) >>> 1);
-
         }
         return ans;
     }

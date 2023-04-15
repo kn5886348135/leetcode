@@ -9,6 +9,7 @@ package com.serendipity.algo12dynamicprogramming.recursion4;
  * @date 2023/03/13/13:57
  */
 public class MinPathSum {
+
     public static void main(String[] args) {
         int row = 10;
         int col = 10;
@@ -92,5 +93,4 @@ public class MinPathSum {
             System.out.println();
         }
     }
-
 }

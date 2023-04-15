@@ -12,6 +12,7 @@ package com.serendipity.algo12dynamicprogramming.recursion4;
  * @date 2023/03/13/15:07
  */
 public class CoinsWayNoLimit {
+
     public static void main(String[] args) {
         int maxLen = 10;
         int maxValue = 30;
