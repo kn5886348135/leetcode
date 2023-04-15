@@ -5,53 +5,37 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
- * 最大线段重合问题
- * 给定很多线段，每个线段都有两个数[start, end]，
- * 表示线段开始位置和结束位置，左右都是闭区间
- * 规定：
- * 1）线段的开始和结束位置一定都是整数值
- * 2）线段重合区域的长度必须>=1
- * 返回线段最多重合区域中，包含了几条线段
+ * @author jack
+ * @version 1.0
+ * @description 最大线段重合问题
+ *              给定很多线段，每个线段都有两个数[start, end]，
+ *              表示线段开始位置和结束位置，左右都是闭区间
+ *              规定：
+ *              1）线段的开始和结束位置一定都是整数值
+ *              2）线段重合区域的长度必须>=1
+ *              返回线段最多重合区域中，包含了几条线段
  *
- * 用最少数量的箭引爆气球
- * 有一些球形气球贴在一堵用 XY 平面表示的墙面上。墙面上的气球记录在整数数组 points ，其中points[i] = [xstart, xend] 表示水平直径在 xstart 和 xend之间的气球。你不知道气球的确切 y
- * 坐标。
- * 一支弓箭可以沿着 x 轴从不同点 完全垂直 地射出。在坐标 x 处射出一支箭，若有一个气球的直径的开始和结束坐标为 xstart，xend， 且满足  xstart ≤ x ≤ xend，则该气球会被 引爆
- * 。可以射出的弓箭的数量 没有限制 。 弓箭一旦被射出之后，可以无限地前进。
- * 给你一个数组 points ，返回引爆所有气球所必须射出的 最小 弓箭数 。
+ *              用最少数量的箭引爆气球
+ *              有一些球形气球贴在一堵用 XY 平面表示的墙面上。墙面上的气球记录在整数数组 points ，
+ *              其中points[i] = [xstart, xend] 表示水平直径在 xstart 和 xend之间的气球。你不知道气球的确切 y坐标。
+ *              一支弓箭可以沿着 x 轴从不同点 完全垂直 地射出。在坐标 x 处射出一支箭，若有一个气球的直径的开始和结束坐标
+ *              为 xstart，xend， 且满足  xstart ≤ x ≤ xend，则该气球会被引爆。可以射出的弓箭的数量 没有限制 。
+ *              弓箭一旦被射出之后，可以无限地前进。
+ *              给你一个数组 points ，返回引爆所有气球所必须射出的 最小 弓箭数 。
+ * @date 2023/04/15/17:39
  */
 public class LeetCode452 {
+
     public static void main(String[] args) {
-        Line line1 = new Line(4, 415);
-        Line line2 = new Line(54, 564);
-        Line line3 = new Line(42, 23);
-        Line line4 = new Line(457, 8);
-        Line line5 = new Line(12, 54);
-        Line line6 = new Line(8, 923);
-        Line line7 = new Line(6, 59);
-        PriorityQueue<Line> heap = new PriorityQueue<>(Comparator.comparingInt(obj -> obj.start));
-
-        heap.add(line1);
-        heap.add(line2);
-        heap.add(line3);
-        heap.add(line4);
-        heap.add(line5);
-        heap.add(line6);
-        heap.add(line7);
-
-        while (!heap.isEmpty()) {
-            System.out.println(heap.poll());
-        }
-
         int num = 100;
         int left = 3;
         int right = 500;
         int testCount = 200000;
         for (int i = 0; i < testCount; i++) {
             int[][] lines = generateLines(num, left, right);
-            int ans1 = MaximumLineSegmentCoincidence1(lines);
-            int ans2 = MaximumLineSegmentCoincidence2(lines);
-            int ans3 = MaximumLineSegmentCoincidence3(lines);
+            int ans1 = maxCover1(lines);
+            int ans2 = maxCover2(lines);
+            int ans3 = maxCover3(lines);
             if (ans1 != ans2 || ans1 != ans3) {
                 System.out.println("test failed " + ans1 + " " + ans2 + " " + ans3);
                 for (int j = 0; j < lines.length; j++) {
@@ -63,11 +47,11 @@ public class LeetCode452 {
         System.out.println("test end");
     }
 
+    // 对数器
     // 重合的区域最小，长度为1，则重合的线段数量最多
     // 找到所有线段的上下限，两层遍历取最大值
     // 时间复杂度O(N^2)不被采纳
-    @Deprecated
-    private static int MaximumLineSegmentCoincidence1(int[][] lines){
+    private static int maxCover1(int[][] lines){
         int max = Integer.MIN_VALUE;
         int min = Integer.MAX_VALUE;
         for (int i = 0; i < lines.length; i++) {
@@ -90,7 +74,7 @@ public class LeetCode452 {
     // 1、将所有线段按照start排序
     // 2、构造堆，保存当前重合所有重合线段的end, heap的size就是当前重合线段的数量
     // 3、遍历所有线段，如果出现不重合线段则弹出不重合的线段，如果重合则加入end
-    public static int MaximumLineSegmentCoincidence2(int[][] lines){
+    public static int maxCover2(int[][] lines){
         Line[] lineList = new Line[lines.length];
         for (int i = 0; i < lines.length; i++) {
             lineList[i] = new Line(lines[i][0], lines[i][1]);
@@ -112,7 +96,7 @@ public class LeetCode452 {
     }
 
     // 使用jdk的比较器
-    private static int MaximumLineSegmentCoincidence3(int[][] lines) {
+    private static int maxCover3(int[][] lines) {
         Arrays.sort(lines, Comparator.comparingInt(obj -> obj[0]));
 
         PriorityQueue<Integer> queue = new PriorityQueue<>();
@@ -134,14 +118,6 @@ public class LeetCode452 {
         public Line(int start, int end) {
             this.start = start;
             this.end = end;
-        }
-
-        @Override
-        public String toString() {
-            return "Line{" +
-                    "start=" + start +
-                    ", end=" + end +
-                    '}';
         }
     }
 
