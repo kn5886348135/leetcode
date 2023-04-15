@@ -81,26 +81,27 @@ public class LeetCode2 {
         Node<Integer> shortList = longList == head1 ? head2 : head1;
         Node<Integer> cur1 = longList;
         Node<Integer> cur2 = shortList;
-        Node<Integer> last = longList;
+        Node<Integer> last = cur1;
 
         int sum = 0;
+        int curNum = 0;
         while (cur2 != null) {
-            sum = cur1.value + cur2.value + sum;
-            cur1.value = sum % 10;
-            sum = sum / 10;
+            curNum = cur1.value + cur2.value + sum;
+            cur1.value = curNum % 10;
+            sum = curNum / 10;
             last = cur1;
             cur1 = cur1.next;
             cur2 = cur2.next;
         }
         while (cur1 != null) {
-            sum = cur1.value + sum;
-            cur1.value = sum % 10;
-            sum = sum / 10;
+            curNum = cur1.value + sum;
+            cur1.value = curNum % 10;
+            sum = curNum / 10;
             last = cur1;
             cur1 = cur1.next;
         }
         if (sum != 0) {
-            last.next = new Node<>(sum);
+            last.next = new Node<>(1);
         }
         return longList;
     }

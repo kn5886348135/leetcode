@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * @author jack
  * @version 1.0
  * @description 判断一棵树是否为搜索二叉树
+ *              LeetCode98
  * @date 2022/12/21/19:53
  */
 public class IsBST {
