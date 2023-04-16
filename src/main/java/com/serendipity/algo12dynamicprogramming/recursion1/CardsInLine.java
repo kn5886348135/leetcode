@@ -31,6 +31,7 @@ public class CardsInLine {
         System.out.println(success ? "success" : "failed");
     }
 
+    // 对数器 递归
     // 根据规则，返回获胜者的分数
     private static int win1(int[] arr) {
         if (arr == null || arr.length == 0) {
@@ -48,8 +49,12 @@ public class CardsInLine {
         if (left == right) {
             return arr[left];
         }
+        // A拿到left或者right
+        // B拿到left+1或者right-1
+        // A拿到left+2或者right-2
         int p1 = arr[left] + gote1(arr, left + 1, right);
         int p2 = arr[right] + gote1(arr, left, right - 1);
+        // 最大值
         return Math.max(p1, p2);
     }
 
@@ -63,9 +68,11 @@ public class CardsInLine {
         int p1 = sente1(arr, left + 1, right);
         // 对手拿走了right位置的数
         int p2 = sente1(arr, left, right - 1);
+        // 先手拿到的是最大值，后手拿到的就是最小值
         return Math.min(p1, p2);
     }
 
+    // 二维数组senteMap[left][right]记录先手在left、right位置的最高得分
     public static int win2(int[] arr) {
         if (arr == null || arr.length == 0) {
             return 0;
@@ -87,6 +94,7 @@ public class CardsInLine {
     // arr[left...right]，先手获得的最好分数返回
     // sente    先手
     private static int sente2(int[] arr, int left, int right, int[][] senteMap, int[][] goteMap) {
+        // 缓存
         if (senteMap[left][right] != -1) {
             return senteMap[left][right];
         }
@@ -120,6 +128,7 @@ public class CardsInLine {
         return ans;
     }
 
+    // left...right范围先手、后手的得分
     public static int win3(int[] arr) {
         if (arr == null || arr.length == 0) {
             return 0;
@@ -131,6 +140,7 @@ public class CardsInLine {
             senteMap[i][i] = arr[i];
         }
 
+        // right > left，只有二维数组的上半部分有值
         for (int startcol = 1; startcol < length; startcol++) {
             int left = 0;
             int right = startcol;

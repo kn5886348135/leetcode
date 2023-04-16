@@ -3,7 +3,7 @@ package com.serendipity.algo12dynamicprogramming.recursion1;
 /**
  * @author jack
  * @version 1.0
- * @description 假设有排成一行的N个位置，记为1~N，N 一定大于或等于2。开始时机器人在其中的M位置上(M一定是 1~N 中的一个)，如果
+ * @description 假设有排成一行的N个位置，记为1~N，N一定大于或等于2。开始时机器人在其中的M位置上(M一定是 1~N 中的一个)，如果
  *              机器人来到1位置，那么下一步只能往右来到2位置；如果机器人来到N位置，那么下一步只能往左来到 N-1 位置；如果机器人
  *              来到中间位置，那么下一步可以往左走或者往右走；规定机器人必须走 K 步，最终能来到P位置(P也是1~N中的一个)的方法有
  *              多少种？
@@ -15,7 +15,7 @@ public class RobotWalk {
     public static void main(String[] args) {
         int maxSize = 500;
         int maxValue = 500;
-        int testTimes = 10000;
+        int testTimes = 50000;
         int n = maxValue, start, aim ;
         int k = maxValue;
         boolean success = true;
@@ -79,14 +79,11 @@ public class RobotWalk {
             }
         }
         // dp就是缓存表
-        // dp[cur][rest] == -1 -> process1(cur, rest)之前没算过！
-        // dp[cur][rest] != -1 -> process1(cur, rest)之前算过！返回值，dp[cur][rest]
-        // N+1 * K+1
         return process2(start, k, aim, n, dp);
     }
 
-    // cur 范: 1 ~ N
-    // rest 范：0 ~ K
+    // cur 1 ~ N
+    // rest 0 ~ K
     private static int process2(int cur, int rest, int aim, int n, int[][] dp) {
         if (dp[cur][rest] != -1) {
             return dp[cur][rest];
@@ -112,13 +109,18 @@ public class RobotWalk {
         if (n < 2 || start < 1 || start > n || aim < 1 || aim > n || k < 1) {
             return -1;
         }
+        // dp[i][j]表示从i出发走j步到达aim的方法
         int[][] dp = new int[n + 1][k + 1];
+        // 走到aim还剩下0步
         dp[aim][0] = 1;
         for (int rest = 1; rest <= k; rest++) {
+            // 第一行的边界
             dp[1][rest] = dp[2][rest - 1];
             for (int cur = 2; cur < n; cur++) {
+                // 根据递归拿到状态转移方程
                 dp[cur][rest] = dp[cur - 1][rest - 1] + dp[cur + 1][rest - 1];
             }
+            // 最后一行的边界
             dp[n][rest] = dp[n - 1][rest - 1];
         }
         return dp[start][k];
