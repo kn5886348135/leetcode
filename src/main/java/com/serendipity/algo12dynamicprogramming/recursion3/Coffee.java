@@ -2,6 +2,7 @@ package com.serendipity.algo12dynamicprogramming.recursion3;
 
 import com.serendipity.common.CommonUtil;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -9,8 +10,7 @@ import java.util.PriorityQueue;
 /**
  * @author jack
  * @version 1.0
- * @description  题目
- *               数组arr代表每一个咖啡机冲一杯咖啡的时间，每个咖啡机只能串行的制造咖啡。
+ * @description  数组arr代表每一个咖啡机冲一杯咖啡的时间，每个咖啡机只能串行的制造咖啡。
  *               现在有n个人需要喝咖啡，只能用咖啡机来制造咖啡。
  *               认为每个人喝咖啡的时间非常短，冲好的时间即是喝完的时间。
  *               每个人喝完之后咖啡杯可以选择洗或者自然挥发干净，只有一台洗咖啡杯的机器，只能串行的洗咖啡杯。
@@ -21,10 +21,33 @@ import java.util.PriorityQueue;
  */
 public class Coffee {
 
-    // 验证的方法
-    // 彻底的暴力
-    // 很慢但是绝对正确
-    public static int right(int[] arr, int n, int a, int b) {
+    public static void main(String[] args) {
+        int maxSize = 10;
+        int maxValue = 10;
+        int testTime = 10;
+        boolean success = true;
+        for (int i = 0; i < testTime; i++) {
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            int n = (int) (Math.random() * 7) + 1;
+            int a = (int) (Math.random() * 7) + 1;
+            int b = (int) (Math.random() * 10) + 1;
+            int ans1 = verifyMinTime(arr, n, a, b);
+            int ans2 = minTime1(arr, n, a, b);
+            int ans3 = minTime2(arr, n, a, b);
+            if (ans1 != ans2 || ans2 != ans3) {
+                CommonUtil.printArray(arr);
+                System.out.println(MessageFormat.format("n {0}, a {1}, b {2}, ans1 {3}, ans2 {4}, ans3 {5}",
+                        new String[]{String.valueOf(n), String.valueOf(a), String.valueOf(b), String.valueOf(ans1),
+                                String.valueOf(ans2), String.valueOf(ans3)}));
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
+    }
+
+    // 暴力递归
+    public static int verifyMinTime(int[] arr, int n, int a, int b) {
         int[] times = new int[arr.length];
         int[] drink = new int[n];
         return forceMake(arr, times, 0, drink, n, a, b);
@@ -75,17 +98,9 @@ public class Coffee {
         }
     }
 
-    public static class MachineComparator implements Comparator<Machine> {
-
-        @Override
-        public int compare(Machine o1, Machine o2) {
-            return (o1.timePoint + o1.workTime) - (o2.timePoint + o2.workTime);
-        }
-    }
-
     // 优良一点的暴力尝试的方法
     public static int minTime1(int[] arr, int n, int a, int b) {
-        PriorityQueue<Machine> heap = new PriorityQueue<>(new MachineComparator());
+        PriorityQueue<Machine> heap = new PriorityQueue<>(Comparator.comparingInt(o -> (o.timePoint + o.workTime)));
         for (int i = 0; i < arr.length; i++) {
             heap.add(new Machine(0, arr[i]));
         }
@@ -122,7 +137,7 @@ public class Coffee {
 
     // 贪心+优良尝试改成动态规划
     public static int minTime2(int[] arr, int n, int a, int b) {
-        PriorityQueue<Machine> heap = new PriorityQueue<>(new MachineComparator());
+        PriorityQueue<Machine> heap = new PriorityQueue<>(Comparator.comparingInt(o -> (o.timePoint + o.workTime)));
         for (int i = 0; i < arr.length; i++) {
             heap.add(new Machine(0, arr[i]));
         }
@@ -160,32 +175,5 @@ public class Coffee {
             }
         }
         return dp[0][0];
-    }
-
-    public static void main(String[] args) {
-        int maxSize = 10;
-        int maxValue = 10;
-        int testTime = 10;
-        boolean success = true;
-        for (int i = 0; i < testTime; i++) {
-            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
-            int n = (int) (Math.random() * 7) + 1;
-            int a = (int) (Math.random() * 7) + 1;
-            int b = (int) (Math.random() * 10) + 1;
-            int ans1 = right(arr, n, a, b);
-            int ans2 = minTime1(arr, n, a, b);
-            int ans3 = minTime2(arr, n, a, b);
-            if (ans1 != ans2 || ans2 != ans3) {
-                CommonUtil.printArray(arr);
-                System.out.println("n " + n);
-                System.out.println("a " + a);
-                System.out.println("b " + b);
-                System.out.println(ans1 + " , " + ans2 + " , " + ans3);
-                System.out.println("===============");
-                success = false;
-                break;
-            }
-        }
-        System.out.println(success ? "success" : "failed");
     }
 }

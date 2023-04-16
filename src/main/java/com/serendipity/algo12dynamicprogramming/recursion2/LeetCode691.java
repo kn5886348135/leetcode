@@ -1,6 +1,7 @@
 package com.serendipity.algo12dynamicprogramming.recursion2;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author jack
@@ -18,24 +19,33 @@ import java.util.HashMap;
  */
 public class LeetCode691 {
 
+    public static void main(String[] args) {
+        // TODO 对数器
+    }
+
     public static int minStickers1(String[] stickers, String target) {
+        if (stickers == null || stickers.length == 0 || target == null || target.length() == 0) {
+            return 0;
+        }
         int ans = process1(stickers, target);
         return ans == Integer.MAX_VALUE ? -1 : ans;
     }
 
+    // 暴力递归
     // 所有贴纸stickers，每一张贴纸都有无数张
     public static int process1(String[] stickers, String target) {
-        if (target.length() == 0) {
-            return 0;
-        }
         int min = Integer.MAX_VALUE;
-        for (String first : stickers) {
-            String rest = minus(target, first);
-            // first是有效的，开始递归
+        for (String sticker : stickers) {
+            // 删除sticker中包含target中的字符
+            String rest = minus(target, sticker);
             if (rest.length() != target.length()) {
+                // 地柜完成后拿到最小值
+                // 继续使用stickers，忽略sticker的张数
                 min = Math.min(min, process1(stickers, rest));
             }
         }
+        // min == Integer.MAX_VALUE证明后续处理不能拼接出rest
+        // 否则当前贴纸消耗一张
         return min + (min == Integer.MAX_VALUE ? 0 : 1);
     }
 
@@ -44,15 +54,18 @@ public class LeetCode691 {
         char[] chs1 = target.toCharArray();
         char[] chs2 = str.toCharArray();
         int[] count = new int[26];
+        // 目标字符串的字符统计
         for (char ch : chs1) {
             count[ch - 'a']++;
         }
+        // target 减去 str字符后剩余字符的个数
         for (char ch : chs2) {
             count[ch - 'a']--;
         }
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < 26; i++) {
-            // 拼接剩余的字符，不关心count[i] <= 0的字符
+            // 拼接剩余的字符，不关心顺序，只关心字符的个数
+            // 不关心count[i] <= 0 的字符
             if (count[i] > 0) {
                 for (int j = 0; j < count[i]; j++) {
                     builder.append((char) (i + 'a'));
@@ -62,6 +75,7 @@ public class LeetCode691 {
         return builder.toString();
     }
 
+    // 用词频代替字符串数组
     public static int minStickers2(String[] stickers, String target) {
         int length = stickers.length;
         // 关键优化
@@ -78,10 +92,12 @@ public class LeetCode691 {
     }
 
     // stickers[i] 数组，原来i号贴纸的字符统计
+    // 贪心算法剪枝
     public static int process2(int[][] stickers, String target) {
         if (target.length() == 0) {
             return 0;
         }
+        // 拿到target的词频
         char[] chs = target.toCharArray();
         int[] count = new int[26];
         for (char ch : chs) {
@@ -95,6 +111,7 @@ public class LeetCode691 {
             // 消除target第一个字符的位置不影响最终答案
             // 处理包含第一个字符的贴纸
             // 所有贴纸都不包含target的第一个字符，则无法完成要求
+            // sticker[chs[0]-'a'] == 0表示sticker不包含chs[0]
             if (sticker[chs[0] - 'a'] > 0) {
                 StringBuilder builder = new StringBuilder();
                 for (int j = 0; j < 26; j++) {
@@ -122,15 +139,15 @@ public class LeetCode691 {
                 counts[i][ch - 'a']++;
             }
         }
-        HashMap<String, Integer> dp = new HashMap<>();
+        Map<String, Integer> dp = new HashMap<>();
         dp.put("", 0);
-        int ans = process3(counts, target, dp);
-        return ans == Integer.MAX_VALUE ? -1 : ans;
+        int min = process3(counts, target, dp);
+        return min == Integer.MAX_VALUE ? -1 : min;
     }
 
     // stickers[i] 数组，原来i号贴纸的字符统计
     // target的可能性不确定，无法像int参数可以变成数组，无法写成动态规划的数组
-    public static int process3(int[][] stickers, String target, HashMap<String, Integer> dp) {
+    public static int process3(int[][] stickers, String target, Map<String, Integer> dp) {
         if (dp.containsKey(target)) {
             return dp.get(target);
         }
@@ -165,5 +182,4 @@ public class LeetCode691 {
         dp.put(target, ans);
         return ans;
     }
-
 }

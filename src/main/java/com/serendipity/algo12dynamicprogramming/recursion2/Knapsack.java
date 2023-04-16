@@ -33,53 +33,59 @@ public class Knapsack {
     /**
      * 为了方便没有负数，负数也是可以满足的
      *
-     * @param w     重量数组
-     * @param v     价值数组
+     * @param weights     重量数组
+     * @param values     价值数组
      * @param bag   背包容量，不能超过这个载重
      * @return      不超重的情况下，能够得到的最大价值
      */
-    public static int maxValue(int[] w, int[] v, int bag) {
-        if (w == null || v == null || w.length != v.length || w.length == 0) {
+    public static int maxValue(int[] weights, int[] values, int bag) {
+        if (weights == null || values == null || weights.length != values.length || weights.length == 0) {
             return 0;
         }
-        // 尝试函数
-        return process(w, v, 0, bag);
+        return process(weights, values, 0, bag);
     }
 
-    // index 0~N
-    // rest 负~bag
-    private static int process(int[] w, int[] v, int index, int rest) {
+    // 暴力递归
+    // index不断右移，最大价值作为process的返回值
+    private static int process(int[] weights, int[] values, int index, int rest) {
+        // 递归终止
         if (rest < 0) {
             return -1;
         }
-        if (index == w.length) {
+        if (index == weights.length) {
             return 0;
         }
-
-        int p1 = process(w, v, index + 1, rest);
+        // 不取index位置
+        int p1 = process(weights, values, index + 1, rest);
         int p2 = 0;
-        int next = process(w, v, index + 1, rest - w[index]);
+        // 取index位置
+        int next = process(weights, values, index + 1, rest - weights[index]);
         if (next != -1) {
-            p2 = v[index] + next;
+            p2 = values[index] + next;
         }
+        // 返回最大值
         return Math.max(p1, p2);
     }
 
-    public static int dp(int[] w, int[] v, int bag) {
-        if (w == null || v == null || w.length != v.length || w.length == 0) {
+    // 动态规划
+    public static int dp(int[] weights, int[] values, int bag) {
+        if (weights == null || values == null || weights.length != values.length || weights.length == 0) {
             return 0;
         }
-        int length = w.length;
+        int length = weights.length;
+        // 从下标i开始，重量不超过bag的value最大值
         int[][] dp = new int[length + 1][bag + 1];
-        for (int index = length - 1; index >= 0; index--) {
+        for (int i = length - 1; i >= 0; i--) {
             for (int rest = 0; rest <= bag; rest++) {
-                int p1 = dp[index + 1][rest];
+                // 不获取i位置
+                int p1 = dp[i + 1][rest];
+                // 获取i位置
                 int p2 = 0;
-                int next = rest - w[index] < 0 ? -1 : dp[index + 1][rest - w[index]];
-                if (next != -1) {
-                    p2 = v[index] + next;
+                if (rest - weights[i] >= 0) {
+                    p2 = values[i] + dp[i + 1][rest - weights[i]];
                 }
-                dp[index][rest] = Math.max(p1, p2);
+                // 更新dp数组
+                dp[i][rest] = Math.max(p1, p2);
             }
         }
         return dp[0][bag];
