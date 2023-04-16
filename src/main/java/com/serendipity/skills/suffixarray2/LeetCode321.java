@@ -1,7 +1,5 @@
 package com.serendipity.skills.suffixarray2;
 
-import com.serendipity.skills.suffixarray.DC3;
-
 /**
  * @author jack
  * @version 1.0

@@ -65,11 +65,11 @@ public class LeetCode516 {
                 if (chs[left] == chs[right]) {
                     dp[left][right] = Math.max(dp[left][right], 2 + dp[left + 1][right - 1]);
                 }
-//                int p1 = dp[left + 1][right - 1];
-//                int p2 = dp[left][right - 1];
-//                int p3 = dp[left + 1][right];
-//                int p4 = chs[left] != chs[right] ? 0 : (2 + dp[left + 1][right - 1]);
-//                dp[left][right] = Math.max(Math.max(p1, p2), Math.max(p3, p4));
+                // int p1 = dp[left + 1][right - 1];
+                // int p2 = dp[left][right - 1];
+                // int p3 = dp[left + 1][right];
+                // int p4 = chs[left] != chs[right] ? 0 : (2 + dp[left + 1][right - 1]);
+                // dp[left][right] = Math.max(Math.max(p1, p2), Math.max(p3, p4));
             }
         }
         return dp[0][length - 1];
@@ -126,31 +126,5 @@ public class LeetCode516 {
             }
         }
         return dp[n - 1][m - 1];
-    }
-
-    public static int longestPalindromeSubseq2(String str) {
-        if (str == null || str.length() == 0) {
-            return 0;
-        }
-        if (str.length() == 1) {
-            return 1;
-        }
-        char[] chs = str.toCharArray();
-        int length = chs.length;
-        int[][] dp = new int[length][length];
-        dp[length - 1][length - 1] = 1;
-        for (int i = 0; i < length - 1; i++) {
-            dp[i][i] = 1;
-            dp[i][i + 1] = chs[i] == chs[i + 1] ? 2 : 1;
-        }
-        for (int i = length - 3; i >= 0; i--) {
-            for (int j = i + 2; j < length; j++) {
-                dp[i][j] = Math.max(dp[i][j - 1], dp[i + 1][j]);
-                if (chs[i] == chs[j]) {
-                    dp[i][j] = Math.max(dp[i][j], dp[i + 1][j - 1] + 2);
-                }
-            }
-        }
-        return dp[0][length - 1];
     }
 }
