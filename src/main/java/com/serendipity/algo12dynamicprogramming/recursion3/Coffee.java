@@ -53,8 +53,8 @@ public class Coffee {
         return forceMake(arr, times, 0, drink, n, a, b);
     }
 
-    // 每个人暴力尝试用每一个咖啡机给自己做咖啡
-    public static int forceMake(int[] arr, int[] times, int kth, int[] drink, int n, int a, int b) {
+    // 每个人都会尝试arr.length个咖啡机制作咖啡
+    private static int forceMake(int[] arr, int[] times, int kth, int[] drink, int n, int a, int b) {
         if (kth == n) {
             int[] drinkSorted = Arrays.copyOf(drink, kth);
             Arrays.sort(drinkSorted);
@@ -63,7 +63,9 @@ public class Coffee {
         int time = Integer.MAX_VALUE;
         for (int i = 0; i < arr.length; i++) {
             int work = arr[i];
+            // 第k个人来到第i个咖啡机，time[i] = (k-1)*work
             int pre = times[i];
+            // 第k个人喝完咖啡后的时间
             drink[kth] = pre + work;
             times[i] = pre + work;
             time = Math.min(time, forceMake(arr, times, kth + 1, drink, n, a, b));
@@ -73,7 +75,18 @@ public class Coffee {
         return time;
     }
 
-    public static int forceWash(int[] drinks, int a, int b, int index, int washLine, int time) {
+    /**
+     * 喝完咖啡并洗杯子的时间
+     *
+     * @param drinks    第i个人喝完咖啡后的时间
+     * @param a         机洗时间
+     * @param b         风干时间
+     * @param index     第index个人
+     * @param washLine  洗杯子的时间线
+     * @param time      所有人喝完咖啡并洗完杯子的时间
+     * @return          第index个人喝完咖啡洗完杯子的时间
+     */
+    private static int forceWash(int[] drinks, int a, int b, int index, int washLine, int time) {
         if (index == drinks.length) {
             return time;
         }
@@ -87,7 +100,7 @@ public class Coffee {
         return Math.min(ans1, ans2);
     }
 
-    // 以下为贪心+优良暴力
+    // 辅助类
     public static class Machine {
         public int timePoint;
         public int workTime;
@@ -98,7 +111,7 @@ public class Coffee {
         }
     }
 
-    // 优良一点的暴力尝试的方法
+    // 贪心算法 + 递归
     public static int minTime1(int[] arr, int n, int a, int b) {
         PriorityQueue<Machine> heap = new PriorityQueue<>(Comparator.comparingInt(o -> (o.timePoint + o.workTime)));
         for (int i = 0; i < arr.length; i++) {

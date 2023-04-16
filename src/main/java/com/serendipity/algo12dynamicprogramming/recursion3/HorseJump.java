@@ -3,11 +3,33 @@ package com.serendipity.algo12dynamicprogramming.recursion3;
 /**
  * @author jack
  * @version 1.0
- * @description 象棋，码在左下角，走到指定位置需要k步，一共有几种方法
+ * @description 象棋，马在左下角，走到指定位置需要k步，一共有几种方法
  * @date 2022/12/24/10:23
  */
 public class HorseJump {
 
+    public static void main(String[] args) {
+        int testTimes = 1;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            int x = (int) Math.random() * 9;
+            int y = (int) Math.random() * 10;
+            int step = (int) Math.random() * 10;
+            while (step < 5) {
+                step = (int) Math.random() * 10;
+            }
+            int ans1 = dp(x, y, step);
+            int ans2 = jump(x, y, step);
+            if (ans1 != ans2) {
+                System.out.println("jump failed");
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
+    }
+
+    // 递归 对数器
     // 当前来到的位置是（x,y）
     // 还剩下rest步需要跳
     // 跳完rest步，正好跳到a，b的方法数是多少？
@@ -34,6 +56,7 @@ public class HorseJump {
         return ways;
     }
 
+    // 动态规划
     public static int dp(int a, int b, int k) {
         int[][][] dp = new int[10][9][k + 1];
         dp[a][b][0] = 1;
@@ -55,61 +78,11 @@ public class HorseJump {
         return dp[0][0][k];
     }
 
-    public static int pick(int[][][] dp, int x, int y, int rest) {
-        if (x < 0 || x > 9 || y < 0 || y > 8) {
-            return 0;
-        }
-        return dp[x][y][rest];
-    }
-
-    public static int ways(int a, int b, int step) {
-        return f(0, 0, step, a, b);
-    }
-
-    public static int f(int i, int j, int step, int a, int b) {
-        if (i < 0 || i > 9 || j < 0 || j > 8) {
-            return 0;
-        }
-        if (step == 0) {
-            return (i == a && j == b) ? 1 : 0;
-        }
-        return f(i - 2, j + 1, step - 1, a, b) + f(i - 1, j + 2, step - 1, a, b) + f(i + 1, j + 2, step - 1, a, b)
-                + f(i + 2, j + 1, step - 1, a, b) + f(i + 2, j - 1, step - 1, a, b) + f(i + 1, j - 2, step - 1, a, b)
-                + f(i - 1, j - 2, step - 1, a, b) + f(i - 2, j - 1, step - 1, a, b);
-
-    }
-
-    public static int waysdp(int a, int b, int s) {
-        int[][][] dp = new int[10][9][s + 1];
-        dp[a][b][0] = 1;
-        for (int step = 1; step <= s; step++) { // 按层来
-            for (int i = 0; i < 10; i++) {
-                for (int j = 0; j < 9; j++) {
-                    dp[i][j][step] = getValue(dp, i - 2, j + 1, step - 1) + getValue(dp, i - 1, j + 2, step - 1)
-                            + getValue(dp, i + 1, j + 2, step - 1) + getValue(dp, i + 2, j + 1, step - 1)
-                            + getValue(dp, i + 2, j - 1, step - 1) + getValue(dp, i + 1, j - 2, step - 1)
-                            + getValue(dp, i - 1, j - 2, step - 1) + getValue(dp, i - 2, j - 1, step - 1);
-                }
-            }
-        }
-        return dp[0][0][s];
-    }
-
     // 在dp表中，得到dp[i][j][step]的值，但如果(i，j)位置越界的话，返回0；
-    public static int getValue(int[][][] dp, int i, int j, int step) {
+    public static int pick(int[][][] dp, int i, int j, int step) {
         if (i < 0 || i > 9 || j < 0 || j > 8) {
             return 0;
         }
         return dp[i][j][step];
-    }
-
-    public static void main(String[] args) {
-        int x = 7;
-        int y = 7;
-        int step = 10;
-        System.out.println(ways(x, y, step));
-        System.out.println(dp(x, y, step));
-
-        System.out.println(jump(x, y, step));
     }
 }
