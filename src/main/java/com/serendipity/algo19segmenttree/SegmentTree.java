@@ -1,4 +1,4 @@
-package com.serendipity.segmenttree;
+package com.serendipity.algo19segmenttree;
 
 /**
  * @author jack

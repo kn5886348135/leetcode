@@ -1,4 +1,4 @@
-package com.serendipity.bfprt;
+package com.serendipity.algo17bfprt;
 
 /**
  * @author jack

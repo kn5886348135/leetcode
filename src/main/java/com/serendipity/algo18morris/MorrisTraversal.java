@@ -1,4 +1,4 @@
-package com.serendipity.morris;
+package com.serendipity.algo18morris;
 
 /**
  * @author jack

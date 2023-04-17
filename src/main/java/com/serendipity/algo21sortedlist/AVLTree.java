@@ -1,4 +1,4 @@
-package com.serendipity.sortedlist;
+package com.serendipity.algo21sortedlist;
 
 /**
  * @author jack

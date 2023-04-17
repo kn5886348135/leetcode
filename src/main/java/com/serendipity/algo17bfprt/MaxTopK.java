@@ -1,4 +1,4 @@
-package com.serendipity.bfprt;
+package com.serendipity.algo17bfprt;
 
 import java.util.Arrays;
 

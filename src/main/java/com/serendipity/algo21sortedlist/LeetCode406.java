@@ -1,4 +1,4 @@
-package com.serendipity.sortedlist;
+package com.serendipity.algo21sortedlist;
 
 import java.util.ArrayList;
 import java.util.Arrays;

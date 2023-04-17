@@ -1,4 +1,4 @@
-package com.serendipity.kmp;
+package com.serendipity.algo15kmp;
 
 /**
  * @author jack

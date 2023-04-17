@@ -1,4 +1,4 @@
-package com.serendipity.indextree;
+package com.serendipity.algo20indextree;
 
 /**
  * @author jack

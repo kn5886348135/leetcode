@@ -1,4 +1,4 @@
-package com.serendipity.manacher;
+package com.serendipity.algo16manacher;
 
 /**
  * @author jack

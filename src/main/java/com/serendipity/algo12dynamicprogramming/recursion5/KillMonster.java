@@ -1,7 +1,5 @@
 package com.serendipity.algo12dynamicprogramming.recursion5;
 
-import com.serendipity.segmenttree.FallingSquares;
-
 import java.text.MessageFormat;
 
 /**

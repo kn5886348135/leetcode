@@ -1,6 +1,7 @@
-package com.serendipity.sortedlist;
+package com.serendipity.algo21sortedlist;
 
 import java.util.TreeMap;
+import java.util.UUID;
 
 /**
  * @author jack
@@ -11,9 +12,10 @@ import java.util.TreeMap;
 public class Test {
 
     public static void main(String[] args) {
-        functionTest();
-        System.out.println("======");
-        performanceTest();
+        System.out.println(UUID.randomUUID().toString().replace("-", ""));
+//        functionTest();
+//        System.out.println("======");
+//        performanceTest();
     }
 
     public static void functionTest() {
