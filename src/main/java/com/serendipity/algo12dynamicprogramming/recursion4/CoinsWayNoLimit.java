@@ -1,5 +1,9 @@
 package com.serendipity.algo12dynamicprogramming.recursion4;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -17,24 +21,25 @@ public class CoinsWayNoLimit {
         int maxLen = 10;
         int maxValue = 30;
         int testTime = 1000000;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int[] arr = generateRandomArr(maxLen, maxValue);
+            int[] arr = CommonUtil.generateRandomUniqueArray(maxLen, maxValue);
             int aim = (int) (Math.random() * maxValue);
             int ans1 = coinsWay(arr, aim);
             int ans2 = dp1(arr, aim);
             int ans3 = dp2(arr, aim);
             if (ans1 != ans2 || ans1 != ans3) {
-                System.out.println("Oops!");
-                printArr(arr);
-                System.out.println(aim);
-                System.out.println(ans1);
-                System.out.println(ans2);
-                System.out.println(ans3);
+                CommonUtil.printArray(arr);
+                System.out.println(MessageFormat.format("aim {0}, ans1 {1}, ans2 {2}, ans3 {3}",
+                        new String[]{String.valueOf(aim), String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3)}));
+                success = false;
                 break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
+    // 对数器
     public static int coinsWay(int[] arr, int aim) {
         if (arr == null || arr.length == 0 || aim < 0) {
             return 0;
@@ -51,9 +56,9 @@ public class CoinsWayNoLimit {
         }
         int result = 0;
         // i表示有i张arr[index]货币
-        for (int i = 0; i * arr[index] <= rest; i++) {
+        for (int piece = 0; piece * arr[index] <= rest; piece++) {
             // 选择1、2、3...i张arr[index]的方法累加
-            result += process(arr, index + 1, rest - (i * arr[index]));
+            result += process(arr, index + 1, rest - (piece * arr[index]));
         }
         return result;
     }
@@ -70,8 +75,8 @@ public class CoinsWayNoLimit {
         for (int index = len - 1; index >= 0; index--) {
             for (int rest = 0; rest <= aim; rest++) {
                 int ways = 0;
-                for (int i = 0; i * arr[index] <= rest; i++) {
-                    ways += dp[index + 1][rest - (i * arr[index])];
+                for (int piece = 0; piece * arr[index] <= rest; piece++) {
+                    ways += dp[index + 1][rest - (piece * arr[index])];
                 }
                 dp[index][rest] = ways;
             }
@@ -99,25 +104,4 @@ public class CoinsWayNoLimit {
         }
         return dp[0][aim];
     }
-
-    public static int[] generateRandomArr(int length, int value) {
-        int len = (int) (Math.random() * length);
-        int[] arr = new int[len];
-        boolean[] has = new boolean[value + 1];
-        for (int i = 0; i < len; i++) {
-            do {
-                arr[i] = (int) (Math.random() * value) + 1;
-            } while (has[arr[i]]);
-            has[arr[i]] = true;
-        }
-        return arr;
-    }
-
-    public static void printArr(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
-    }
-
 }

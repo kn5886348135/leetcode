@@ -1,5 +1,9 @@
 package com.serendipity.algo12dynamicprogramming.recursion6;
 
+import org.springframework.util.StopWatch;
+
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -14,16 +18,27 @@ public class NQueens {
 
     public static void main(String[] args) {
         // 建议n不超过15，否则运算时间会很长
-        int n = 15;
-        long start = System.currentTimeMillis();
-        System.out.println(nQueens1(n));
-        long end = System.currentTimeMillis();
-        System.out.println("cost time " + (end - start) + " ms");
-
-        start = System.currentTimeMillis();
-        System.out.println(nQueens2(n));
-        end = System.currentTimeMillis();
-        System.out.println("cost time " + (end - start) + " ms");
+        int maxValue = 15;
+        int testTime = 300000;
+        boolean success = true;
+        StopWatch stopWatch = new StopWatch();
+        for (int i = 0; i < testTime; i++) {
+            int n = (int) (Math.random() * maxValue);
+            stopWatch.start("nQueens1");
+            int ans1 = nQueens1(n);
+            stopWatch.stop();
+            stopWatch.start("nQueens2");
+            int ans2 = nQueens2(n);
+            stopWatch.stop();
+            System.out.println(stopWatch.prettyPrint());
+            if (ans1 != ans2) {
+                System.out.println(MessageFormat.format("nQueens failed, n {0}, ans1 {1}, ans2 {2}",
+                        new String[]{String.valueOf(n), String.valueOf(ans1), String.valueOf(ans2)}));
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 暴力递归

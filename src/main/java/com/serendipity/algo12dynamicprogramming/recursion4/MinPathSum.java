@@ -1,5 +1,7 @@
 package com.serendipity.algo12dynamicprogramming.recursion4;
 
+import com.serendipity.common.CommonUtil;
+
 /**
  * @author jack
  * @version 1.0
@@ -13,11 +15,25 @@ public class MinPathSum {
     public static void main(String[] args) {
         int row = 10;
         int col = 10;
-        int[][] matrix = generateRandomMatrix(row, col);
-        System.out.println(minPathSum1(matrix));
-        System.out.println(minPathSum2(matrix));
+        int maxValue = 200;
+        int testTimes = 50000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            int[][] matrix = CommonUtil.generateRandomMatrix(row, col, maxValue);
+            int ans1 = minPathSum1(matrix);
+            int ans2 = minPathSum2(matrix);
+            if (ans1 != ans2) {
+                System.out.println("minPathSum failed");
+                CommonUtil.printMatrix(matrix);
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
     }
 
+    // 动态规划
+    // 初始化左上角、第一行第一列，然后按照业务要求左、上最小值
     public static int minPathSum1(int[][] matrix) {
         // 边界条件
         if (matrix == null || matrix.length == 0 || matrix[0] == null || matrix[0].length == 0) {
@@ -70,27 +86,5 @@ public class MinPathSum {
             }
         }
         return dp[col - 1];
-    }
-
-    public static int[][] generateRandomMatrix(int row, int col) {
-        if (row < 0 || col < 0) {
-            return null;
-        }
-        int[][] matrix = new int[row][col];
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                matrix[i][j] = (int) (Math.random() * 100);
-            }
-        }
-        return matrix;
-    }
-
-    public static void printMatrix(int[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                System.out.print(matrix[i][j] + " ");
-            }
-            System.out.println();
-        }
     }
 }

@@ -62,10 +62,10 @@ public class BobDie {
         return (double) dp[row][col][k] / Math.pow(4, k);
     }
 
-    public static long pick(long[][][] dp, int n, int m, int r, int c, int rest) {
-        if (r < 0 || r == n || c < 0 || c == m) {
+    public static long pick(long[][][] dp, int n, int m, int row, int col, int rest) {
+        if (row < 0 || row == n || col < 0 || col == m) {
             return 0;
         }
-        return dp[r][c][rest];
+        return dp[row][col][rest];
     }
 }

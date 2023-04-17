@@ -1,5 +1,9 @@
 package com.serendipity.algo12dynamicprogramming.recursion6;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -12,24 +16,26 @@ package com.serendipity.algo12dynamicprogramming.recursion6;
 public class SplitSumClosed {
 
     public static void main(String[] args) {
-        int maxLen = 20;
+        int maxSize = 20;
         int maxValue = 50;
         int testTime = 10000;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int len = (int) (Math.random() * maxLen);
-            int[] arr = generateRandomArr(len, maxValue);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
             int ans1 = splitArray(arr);
             int ans2 = dp(arr);
             if (ans1 != ans2) {
-                printArr(arr);
-                System.out.println(ans1);
-                System.out.println(ans2);
-                System.out.println("Oops!");
+                System.out.println(MessageFormat.format("splitArray failed, ans1 {0}, ans2 {1}",
+                        new String[]{String.valueOf(ans1), String.valueOf(ans2)}));
+                CommonUtil.printArray(arr);
+                success = false;
                 break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
+    // 对数器 暴力递归
     public static int splitArray(int[] arr) {
         if (arr == null || arr.length < 2) {
             return 0;
@@ -62,6 +68,8 @@ public class SplitSumClosed {
         return Math.max(ans1, ans2);
     }
 
+    // 动态规划
+    // 直接改写暴力递归
     public static int dp(int[] arr) {
         if (arr == null || arr.length < 2) {
             return 0;
@@ -89,20 +97,4 @@ public class SplitSumClosed {
         }
         return dp[0][sum];
     }
-
-    public static int[] generateRandomArr(int length, int value) {
-        int[] arr = new int[length];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) (Math.random() * value);
-        }
-        return arr;
-    }
-
-    public static void printArr(int[] arr) {
-        for (int num : arr) {
-            System.out.print(num + " ");
-        }
-        System.out.println();
-    }
-
 }

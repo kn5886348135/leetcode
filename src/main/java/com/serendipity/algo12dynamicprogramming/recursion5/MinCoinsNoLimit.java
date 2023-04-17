@@ -1,5 +1,9 @@
 package com.serendipity.algo12dynamicprogramming.recursion5;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -11,27 +15,28 @@ package com.serendipity.algo12dynamicprogramming.recursion5;
 public class MinCoinsNoLimit {
 
     public static void main(String[] args) {
-        int maxLen = 20;
+        int maxSize = 20;
         int maxValue = 30;
         int testTime = 300000;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int n = (int) (Math.random() * maxLen);
-            int[] arr = generateRandomArr(n, maxValue);
+            int[] arr = CommonUtil.generateRandomUniqueArray(maxSize, maxValue);
             int aim = (int) (Math.random() * maxValue);
             int ans1 = minCoins(arr, aim);
             int ans2 = dp1(arr, aim);
             int ans3 = dp2(arr, aim);
             if (ans1 != ans2 || ans1 != ans3) {
-                System.out.println("Oops!");
-                printArr(arr);
-                System.out.println(aim);
-                System.out.println(ans1);
-                System.out.println(ans2);
+                System.out.println(MessageFormat.format("minCoins failed, aim {0}, ans1 {1}, ans2 {2}, ans3 {3}",
+                        new String[]{String.valueOf(aim), String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3)}));
+                CommonUtil.printArray(arr);
+                success = false;
                 break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
+    // 对数器
     public static int minCoins(int[] arr, int aim) {
         if (arr == null || arr.length == 0 || aim < 0) {
             return 0;
@@ -102,25 +107,5 @@ public class MinCoinsNoLimit {
             }
         }
         return dp[0][aim];
-    }
-
-    public static int[] generateRandomArr(int length, int value) {
-        int len = (int) (Math.random() * length);
-        int[] arr = new int[len];
-        boolean[] has = new boolean[value + 1];
-        for (int i = 0; i < len; i++) {
-            do {
-                arr[i] = (int) (Math.random() * value) + 1;
-            } while (has[arr[i]]);
-            has[arr[i]] = true;
-        }
-        return arr;
-    }
-
-    public static void printArr(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
     }
 }

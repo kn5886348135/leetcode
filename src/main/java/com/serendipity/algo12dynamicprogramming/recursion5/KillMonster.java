@@ -1,5 +1,9 @@
 package com.serendipity.algo12dynamicprogramming.recursion5;
 
+import com.serendipity.segmenttree.FallingSquares;
+
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -16,8 +20,9 @@ public class KillMonster {
         int nMax = 10;
         int mMax = 10;
         int kMax = 10;
-        int testTime = 200;
-        for (int i = 0; i < testTime; i++) {
+        int testTimes = 200;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
             int n = (int) (Math.random() * nMax);
             int m = (int) (Math.random() * mMax);
             int k = (int) (Math.random() * kMax);
@@ -25,12 +30,17 @@ public class KillMonster {
             double ans2 = dp1(n, m, k);
             double ans3 = dp2(n, m, k);
             if (ans1 != ans2 || ans1 != ans3) {
-                System.out.println("Oops!");
+                System.out.println(MessageFormat.format("killMonster failed, n {0}, m {1}, k {2}, ans1 {3}, ans2 {4}, ans3 {5}",
+                        new String[]{String.valueOf(n), String.valueOf(m), String.valueOf(k), String.valueOf(ans1),
+                                String.valueOf(ans2), String.valueOf(ans3)}));
+                success = false;
                 break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
+    // 对数器
     public static double killMonster1(int n, int m, int k) {
         if (n < 1 || m < 1 || k < 1) {
             return 0;

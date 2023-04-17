@@ -1,5 +1,8 @@
 package com.serendipity.algo12dynamicprogramming.recursion4;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,23 +23,23 @@ public class CoinsWaySameValueSamePapper {
     public static void main(String[] args) {
         int maxLen = 10;
         int maxValue = 20;
-        int testTime = 1000000;
-        for (int i = 0; i < testTime; i++) {
-            int[] arr = generateRandomArr(maxLen, maxValue);
+        int testTimes = 1000000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            int[] arr = CommonUtil.generateRandomArray(maxLen, maxValue, true);
             int aim = (int) (Math.random() * maxValue);
             int ans1 = coinsWay(arr, aim);
             int ans2 = dp1(arr, aim);
             int ans3 = dp2(arr, aim);
             if (ans1 != ans2 || ans1 != ans3) {
-                System.out.println("Oops!");
-                printArr(arr);
-                System.out.println(aim);
-                System.out.println(ans1);
-                System.out.println(ans2);
-                System.out.println(ans3);
+                CommonUtil.printArray(arr);
+                System.out.println(MessageFormat.format("aim {0}, ans1 {1}, ans2 {2}, ans3 {3}",
+                        new String[]{String.valueOf(aim), String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3)}));
+                success = false;
                 break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     public static class Info {
@@ -135,21 +138,5 @@ public class CoinsWaySameValueSamePapper {
             }
         }
         return dp[0][aim];
-    }
-
-    public static int[] generateRandomArr(int length, int value) {
-        int len = (int) (Math.random() * length);
-        int[] arr = new int[len];
-        for (int i = 0; i < len; i++) {
-            arr[i] = (int) (Math.random() * value) + 1;
-        }
-        return arr;
-    }
-
-    public static void printArr(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
     }
 }

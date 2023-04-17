@@ -1,5 +1,7 @@
 package com.serendipity.algo12dynamicprogramming.recursion5;
 
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -13,14 +15,27 @@ package com.serendipity.algo12dynamicprogramming.recursion5;
 public class SplitNumber {
 
     public static void main(String[] args) {
-        int test = 39;
-        System.out.println(ways(test));
-        System.out.println(dp1(test));
-        System.out.println(dp2(test));
+        int maxValue = 40;
+        int testTime = 300000;
+        boolean success = true;
+        for (int i = 0; i < testTime; i++) {
+            int n = (int) (Math.random() * maxValue);
+            int ans1 = verifySplitNum(n);
+            int ans2 = dp1(n);
+            int ans3 = dp2(n);
+            if (ans1 != ans2 || ans1 != ans3) {
+                System.out.println(MessageFormat.format("splitSum failed, n {0}, ans1 {1}, ans2 {2}, ans3 {3}",
+                        new String[]{String.valueOf(n), String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3)}));
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
     }
 
+    // 对数器
     // n为正数
-    public static int ways(int n) {
+    public static int verifySplitNum(int n) {
         // 等于0没法裂开
         if (n <= 0) {
             return 0;
@@ -48,7 +63,7 @@ public class SplitNumber {
         return ans;
     }
 
-    // 暴力递归，有枚举
+    // 动态规划，有枚举
     public static int dp1(int n) {
         // 等于0没法裂开
         if (n <= 0) {
@@ -74,7 +89,7 @@ public class SplitNumber {
         return dp[1][n];
     }
 
-    // 暴力递归，优化枚举
+    // 动态规划，优化枚举
     public static int dp2(int n) {
         // 等于0没法裂开
         if (n <= 0) {
