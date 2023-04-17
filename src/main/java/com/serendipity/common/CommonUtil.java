@@ -82,8 +82,22 @@ public class CommonUtil {
                 arr[i] = (int) (maxValue * Math.random() + 1);
             } else {
                 // 可能有负数
-                arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
+                arr[i] = (int) ((maxValue + 1) * Math.random() + 1) - (int) (maxValue * Math.random() + 1);
             }
+        }
+        return arr;
+    }
+
+    // 生成正数数组，唯一
+    public static int[] generateRandomUniqueArray(int maxSize, int maxValue) {
+        int len = (int) (Math.random() * maxSize);
+        int[] arr = new int[len];
+        boolean[] has = new boolean[maxValue + 1];
+        for (int i = 0; i < len; i++) {
+            do {
+                arr[i] = (int) (maxValue * Math.random() + 1);
+            } while (has[arr[i]]);
+            has[arr[i]] = true;
         }
         return arr;
     }
@@ -112,6 +126,30 @@ public class CommonUtil {
             } while (arr[i] == arr[i - 1]);
         }
         return arr;
+    }
+
+    // 生成二维数组
+    public static int[][] generateRandomMatrix(int row, int col, int maxValue) {
+        if (row < 0 || col < 0) {
+            return null;
+        }
+        int[][] matrix = new int[row][col];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                matrix[i][j] = (int) (Math.random() * maxValue);
+            }
+        }
+        return matrix;
+    }
+
+    // 打印二维数组
+    public static void printMatrix(int[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                System.out.print(matrix[i][j] + "\t");
+            }
+            System.out.println();
+        }
     }
 
     // 打印数组
