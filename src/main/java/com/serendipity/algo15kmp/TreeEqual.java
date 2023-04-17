@@ -1,6 +1,9 @@
 package com.serendipity.algo15kmp;
 
 
+import com.serendipity.common.BinaryNode;
+import com.serendipity.common.CommonUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,31 +21,23 @@ public class TreeEqual {
         int smallTreeLevel = 4;
         int nodeMaxValue = 5;
         int testTimes = 100000;
-        System.out.println("test begin");
+        boolean success = true;
         for (int i = 0; i < testTimes; i++) {
-            Node big = generateRandomBST(bigTreeLevel, nodeMaxValue);
-            Node small = generateRandomBST(smallTreeLevel, nodeMaxValue);
+            BinaryNode big = CommonUtil.generateRandomBST(bigTreeLevel, nodeMaxValue);
+            BinaryNode small = CommonUtil.generateRandomBST(smallTreeLevel, nodeMaxValue);
             boolean ans1 = containsTree1(big, small);
             boolean ans2 = containsTree2(big, small);
             if (ans1 != ans2) {
-                System.out.println("Oops!");
+                System.out.println("containsTree failed");
+                success = false;
+                break;
             }
         }
-        System.out.println("test finish!");
-    }
-
-    public static class Node {
-        public int value;
-        public Node left;
-        public Node right;
-
-        public Node(int value) {
-            this.value = value;
-        }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 对数器 暴力递归
-    public static boolean containsTree1(Node node1, Node node2) {
+    public static boolean containsTree1(BinaryNode node1, BinaryNode node2) {
         if (node2 == null) {
             return true;
         }
@@ -56,7 +51,7 @@ public class TreeEqual {
     }
 
     // 递归判断二叉树的结构是否相同，判断值
-    public static boolean isSameValueStructure(Node node1, Node node2) {
+    public static boolean isSameValueStructure(BinaryNode node1, BinaryNode node2) {
         if (node1 == null && node2 != null) {
             return false;
         }
@@ -74,7 +69,7 @@ public class TreeEqual {
 
     // 获取树的先序遍历组成字符串数组
     // 使用kmp算法匹配
-    public static boolean containsTree2(Node node1, Node node2) {
+    public static boolean containsTree2(BinaryNode node1, BinaryNode node2) {
         if (node2 == null) {
             return true;
         }
@@ -95,13 +90,13 @@ public class TreeEqual {
         return getIndexOf(str, match) != -1;
     }
 
-    public static List<String> preSerial(Node node) {
+    public static List<String> preSerial(BinaryNode node) {
         List<String> ans = new ArrayList<>();
         pres(node, ans);
         return ans;
     }
 
-    public static void pres(Node node, List<String> list) {
+    public static void pres(BinaryNode node, List<String> list) {
         if (node == null) {
             // 空节点一定要添加，表示节点结束
             list.add(null);
@@ -134,7 +129,7 @@ public class TreeEqual {
 
     public static int[] getNextArray(String[] ms) {
         if (ms.length == 1) {
-            return new int[]{ -1 };
+            return new int[] { -1 };
         }
         int[] next = new int[ms.length];
         next[0] = -1;
@@ -164,21 +159,4 @@ public class TreeEqual {
             }
         }
     }
-
-    // for test
-    public static Node generateRandomBST(int maxLevel, int maxValue) {
-        return generate(1, maxLevel, maxValue);
-    }
-
-    // for test
-    public static Node generate(int level, int maxLevel, int maxValue) {
-        if (level > maxLevel || Math.random() < 0.5) {
-            return null;
-        }
-        Node head = new Node((int) (Math.random() * maxValue));
-        head.left = generate(level + 1, maxLevel, maxValue);
-        head.right = generate(level + 1, maxLevel, maxValue);
-        return head;
-    }
-
 }

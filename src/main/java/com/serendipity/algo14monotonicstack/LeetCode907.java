@@ -1,37 +1,44 @@
 package com.serendipity.algo14monotonicstack;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
  * @description 给定一个数组arr，
  *              返回所有子数组最小值的累加和
+ *
+ *              给定一个整数数组 arr，找到 min(b) 的总和，其中 b 的范围为 arr 的每个（连续）子数组。
+ *              由于答案可能很大，因此 返回答案模 10^9^ + 7 。
  * @date 2023/03/17/12:29
  */
 public class LeetCode907 {
 
     public static void main(String[] args) {
-        int maxLen = 100;
+        int maxSize = 100;
         int maxValue = 50;
-        int testTime = 100000;
-        for (int i = 0; i < testTime; i++) {
-            int len = (int) (Math.random() * maxLen);
-            int[] arr = generateRandomArr(len, maxValue);
+        int testTimes = 100000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
             int ans1 = subArrayMinSum1(arr);
             int ans2 = subArrayMinSum2(arr);
             int ans3 = subArrayMinSum3(arr);
             if (ans1 != ans2 || ans1 != ans3) {
-                printArr(arr);
-                System.out.println(ans1);
-                System.out.println(ans2);
-                System.out.println(ans3);
-                System.out.println("出错了！");
+                System.out.println(MessageFormat.format("subArrayMinSum failed, ans1 {0}, ans2 {1}, ans3 {2}",
+                        new String[]{String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3)}));
+                CommonUtil.printArray(arr);
+                success = false;
                 break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
-    // 对数器
-    // 暴力解
+    // 对数器 暴力解
+    // 没有取模
     public static int subArrayMinSum1(int[] arr) {
         if (arr == null || arr.length == 0) {
             return 0;
@@ -53,6 +60,7 @@ public class LeetCode907 {
     // 不用单调栈，没有取模
     // 当前位置index作为子数组的最小值，找到子数组的个数
     // index左边的个数 * index右边的个数 = 子数组的个数
+    // 最优解的思路
     public static int subArrayMinSum2(int[] arr) {
         if (arr == null || arr.length == 0) {
             return 0;
@@ -108,6 +116,7 @@ public class LeetCode907 {
     }
 
     // 数组实现的单调栈 时间复杂度 O(n)
+    // 最优解思路下的单调栈优化
     public static int subArrayMinSum3(int[] arr) {
         if (arr == null || arr.length == 0) {
             return 0;
@@ -166,20 +175,4 @@ public class LeetCode907 {
         }
         return right;
     }
-
-    public static int[] generateRandomArr(int len, int maxValue) {
-        int[] ans = new int[len];
-        for (int i = 0; i < len; i++) {
-            ans[i] = (int) (Math.random() * maxValue) + 1;
-        }
-        return ans;
-    }
-
-    public static void printArr(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
-    }
-
 }

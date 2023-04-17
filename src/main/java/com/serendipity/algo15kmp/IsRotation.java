@@ -50,7 +50,7 @@ public class IsRotation {
 
     public static int[] getNextArray(char[] mch) {
         if (mch.length == 1) {
-            return new int[]{ -1 };
+            return new int[]{-1};
         }
         int[] next = new int[mch.length];
         next[0] = -1;
@@ -68,5 +68,4 @@ public class IsRotation {
         }
         return next;
     }
-
 }

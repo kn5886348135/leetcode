@@ -13,13 +13,16 @@ public class KMP {
         int strSize = 20;
         int matchSize = 5;
         int testTimes = 5000000;
+        boolean success = true;
         for (int i = 0; i < testTimes; i++) {
             String str = generateRandomString(possibilities, strSize);
             String match = generateRandomString(possibilities, matchSize);
             if (getIndexOf(str, match) != str.indexOf(match)) {
-                System.out.println("Oops!");
+                success = false;
+                break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     public static int getIndexOf(String s1, String s2) {
@@ -37,7 +40,8 @@ public class KMP {
             if (str1[x] == str2[y]) {
                 x++;
                 y++;
-            } else if (next[y] == -1) { // y == 0
+            } else if (next[y] == -1) {
+                // y == 0
                 x++;
             } else {
                 y = next[y];
@@ -56,11 +60,14 @@ public class KMP {
         int[] next = new int[str2.length];
         next[0] = -1;
         next[1] = 0;
-        int i = 2; // 目前在哪个位置上求next数组的值
-        int cn = 0; // 当前是哪个位置的值再和i-1位置的字符比较
+        // 目前在哪个位置上求next数组的值
+        int i = 2;
+        // 当前是哪个位置的值再和i-1位置的字符比较
+        int cn = 0;
         while (i < next.length) {
             // 前缀字符串和后缀字符串的末位比较
-            if (str2[i - 1] == str2[cn]) { // 配成功的时候
+            // 配成功的时候
+            if (str2[i - 1] == str2[cn]) {
                 // next[i++]只能大于cn，如果next[i++] = cn + 2，则表示next[i-1] = cn + 1，产生矛盾
                 // 所以next[i] = cn + 1
                 // 可以画图模拟
@@ -86,5 +93,4 @@ public class KMP {
         }
         return String.valueOf(ans);
     }
-
 }
