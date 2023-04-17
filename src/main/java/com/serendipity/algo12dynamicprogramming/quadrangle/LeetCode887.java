@@ -1,4 +1,4 @@
-package com.serendipity.skills.quadrangle2;
+package com.serendipity.algo12dynamicprogramming.quadrangle;
 
 /**
  * @author jack

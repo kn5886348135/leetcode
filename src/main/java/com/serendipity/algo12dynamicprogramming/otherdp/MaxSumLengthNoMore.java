@@ -1,4 +1,4 @@
-package com.serendipity.skills.otherdp;
+package com.serendipity.algo12dynamicprogramming.otherdp;
 
 import java.util.LinkedList;
 

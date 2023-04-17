@@ -1,4 +1,4 @@
-package com.serendipity.skills.statecompression;
+package com.serendipity.algo12dynamicprogramming.statecompression;
 
 import java.util.ArrayList;
 import java.util.List;
