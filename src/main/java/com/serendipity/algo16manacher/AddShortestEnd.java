@@ -11,6 +11,7 @@ public class AddShortestEnd {
     public static void main(String[] args) {
         String str1 = "abcd123321";
         System.out.println(shortestEnd(str1));
+        // TODO 对数器
     }
 
     public static String shortestEnd(String str) {

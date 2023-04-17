@@ -11,14 +11,18 @@ public class Manacher {
 
     public static void main(String[] args) {
         int possibilities = 5;
-        int strSize = 20;
+        int maxSize = 20;
         int testTimes = 5000000;
+        boolean success = true;
         for (int i = 0; i < testTimes; i++) {
-            String str = getRandomString(possibilities, strSize);
+            String str = getRandomString(possibilities, maxSize);
             if (manacher1(str) != manacher2(str)) {
-                System.out.println("Oops!");
+                System.out.println("manacher failed");
+                success = false;
+                break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 对数器，在原字符串中插入特殊字符，例如#
@@ -50,7 +54,7 @@ public class Manacher {
         if (str == null || str.length() == 0) {
             return 0;
         }
-
+        // "12132" -> "#1#2#1#3#2#"
         char[] chs = manacherString(str);
         // 回文半径数组
         int[] pArr = new int[chs.length];
@@ -58,6 +62,7 @@ public class Manacher {
         // 最右扩成功位置的下一个位置
         int right = -1;
         int max = Integer.MIN_VALUE;
+        // 0 1 2
         for (int i = 0; i < chs.length; i++) {
             // R第一个违规的位置，i>= R
             // i位置扩出来的答案，i位置扩的区域，至少是多大。
@@ -89,12 +94,11 @@ public class Manacher {
         return ans;
     }
 
-    public static String getRandomString(int possibilities, int size) {
-        char[] ans = new char[(int) (Math.random() * size) + 1];
+    public static String getRandomString(int possibilities, int maxSize) {
+        char[] ans = new char[(int) (Math.random() * maxSize) + 1];
         for (int i = 0; i < ans.length; i++) {
             ans[i] = (char) ((int) (Math.random() * possibilities) + 'a');
         }
         return String.valueOf(ans);
     }
-
 }
