@@ -1,4 +1,4 @@
-package com.serendipity.monotonicstack;
+package com.serendipity.algo14monotonicstack;
 
 import java.util.HashSet;
 import java.util.Set;

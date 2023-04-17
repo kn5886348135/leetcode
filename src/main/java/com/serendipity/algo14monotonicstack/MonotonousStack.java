@@ -1,4 +1,4 @@
-package com.serendipity.monotonicstack;
+package com.serendipity.algo14monotonicstack;
 
 import java.util.ArrayList;
 import java.util.List;

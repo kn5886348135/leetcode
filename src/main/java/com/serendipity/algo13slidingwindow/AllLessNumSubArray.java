@@ -1,4 +1,4 @@
-package com.serendipity.slidingwindow;
+package com.serendipity.algo13slidingwindow;
 
 import java.util.LinkedList;
 
