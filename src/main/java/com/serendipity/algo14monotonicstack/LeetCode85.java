@@ -1,5 +1,8 @@
 package com.serendipity.algo14monotonicstack;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
 import java.util.Stack;
 
 /**
@@ -7,12 +10,35 @@ import java.util.Stack;
  * @version 1.0
  * @description 给定一个二维数组matrix，其中的值不是0就是1，
  *              返回全部由1组成的最大子矩形，内部有多少个1
+ *
+ *              给定一个仅包含 0 和 1 、大小为 rows x cols 的二维二进制矩阵，找出只包含 1 的最大矩形，并返回其面积。
  * @date 2023/03/16/16:39
  */
 public class LeetCode85 {
 
     public static void main(String[] args) {
-
+        int maxRow = 100;
+        int maxCol = 500;
+        int testTimes = 2000000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            int row = (int) Math.random() * maxRow;
+            int col = (int) Math.random() * maxCol;
+            char[][] height = generateRandomMatrix(row, col);
+            char[][] height1 = copyMatrix(height);
+            char[][] height2 = copyMatrix(height);
+//            char[][] height3 = copyMatrix(height);
+            int ans1 = maximalRectangle1(height1);
+            int ans2 = maximalRectangle2(height2);
+//            int ans3 = maxRecFromBottom(height3);
+            if (ans1 != ans2) {
+                System.out.println(MessageFormat.format("largestRectangleArea failed, ans1 {0}, ans2 {1}",
+                        new String[]{String.valueOf(ans1), String.valueOf(ans2)}));
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 对数器
@@ -89,7 +115,6 @@ public class LeetCode85 {
             }
             stack.push(i);
         }
-
         while (!stack.isEmpty()) {
             int j = stack.pop();
             int k = stack.isEmpty() ? -1 : stack.peek();
@@ -97,5 +122,37 @@ public class LeetCode85 {
             max = Math.max(max, cur);
         }
         return max;
+    }
+
+    public static char[][] generateRandomMatrix(int row, int col) {
+        if (row < 0 || col < 0) {
+            return null;
+        }
+        char[][] matrix = new char[row][col];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (Math.random() < 0.5) {
+                    matrix[i][j] = '0';
+                } else {
+                    matrix[i][j] = '1';
+                }
+            }
+        }
+        return matrix;
+    }
+
+    public static char[][] copyMatrix(char[][] matrix) {
+        int row = matrix.length;
+        int col = matrix[0].length;
+        if (row < 0 || col < 0) {
+            return null;
+        }
+        char[][] ans = new char[row][col];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                ans[i][j] = matrix[i][j];
+            }
+        }
+        return matrix;
     }
 }

@@ -1,5 +1,7 @@
 package com.serendipity.algo14monotonicstack;
 
+import com.serendipity.common.CommonUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -8,34 +10,44 @@ import java.util.Stack;
  * @author jack
  * @version 1.0
  * @description 单调栈的实现
+ *              给定一个可能含有重复值的数组arr，i位置的数一定存在如下两个信息
+ *              1）arr[i]的左侧离i最近并且小于(或者大于)arr[i]的数在哪？
+ *              2）arr[i]的右侧离i最近并且小于(或者大于)arr[i]的数在哪？
+ *              如果想得到arr中所有位置的两个信息，怎么能让得到信息的过程尽量快。
  * @date 2023/03/15/21:27
  */
 public class MonotonousStack {
 
     public static void main(String[] args) {
-        int size = 10;
-        int max = 20;
+        int maxSize = 100;
+        int maxValue = 200;
         int testTimes = 2000000;
-        System.out.println("测试开始");
+        boolean success = true;
         for (int i = 0; i < testTimes; i++) {
-            int[] arr1 = generateRandomArrNoRepeat(size);
-            int[] arr2 = generateRandomArr(size, max);
-            if (!isEqual(getNearLessNoRepeat(arr1), rightWay(arr1))) {
-                System.out.println("Oops!");
-                printArray(arr1);
+            int[] arr1 = CommonUtil.generateRandomUniqueArray(maxSize, maxValue);
+            int[] arr2 = CommonUtil.generateRandomArray(maxSize, maxValue, false);
+            int[][] ans1 = getNearLessNoRepeat(arr1);
+            int[][] ans2 = verifyMonotonousStack(arr1);
+            if (!isEqual(ans1, ans2)) {
+                System.out.println("getNearLessNoRepeat failed");
+                CommonUtil.printArray(arr1);
+                CommonUtil.printMatrix(ans1);
+                CommonUtil.printMatrix(ans2);
+                success = false;
                 break;
             }
-            if (!isEqual(getNearLess(arr2), rightWay(arr2))) {
-                System.out.println("Oops!");
-                printArray(arr2);
+            int[][] ans3 = getNearLess(arr2);
+            int[][] ans4 = verifyMonotonousStack(arr2);
+            if (!isEqual(ans3, ans4)) {
+                System.out.println("getNearLess failed");
+                CommonUtil.printArray(arr2);
+                CommonUtil.printMatrix(ans3);
+                CommonUtil.printMatrix(ans4);
+                success = false;
                 break;
             }
         }
-        System.out.println("测试结束");
-    }
-
-    public static int monotonousStack() {
-        return 0;
+        System.out.println(success ? "success" : "failed");
     }
 
     // 将数组中的元素依次压栈，要求
@@ -51,7 +63,9 @@ public class MonotonousStack {
     //  ]
     public static int[][] getNearLessNoRepeat(int[] arr) {
         int[][] ans = new int[arr.length][2];
+        // 只存位置！
         Stack<Integer> stack = new Stack<>();
+        // 当遍历到i位置的数，arr[i]
         for (int i = 0; i < arr.length; i++) {
             while (!stack.isEmpty() && arr[stack.peek()] > arr[i]) {
                 int j = stack.pop();
@@ -74,6 +88,7 @@ public class MonotonousStack {
     public static int[][] getNearLess(int[] arr) {
         int[][] ans = new int[arr.length][2];
         Stack<List<Integer>> stack = new Stack<>();
+        // i -> arr[i] 进栈
         for (int i = 0; i < arr.length; i++) {
             while (!stack.isEmpty() && arr[stack.peek().get(0)] > arr[i]) {
                 List<Integer> popIs = stack.pop();
@@ -103,29 +118,8 @@ public class MonotonousStack {
         return ans;
     }
 
-    public static int[] generateRandomArrNoRepeat(int size) {
-        int[] arr = new int[(int) (Math.random() * size) + 1];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = i;
-        }
-        for (int i = 0; i < arr.length; i++) {
-            int swapIndex = (int) (Math.random() * arr.length);
-            int tmp = arr[swapIndex];
-            arr[swapIndex] = arr[i];
-            arr[i] = tmp;
-        }
-        return arr;
-    }
-
-    public static int[] generateRandomArr(int size, int max) {
-        int[] arr = new int[(int) (Math.random() * size) + 1];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) (Math.random() * max) - (int) (Math.random() * max);
-        }
-        return arr;
-    }
-
-    public static int[][] rightWay(int[] arr) {
+    // 对数器
+    public static int[][] verifyMonotonousStack(int[] arr) {
         int[][] res = new int[arr.length][2];
         for (int i = 0; i < arr.length; i++) {
             int leftLessIndex = -1;
@@ -164,12 +158,4 @@ public class MonotonousStack {
 
         return true;
     }
-
-    public static void printArray(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
-    }
-
 }

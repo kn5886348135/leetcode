@@ -1,5 +1,6 @@
 package com.serendipity.algo14monotonicstack;
 
+import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,12 +9,22 @@ import java.util.Set;
  * @version 1.0
  * @description 给定一个二维数组matrix，其中的值不是0就是1，
  *              返回全部由1组成的子矩形数量
+ *
+ *              给你一个 m x n 的二进制矩阵 mat ，请你返回有多少个 子矩形 的元素全部都是 1 。
  * @date 2023/03/16/17:59
  */
 public class LeetCode1504 {
 
     public static void main(String[] args) {
-
+        int maxRow = 100;
+        int maxCol = 500;
+        int testTimes = 2000000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            int row = (int) Math.random() * maxRow;
+            int col = (int) Math.random() * maxCol;
+        }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 对数器
@@ -132,5 +143,4 @@ public class LeetCode1504 {
     public static int num(int n) {
         return ((n * (1 + n)) >> 1);
     }
-
 }

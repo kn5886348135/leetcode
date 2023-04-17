@@ -1,28 +1,48 @@
 package com.serendipity.algo14monotonicstack;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
 import java.util.Stack;
 
 /**
  * @author jack
  * @version 1.0
- * @description 给定一个只包含正数的数组arr，arr中任何一个子数组sub，
+ * @description 一个数组的 最小乘积 定义为这个数组中 最小值 乘以 数组的 和 。
+ *              比方说，数组 [3,2,5] （最小值是 2）的最小乘积为 2 * (3+2+5) = 2 * 10 = 20 。
+ *              给你一个正整数数组 nums ，请你返回 nums 任意 非空子数组 的最小乘积 的 最大值 。
+ *              由于答案可能很大，请你返回答案对  10^9^ + 7 取余 的结果。
+ *              请注意，最小乘积的最大值考虑的是取余操作 之前 的结果。
+ *              题目保证最小乘积的最大值在不取余的情况下可以用 64 位有符号整数 保存。
+ *              子数组 定义为一个数组的 连续 部分。
+ *
+ *              给定一个只包含正数的数组arr，arr中任何一个子数组sub，
  *              一定都可以算出(sub累加和 )* (sub中的最小值)是什么，
  *              那么所有子数组中，这个值最大是多少？
+ *              https://leetcode.com/problems/maximum-subarray-min-product/
  * @date 2023/03/16/13:22
  */
-public class AllTimesMinToMax {
+public class LeetCode1856 {
 
     public static void main(String[] args) {
+        int maxSize = 100;
+        int maxValue = 500;
         int testTimes = 2000000;
-        System.out.println("test begin");
+        boolean success = true;
         for (int i = 0; i < testTimes; i++) {
-            int[] arr = gerenareRondomArray();
-            if (sumPlusMinOfSubArray1(arr) != sumPlusMinOfSubArray2(arr)) {
-                System.out.println("FUCK!");
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            int ans1 = sumPlusMinOfSubArray1(arr);
+            int ans2 = sumPlusMinOfSubArray2(arr);
+            int ans3 = maxSumMinProduct(arr);
+            if (ans1 != ans2 || ans1 != ans3) {
+                System.out.println(MessageFormat.format("sumPlusMinOfSubArray failed, ans1 {0}, ans2 {1}, ans3 {2}",
+                        new String[]{String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3)}));
+                CommonUtil.printArray(arr);
+                success = false;
                 break;
             }
         }
-        System.out.println("test finish");
+        System.out.println(success ? "success" : "failed");
     }
 
     // 对数器
@@ -84,19 +104,8 @@ public class AllTimesMinToMax {
         return max;
     }
 
-    public static int[] gerenareRondomArray() {
-        int[] arr = new int[(int) (Math.random() * 20) + 10];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) (Math.random() * 101);
-        }
-        return arr;
-    }
-
-    // leetcode
-    // https://leetcode.com/problems/maximum-subarray-min-product/
-    // 注意测试题目数量大，要取模
-    // 注意溢出的处理用long类型来表示累加和
-    // 可以用自己手写的数组栈，优化系统实现的栈
+    // 测试样本太大，要取模，溢出用long类型来表示累加和
+    // 优化点，手写的数组栈，来替代系统实现的栈
     public static int maxSumMinProduct(int[] arr) {
         int size = arr.length;
         long[] sums = new long[size];
@@ -122,5 +131,4 @@ public class AllTimesMinToMax {
         }
         return (int) (max % 1000000007);
     }
-
 }
