@@ -1,6 +1,11 @@
 package com.serendipity.algo13slidingwindow;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * @author jack
@@ -9,7 +14,7 @@ import java.util.LinkedList;
  *              你有一辆油箱容量无限的的汽车，从第 i 个加油站开往第 i+1 个加油站需要
  *              消耗汽油 cost[i] 升。你从其中的一个加油站出发，开始时油箱为空。
  *              给定两个整数数组 gas 和 cost ，如果你可以绕环路行驶一周，则返回出发时加油站的
- *              编号，否则返回 -1 。如果存在解，则 保证 它是 唯一 的。
+ *              编号，否则返回 -1 。如果存在解，则保证它是唯一的。
  *
  *              问题变种
  *              返回所有可以跑完的加油站数组
@@ -18,11 +23,31 @@ import java.util.LinkedList;
 public class LeetCode134 {
 
     public static void main(String[] args) {
-
+        int maxSize = 100;
+        int maxValue = 200;
+        int testTimes = 100000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            int[] gas = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            int[] cost = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            int ans1 = canCompleteCircuit1(gas, cost);
+            int ans2 = canCompleteCircuit2(gas, cost);
+            if (ans1 != ans2) {
+                System.out.println(MessageFormat.format("canCompleteCircuit failed, ans1 {0}, ans2 {1}",
+                        new String[]{String.valueOf(ans1), String.valueOf(ans2)}));
+                CommonUtil.printArray(gas);
+                CommonUtil.printArray(cost);
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 暴力循环 O(n2)
     public static int canCompleteCircuit1(int[] gas, int[] cost) {
+        // TODO
+        Set<Integer> set = new HashSet<>();
         return -1;
     }
 

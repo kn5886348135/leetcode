@@ -1,5 +1,8 @@
 package com.serendipity.algo13slidingwindow;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
 import java.util.LinkedList;
 
 /**
@@ -14,18 +17,23 @@ import java.util.LinkedList;
 public class SlidingWindowMaxArray {
 
     public static void main(String[] args) {
-        int maxLen = 100;
+        int maxSize = 100;
         int maxValue = 100;
-        int testTime = 10000;
-        for (int i = 0; i < testTime; i++) {
-            int[] arr = generateRandomArr(maxLen, maxValue);
-            int width = (int) (Math.random() * arr.length) + 1;
-            int[] ans1 = slidingWindow2(arr, width);
-            int[] ans2 = slidingWindow1(arr, width);
-            if (!isEqual(ans1, ans2)) {
-                System.out.println("Oops!");
+        int testTimes = 100000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            int width = (int) (Math.random() * (arr.length + 1));
+            int[] ans1 = slidingWindow1(arr, width);
+            int[] ans2 = slidingWindow2(arr, width);
+            if (!CommonUtil.isEqual(ans1, ans2)) {
+                System.out.println(MessageFormat.format("slidingWindow failed, ans1 {0}, ans2 {1}",
+                        new String[]{String.valueOf(ans1), String.valueOf(ans2)}));
+                success = false;
+                break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 暴力循环，对数器
@@ -85,38 +93,4 @@ public class SlidingWindowMaxArray {
         }
         return ans;
     }
-
-    public static int[] generateRandomArr(int length, int value) {
-        int[] arr = new int[(int) (Math.random() * length) + 1];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) (Math.random() * value);
-        }
-        return arr;
-    }
-
-    public static void printArr(int[] arr) {
-        for (int num : arr) {
-            System.out.print(num + " ");
-        }
-        System.out.println();
-    }
-
-    public static boolean isEqual(int[] arr1, int[] arr2) {
-        if ((arr1 == null && arr2 != null) || (arr1 != null && arr2 == null)) {
-            return false;
-        }
-        if (arr1 == null && arr2 == null) {
-            return true;
-        }
-        if (arr1.length != arr2.length) {
-            return false;
-        }
-        for (int i = 0; i < arr1.length; i++) {
-            if (arr1[i] != arr2[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 }

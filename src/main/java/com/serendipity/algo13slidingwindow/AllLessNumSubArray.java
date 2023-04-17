@@ -1,5 +1,8 @@
 package com.serendipity.algo13slidingwindow;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
 import java.util.LinkedList;
 
 /**
@@ -14,27 +17,27 @@ import java.util.LinkedList;
 public class AllLessNumSubArray {
 
     public static void main(String[] args) {
-        int maxLen = 100;
+        int maxSize = 100;
         int maxValue = 200;
-        int testTime = 100000;
-        for (int i = 0; i < testTime; i++) {
-            int[] arr = generateRandomArr(maxLen, maxValue);
+        int testTimes = 100000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, false);
             int sum = (int) (Math.random() * (maxValue + 1));
             int ans1 = allLessNumSubArray1(arr, sum);
             int ans2 = allLessNumSubArray2(arr, sum);
             if (ans1 != ans2) {
-                System.out.println("Oops!");
-                printArr(arr);
-                System.out.println(sum);
-                System.out.println(ans1);
-                System.out.println(ans2);
+                System.out.println(MessageFormat.format("allLessNumSubArray failed, ans1 {0}, ans2 {1}, sum {2}",
+                        new String[]{String.valueOf(ans1), String.valueOf(ans2), String.valueOf(sum)}));
+                CommonUtil.printArray(arr);
+                success = false;
                 break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
-    // 子数组连续
-    // 对数器
+    // 暴力递归 对数器 子数组连续
     public static int allLessNumSubArray1(int[] arr, int num) {
         if (arr == null || arr.length == 0 || num < 0) {
             return 0;
@@ -49,7 +52,7 @@ public class AllLessNumSubArray {
                     max = Math.max(max, arr[i]);
                     min = Math.min(min, arr[i]);
                 }
-                if (Math.abs(max - min) <= num) {
+                if (max - min <= num) {
                     ans++;
                 }
             }
@@ -103,20 +106,4 @@ public class AllLessNumSubArray {
         }
         return ans;
     }
-
-    public static int[] generateRandomArr(int length, int value) {
-        int[] arr = new int[(int) (Math.random() * length) + 1];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) (Math.random() * value);
-        }
-        return arr;
-    }
-
-    public static void printArr(int[] arr) {
-        for (int num : arr) {
-            System.out.print(num + " ");
-        }
-        System.out.println();
-    }
-
 }

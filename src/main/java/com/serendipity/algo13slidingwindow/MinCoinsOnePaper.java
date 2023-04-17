@@ -1,5 +1,9 @@
 package com.serendipity.algo13slidingwindow;
 
+import com.serendipity.common.CommonUtil;
+import org.springframework.util.StopWatch;
+
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -17,76 +21,42 @@ import java.util.Map;
 public class MinCoinsOnePaper {
 
     public static void main(String[] args) {
-        int maxLen = 20;
-        int maxValue = 30;
-        int testTime = 300000;
-        for (int i = 0; i < testTime; i++) {
-            int N = (int) (Math.random() * maxLen);
-            int[] arr = generateRandomArr(N, maxValue);
+        // 当货币很少出现重复，dp2比dp3有常数时间优势     maxSize=30000 maxValue=20 aim=60000
+        // 当货币大量出现重复，dp3时间复杂度明显优于dp2    maxSize=20000000 maxValue=10000 aim=10000
+        // dp3的优化用到了窗口内最小值的更新结构
+        int maxSize = 30000;
+        int maxValue = 3000;
+        int testTimes = 300000;
+        boolean success = true;
+        StopWatch stopWatch = new StopWatch();
+        for (int i = 0; i < testTimes; i++) {
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
             int aim = (int) (Math.random() * maxValue);
+            stopWatch.start("minCoins");
             int ans1 = minCoins(arr, aim);
+            stopWatch.stop();
+            stopWatch.start("dp1");
             int ans2 = dp1(arr, aim);
+            stopWatch.stop();
+            stopWatch.start("dp2");
             int ans3 = dp2(arr, aim);
+            stopWatch.stop();
+            stopWatch.start("dp3");
             int ans4 = dp3(arr, aim);
+            stopWatch.stop();
+            System.out.println(stopWatch.prettyPrint());
             if (ans1 != ans2 || ans3 != ans4 || ans1 != ans3) {
-                System.out.println("Oops!");
-                printArr(arr);
-                System.out.println(aim);
-                System.out.println(ans1);
-                System.out.println(ans2);
-                System.out.println(ans3);
-                System.out.println(ans4);
+                System.out.println(MessageFormat.format("minCoins failed, aim {0}, ans1 {1}, ans2 {2}, ans3 {3}, ans4 {4}",
+                        new String[]{String.valueOf(aim), String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3), String.valueOf(ans4)}));
+                CommonUtil.printArray(arr);
+                success = false;
                 break;
             }
         }
-
-        System.out.println("==========");
-
-        int aim = 0;
-        int[] arr = null;
-        long start;
-        long end;
-        int ans2;
-        int ans3;
-
-        System.out.println("性能测试开始");
-        maxLen = 30000;
-        maxValue = 20;
-        aim = 60000;
-        arr = generateRandomArr(maxLen, maxValue);
-
-        start = System.currentTimeMillis();
-        ans2 = dp2(arr, aim);
-        end = System.currentTimeMillis();
-        System.out.println("dp2答案 : " + ans2 + ", dp2运行时间 : " + (end - start) + " ms");
-
-        start = System.currentTimeMillis();
-        ans3 = dp3(arr, aim);
-        end = System.currentTimeMillis();
-        System.out.println("dp3答案 : " + ans3 + ", dp3运行时间 : " + (end - start) + " ms");
-        System.out.println("性能测试结束");
-
-        System.out.println("===========");
-
-        System.out.println("货币大量重复出现情况下，");
-        System.out.println("大数据量测试dp3开始");
-        maxLen = 20000000;
-        aim = 10000;
-        maxValue = 10000;
-        arr = generateRandomArr(maxLen, maxValue);
-        start = System.currentTimeMillis();
-        ans3 = dp3(arr, aim);
-        end = System.currentTimeMillis();
-        System.out.println("dp3运行时间 : " + (end - start) + " ms");
-        System.out.println("大数据量测试dp3结束");
-
-        System.out.println("===========");
-
-        System.out.println("当货币很少出现重复，dp2比dp3有常数时间优势");
-        System.out.println("当货币大量出现重复，dp3时间复杂度明显优于dp2");
-        System.out.println("dp3的优化用到了窗口内最小值的更新结构");
+        System.out.println(success ? "success" : "failed");
     }
 
+    // 暴力递归
     public static int minCoins(int[] arr, int aim) {
         return process(arr, 0, aim);
     }
@@ -240,20 +210,4 @@ public class MinCoinsOnePaper {
     public static int compensate(int pre, int cur, int coin) {
         return (cur - pre) / coin;
     }
-
-    public static int[] generateRandomArr(int N, int maxValue) {
-        int[] arr = new int[N];
-        for (int i = 0; i < N; i++) {
-            arr[i] = (int) (Math.random() * maxValue) + 1;
-        }
-        return arr;
-    }
-
-    public static void printArr(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
-    }
-
 }
