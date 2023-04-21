@@ -61,14 +61,14 @@ public class KMP {
     // 利用已经求好的i-1的next数组推倒i的next数组
     public static int[] getNextArray(char[] str2) {
         if (str2.length == 1) {
-            return new int[] { -1 };
+            return new int[]{-1};
         }
         int[] next = new int[str2.length];
         next[0] = -1;
         next[1] = 0;
         // 目前在哪个位置上求next数组的值
         int i = 2;
-        // 当前是哪个位置的值再和i-1位置的字符比较
+        // 当前是哪个位置的值在和i-1位置的字符比较
         int cn = 0;
         while (i < next.length) {
             // 前缀字符串和后缀字符串的末位比较
