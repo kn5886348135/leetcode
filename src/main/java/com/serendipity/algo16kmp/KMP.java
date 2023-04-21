@@ -1,4 +1,6 @@
-package com.serendipity.algo15kmp;
+package com.serendipity.algo16kmp;
+
+import com.serendipity.common.CommonUtil;
 
 /**
  * @author jack
@@ -10,13 +12,17 @@ public class KMP {
 
     public static void main(String[] args) {
         int possibilities = 5;
-        int strSize = 20;
+        int maxSize = 20;
         int matchSize = 5;
         int testTimes = 5000000;
         boolean success = true;
         for (int i = 0; i < testTimes; i++) {
-            String str = generateRandomString(possibilities, strSize);
-            String match = generateRandomString(possibilities, matchSize);
+            String str = CommonUtil.generateRandomString(possibilities, maxSize);
+            String match = CommonUtil.generateRandomString(possibilities, matchSize);
+            while (str.length() < match.length()) {
+                str = CommonUtil.generateRandomString(possibilities, maxSize);
+                match = CommonUtil.generateRandomString(possibilities, matchSize);
+            }
             if (getIndexOf(str, match) != str.indexOf(match)) {
                 success = false;
                 break;
@@ -84,13 +90,5 @@ public class KMP {
             }
         }
         return next;
-    }
-
-    public static String generateRandomString(int possibilities, int size) {
-        char[] ans = new char[(int) (Math.random() * size) + 1];
-        for (int i = 0; i < ans.length; i++) {
-            ans[i] = (char) ((int) (Math.random() * possibilities) + 'a');
-        }
-        return String.valueOf(ans);
     }
 }

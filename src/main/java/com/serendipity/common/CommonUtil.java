@@ -152,6 +152,15 @@ public class CommonUtil {
         }
     }
 
+    // 生成随机字符串
+    public static String generateRandomString(int possibilities, int size) {
+        char[] ans = new char[(int) (Math.random() * size) + 1];
+        for (int i = 0; i < ans.length; i++) {
+            ans[i] = (char) ((int) (Math.random() * possibilities) + 'a');
+        }
+        return String.valueOf(ans);
+    }
+
     // 打印数组
     public static void printArray(int[] arr) {
         if (arr == null) {

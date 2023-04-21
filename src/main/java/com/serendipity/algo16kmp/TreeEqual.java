@@ -1,4 +1,4 @@
-package com.serendipity.algo15kmp;
+package com.serendipity.algo16kmp;
 
 
 import com.serendipity.common.BinaryNode;
