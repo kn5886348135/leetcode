@@ -1,4 +1,4 @@
-package com.serendipity.fibonacci;
+package com.serendipity.algo15fibonacci;
 
 /**
  * @author jack
