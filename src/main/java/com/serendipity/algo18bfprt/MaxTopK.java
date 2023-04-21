@@ -1,5 +1,7 @@
 package com.serendipity.algo18bfprt;
 
+import com.serendipity.common.CommonUtil;
+
 import java.util.Arrays;
 
 /**
@@ -20,9 +22,10 @@ public class MaxTopK {
         int testTime = 500000;
         int maxSize = 100;
         int maxValue = 100;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
             int k = (int) (Math.random() * maxSize) + 1;
-            int[] arr = generateRandomArray(maxSize, maxValue);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
 
             int[] arr1 = new int[arr.length];
             System.arraycopy(arr, 0, arr1, 0, arr.length);
@@ -34,18 +37,20 @@ public class MaxTopK {
             int[] ans1 = maxTopK1(arr1, k);
             int[] ans2 = maxTopK2(arr2, k);
             int[] ans3 = maxTopK3(arr3, k);
-            if (!isEqual(ans1, ans2) || !isEqual(ans1, ans3)) {
-                System.out.println("出错了！");
-                printArray(ans1);
-                printArray(ans2);
-                printArray(ans3);
+            if (!CommonUtil.isEqual(ans1, ans2) || !CommonUtil.isEqual(ans1, ans3)) {
+                System.out.println("maxTopK failed");
+                CommonUtil.printArray(ans1);
+                CommonUtil.printArray(ans2);
+                CommonUtil.printArray(ans3);
+                success = false;
                 break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 对数器
-    // 排序、收集 O(n * logn) 时间复杂度
+    // 排序、收集 O(N * logN) 时间复杂度
     // k >= 1
     public static int[] maxTopK1(int[] arr, int k) {
         if (arr == null || arr.length == 0) {
@@ -62,7 +67,7 @@ public class MaxTopK {
         return ans;
     }
 
-    // 大顶堆 O(n + k*logn)
+    // 大根堆 O(N + K * logN)
     public static int[] maxTopK2(int[] arr, int k) {
         if (arr == null || arr.length == 0) {
             return new int[0];
@@ -76,13 +81,13 @@ public class MaxTopK {
             heapify(arr, i, len);
         }
 
-        // 只把前k个数放在arr末尾，然后收集，O(k * logn)
+        // 只把前K个数放在arr末尾，然后收集，O(K * logN)
         int heapSize = len;
-        swap(arr, 0, --heapSize);
+        CommonUtil.swap(arr, 0, --heapSize);
         int count = 1;
         while (heapSize > 0 && count < k) {
             heapify(arr, 0, heapSize);
-            swap(arr, 0, --heapSize);
+            CommonUtil.swap(arr, 0, --heapSize);
             count++;
         }
         int[] ans = new int[k];
@@ -94,7 +99,7 @@ public class MaxTopK {
 
     public static void heapInsert(int[] arr, int index) {
         while (arr[index] > arr[(index - 1) / 2]) {
-            swap(arr, index, (index - 1) / 2);
+            CommonUtil.swap(arr, index, (index - 1) / 2);
             index = (index - 1) / 2;
         }
     }
@@ -107,19 +112,13 @@ public class MaxTopK {
             if (largest == index) {
                 break;
             }
-            swap(arr, largest, index);
+            CommonUtil.swap(arr, largest, index);
             index = largest;
             left = index * 2 + 1;
         }
     }
 
-    public static void swap(int[] arr, int index1, int index2) {
-        int tmp = arr[index1];
-        arr[index1] = arr[index2];
-        arr[index2] = tmp;
-    }
-
-    // 时间复杂度O(n + k * logk)
+    // 时间复杂度 O(N + K * logK)
     public static int[] maxTopK3(int[] arr, int k) {
         if (arr == null || arr.length == 0) {
             return new int[0];
@@ -140,10 +139,10 @@ public class MaxTopK {
         for (; index < k; index++) {
             ans[index] = num;
         }
-        // O(k * logk)
+        // O(K * logK)
         Arrays.sort(ans);
         for (int left = 0, right = k - 1; left < right; left++, right--) {
-            swap(ans, left, right);
+            CommonUtil.swap(ans, left, right);
         }
         return ans;
     }
@@ -175,49 +174,13 @@ public class MaxTopK {
         int cur = left;
         while (cur < more) {
             if (arr[cur] < pivot) {
-                swap(arr, ++less, cur++);
+                CommonUtil.swap(arr, ++less, cur++);
             } else if (arr[cur] > pivot) {
-                swap(arr, cur, --more);
+                CommonUtil.swap(arr, cur, --more);
             } else {
                 cur++;
             }
         }
         return new int[]{less + 1, more - 1};
-    }
-
-    public static int[] generateRandomArray(int maxSize, int maxValue) {
-        int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
-        }
-        return arr;
-    }
-
-    public static boolean isEqual(int[] arr1, int[] arr2) {
-        if ((arr1 == null && arr2 != null) || (arr1 != null && arr2 == null)) {
-            return false;
-        }
-        if (arr1 == null && arr2 == null) {
-            return true;
-        }
-        if (arr1.length != arr2.length) {
-            return false;
-        }
-        for (int i = 0; i < arr1.length; i++) {
-            if (arr1[i] != arr2[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static void printArray(int[] arr) {
-        if (arr == null) {
-            return;
-        }
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
     }
 }

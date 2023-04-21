@@ -1,5 +1,8 @@
 package com.serendipity.algo18bfprt;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
 import java.util.PriorityQueue;
 
 /**
@@ -14,19 +17,26 @@ public class FindMinKth {
         int testTime = 1000000;
         int maxSize = 100;
         int maxValue = 100;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int[] arr = generateRandomArray(maxSize, maxValue);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
             int k = (int) (Math.random() * arr.length) + 1;
             int ans1 = minKth1(arr, k);
             int ans2 = minKth2(arr, k);
             int ans3 = minKth3(arr, k);
             if (ans1 != ans2 || ans2 != ans3) {
-                System.out.println("Oops!");
+                System.out.println(MessageFormat.format("minKth failed, k {0}, ans1 {1}, ans2 {2}, ans3 {3}",
+                        new String[]{String.valueOf(k), String.valueOf(ans1), String.valueOf(ans2),
+                                String.valueOf(ans3)}));
+                CommonUtil.printArray(arr);
+                success = false;
+                break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
-    // 大顶堆 O(n * logk)
+    // 大根堆 O(n * logk)
     public static int minKth1(int[] arr, int k) {
         PriorityQueue<Integer> maxHeap = new PriorityQueue<>((o1, o2) -> o2 - o1);
         for (int i = 0; i < k; i++) {
@@ -62,8 +72,8 @@ public class FindMinKth {
 
     // arr[left...right]范围上做荷兰国旗划分，找到位于index的数
     public static int process2(int[] arr, int left, int right, int index) {
+        // left == right == index
         if (left == right) {
-            // L = =R ==INDEX
             return arr[left];
         }
         // 不止一个数  L +  [0, R -L]
@@ -100,7 +110,7 @@ public class FindMinKth {
         arr[index2] = tmp;
     }
 
-    // bfprt算法 时间复杂度O(n)
+    // bfprt算法 时间复杂度O(N)
     public static int minKth3(int[] array, int k) {
         int[] arr = new int[array.length];
         System.arraycopy(array, 0, arr, 0, arr.length);
@@ -140,9 +150,9 @@ public class FindMinKth {
         int[] matrix = new int[size / 5 + offset];
         for (int i = 0; i < matrix.length; i++) {
             int first = left + i * 5;
-            // L ... L + 4
-            // L +5 ... L +9
-            // L +10....L+14
+            // left ... left + 4
+            // left + 5 ... left + 9
+            // left + 10....left + 14
             matrix[i] = getMedian(arr, first, Math.min(right, first + 4));
         }
         // marr中，找到中位数
@@ -163,13 +173,4 @@ public class FindMinKth {
             }
         }
     }
-
-    public static int[] generateRandomArray(int maxSize, int maxValue) {
-        int[] arr = new int[(int) (Math.random() * maxSize) + 1];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) (Math.random() * (maxValue + 1));
-        }
-        return arr;
-    }
-
 }
