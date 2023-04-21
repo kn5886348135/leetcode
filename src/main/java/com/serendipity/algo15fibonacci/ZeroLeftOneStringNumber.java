@@ -1,27 +1,41 @@
 package com.serendipity.algo15fibonacci;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
  * @description 给定一个数N，想象只由0和1两种字符，组成的所有长度为N的字符串
  *              如果某个字符串,任何0字符的左边都有1紧挨着,认为这个字符串达标
- * 返回有多少达标的字符串
+ *              返回有多少达标的字符串
  * @date 2023/03/17/17:44
  */
 public class ZeroLeftOneStringNumber {
 
     public static void main(String[] args) {
-        for (int i = 0; i != 20; i++) {
-            System.out.println(fibonacci1(i));
-            System.out.println(fibonacci2(i));
-            System.out.println(fibonacci3(i));
-            System.out.println("===================");
+        int testTimes = 20;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            int ans1 = fibonacci1(i);
+            int ans2 = fibonacci2(i);
+            int ans3 = fibonacci3(i);
+            if (ans1 != ans2 || ans1 != ans3) {
+                System.out.println(MessageFormat.format("i {0}, fibonacci1 {1}, fibonacci2 {2},fibonacci3 {3}",
+                        new String[]{String.valueOf(i), String.valueOf(ans1), String.valueOf(ans2),
+                                String.valueOf(ans3)}));
+                success = false;
+                break;
+            }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 斐波那契问题
     // 列出每一项，观察得出结论
     // 按照第一位是0或者1推理得出fn = fn-1 + fn-2
+    // 对数器 O(n)
     public static int fibonacci1(int n) {
         if (n < 1) {
             return 0;
@@ -39,6 +53,7 @@ public class ZeroLeftOneStringNumber {
         return process(i + 1, n) + process(i + 2, n);
     }
 
+    // 递归改成循环，利用中间变量
     public static int fibonacci2(int n) {
         if (n < 1) {
             return 0;
@@ -57,6 +72,7 @@ public class ZeroLeftOneStringNumber {
         return cur;
     }
 
+    // 类似斐波那契的递归优化
     public static int fibonacci3(int n) {
         if (n < 1) {
             return 0;
@@ -64,13 +80,14 @@ public class ZeroLeftOneStringNumber {
         if (n == 1 || n == 2) {
             return n;
         }
-        int[][] base = { { 1, 1 }, { 1, 0 } };
-        int[][] res = matrixPower(base, n - 2);
+        int[][] base = {{1, 1}, {1, 0}};
+        int[][] res = CommonUtil.matrixPower(base, n - 2);
         return 2 * res[0][0] + res[1][0];
     }
 
     // 用1 * 2的瓷砖，把N * 2的区域填满
     // 返回铺瓷砖的方法数
+    // 类似斐波那契的递归优化
     public static int fi(int n) {
         if (n < 1) {
             return 0;
@@ -78,41 +95,11 @@ public class ZeroLeftOneStringNumber {
         if (n == 1 || n == 2) {
             return 1;
         }
-        int[][] base = { { 1, 1 },
-                { 1, 0 } };
-        int[][] res = matrixPower(base, n - 2);
+        int[][] base = {
+                {1, 1},
+                {1, 0}
+        };
+        int[][] res = CommonUtil.matrixPower(base, n - 2);
         return res[0][0] + res[1][0];
     }
-
-    public static int[][] matrixPower(int[][] m, int p) {
-        int[][] res = new int[m.length][m[0].length];
-        for (int i = 0; i < res.length; i++) {
-            res[i][i] = 1;
-        }
-        int[][] tmp = m;
-        for (; p != 0; p >>= 1) {
-            if ((p & 1) != 0) {
-                res = product(res, tmp);
-            }
-            tmp = product(tmp, tmp);
-        }
-        return res;
-    }
-
-    // 两个矩阵乘完之后的结果返回
-    public static int[][] product(int[][] a, int[][] b) {
-        int n = a.length;
-        int m = b[0].length;
-        int k = a[0].length; // a的列数同时也是b的行数
-        int[][] ans = new int[n][m];
-        for(int i = 0 ; i < n; i++) {
-            for(int j = 0 ; j < m;j++) {
-                for(int c = 0; c < k; c++) {
-                    ans[i][j] += a[i][c] * b[c][j];
-                }
-            }
-        }
-        return ans;
-    }
-
 }
