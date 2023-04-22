@@ -87,7 +87,7 @@ public class TreeEqual {
         for (int i = 0; i < match.length; i++) {
             match[i] = list2.get(i);
         }
-        return getIndexOf(str, match) != -1;
+        return kmp(str, match) != -1;
     }
 
     public static List<String> preSerial(BinaryNode node) {
@@ -107,7 +107,7 @@ public class TreeEqual {
         }
     }
 
-    public static int getIndexOf(String[] str1, String[] str2) {
+    public static int kmp(String[] str1, String[] str2) {
         if (str1 == null || str2 == null || str1.length < 1 || str1.length < str2.length) {
             return -1;
         }

@@ -20,11 +20,11 @@ public class IsRotation {
             return false;
         }
         String str = str2 + str2;
-        return getIndexOf(str, str1) != -1;
+        return kmp(str, str1) != -1;
     }
 
     // KMP Algorithm
-    public static int getIndexOf(String str1, String str2) {
+    public static int kmp(String str1, String str2) {
         if (str1.length() < str2.length()) {
             return -1;
         }
