@@ -7,6 +7,7 @@ package com.serendipity.algo20segmenttree;
  * @date 2023/04/24/23:57
  */
 public class SegmentTreeFake {
+
     public int[] arr;
 
     public SegmentTreeFake(int[] origin) {

@@ -5,6 +5,7 @@ package com.serendipity.algo19morris;
  * @version 1.0
  * @description 给定一个二叉树，找出其最小深度。
  *              最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+ *              https://leetcode.cn/problems/minimum-depth-of-binary-tree/
  * @date 2023/03/18/22:06
  */
 public class LeetCode111 {

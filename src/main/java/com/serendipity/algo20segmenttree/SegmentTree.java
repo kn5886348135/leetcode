@@ -1,7 +1,5 @@
 package com.serendipity.algo20segmenttree;
 
-import com.serendipity.common.CommonUtil;
-
 /**
  * @author jack
  * @version 1.0

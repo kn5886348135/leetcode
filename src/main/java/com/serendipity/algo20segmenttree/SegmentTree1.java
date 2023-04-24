@@ -7,95 +7,68 @@ package com.serendipity.algo20segmenttree;
  * @date 2023/04/25/0:06
  */
 public class SegmentTree1 {
+
     private int[] max;
     private int[] change;
-    // 更新的懒标记，避免change[index] = 0产生无解，全部更新为0还是不更新
     private boolean[] update;
 
     public SegmentTree1(int size) {
-        int len = size + 1;
-        max = new int[len << 2];
-        change = new int[len << 2];
-        update = new boolean[len << 2];
+        int N = size + 1;
+        max = new int[N << 2];
+
+        change = new int[N << 2];
+        update = new boolean[N << 2];
     }
 
-    // index为线段树中的索引位置
-    // index位置的最大值等于左右子树的较大的那个
-    private void pushUp(int index) {
-        max[index] = Math.max(max[index << 1], max[index << 1 | 1]);
+    private void pushUp(int rt) {
+        max[rt] = Math.max(max[rt << 1], max[rt << 1 | 1]);
     }
 
     // ln表示左子树元素结点个数，rn表示右子树结点个数
-    private void pushDown(int index) {
-        if (update[index]) {
-            update[index << 1] = true;
-            update[index << 1 | 1] = true;
-            change[index << 1] = change[index];
-            change[index << 1 | 1] = change[index];
-            max[index << 1] = change[index];
-            max[index << 1 | 1] = change[index];
-            update[index] = false;
+    private void pushDown(int rt, int ln, int rn) {
+        if (update[rt]) {
+            update[rt << 1] = true;
+            update[rt << 1 | 1] = true;
+            change[rt << 1] = change[rt];
+            change[rt << 1 | 1] = change[rt];
+            max[rt << 1] = change[rt];
+            max[rt << 1 | 1] = change[rt];
+            update[rt] = false;
         }
     }
 
-    /**
-     * 将arr[left...right]的所有数据更新成target
-     *
-     * @param left       数组左边界
-     * @param right      数组右边界
-     * @param target     更新的值
-     * @param scopeLeft  线段树index节点的范围下线
-     * @param scopeRight 线段树index节点的范围上限
-     * @param index      线段树的节点
-     */
-    public void update(int left, int right, int target, int scopeLeft, int scopeRight, int index) {
-        // 当前任务不需要继续下发
-        if (left <= scopeLeft && scopeRight <= right) {
-            update[index] = true;
-            change[index] = target;
-            max[index] = target;
+    public void update(int L, int R, int C, int l, int r, int rt) {
+        if (L <= l && r <= R) {
+            update[rt] = true;
+            change[rt] = C;
+            max[rt] = C;
             return;
         }
-        // 当前任务需要下发
-        int mid = (scopeLeft + scopeRight) >> 1;
-        pushDown(index);
-        // 下发左子树
-        if (left <= mid) {
-            update(left, right, target, scopeLeft, mid, index << 1);
+        int mid = (l + r) >> 1;
+        pushDown(rt, mid - l + 1, r - mid);
+        if (L <= mid) {
+            update(L, R, C, l, mid, rt << 1);
         }
-        // 下发右子树
-        if (right > mid) {
-            update(left, right, target, mid + 1, scopeRight, index << 1 | 1);
+        if (R > mid) {
+            update(L, R, C, mid + 1, r, rt << 1 | 1);
         }
-        pushUp(index);
+        pushUp(rt);
     }
 
-    /**
-     * 查询arr[left...right]范围上的最大值
-     *
-     * @param left       arr的左边界
-     * @param right      arr的右边界
-     * @param scopeLeft  线段树index节点的左边界
-     * @param scopeRight 线段树index节点的右边界
-     * @param index      线段树idnex节点
-     * @return 查询结果
-     */
-    public int query(int left, int right, int scopeLeft, int scopeRight, int index) {
-        if (left <= scopeLeft && scopeRight <= right) {
-            return max[index];
+    public int query(int L, int R, int l, int r, int rt) {
+        if (L <= l && r <= R) {
+            return max[rt];
         }
-        int mid = (scopeLeft + scopeRight) >> 1;
-        pushDown(index);
-        int leftMax = 0;
-        int rightMax = 0;
-        // 下发左子树
-        if (left <= mid) {
-            leftMax = query(left, right, scopeLeft, mid, index << 1);
+        int mid = (l + r) >> 1;
+        pushDown(rt, mid - l + 1, r - mid);
+        int left = 0;
+        int right = 0;
+        if (L <= mid) {
+            left = query(L, R, l, mid, rt << 1);
         }
-        // 下发右子树
-        if (right > mid) {
-            rightMax = query(left, right, mid + 1, scopeRight, index << 1 | 1);
+        if (R > mid) {
+            right = query(L, R, mid + 1, r, rt << 1 | 1);
         }
-        return Math.max(leftMax, rightMax);
+        return Math.max(left, right);
     }
 }
