@@ -14,32 +14,33 @@ public class AddShortestEnd {
         // TODO 对数器
     }
 
+    // 最右回文边界到达右边界时，补充的字符最少
     public static String shortestEnd(String str) {
         if (str == null || str.length() == 0) {
             return null;
         }
 
         char[] chs = manacherString(str);
-        int[] pArr = new int[chs.length];
+        int[] arr = new int[chs.length];
         int c = -1;
         int right = -1;
         int maxContainsEnd = -1;
         for (int i = 0; i < chs.length; i++) {
-            pArr[i] = right > i ? Math.min(pArr[2 * c - i], right - i) : 1;
-            while (i + pArr[i] < chs.length && i - pArr[i] > -1) {
-                if (chs[i + pArr[i]] == chs[i - pArr[i]]) {
-                    pArr[i]++;
+            arr[i] = right > i ? Math.min(arr[2 * c - i], right - i) : 1;
+            while (i + arr[i] < chs.length && i - arr[i] > -1) {
+                if (chs[i + arr[i]] == chs[i - arr[i]]) {
+                    arr[i]++;
                 } else {
                     break;
                 }
             }
 
-            if (i + pArr[i] > right) {
-                right = i + pArr[i];
+            if (i + arr[i] > right) {
+                right = i + arr[i];
                 c = i;
             }
             if (right == chs.length) {
-                maxContainsEnd = pArr[i];
+                maxContainsEnd = arr[i];
                 break;
             }
         }
