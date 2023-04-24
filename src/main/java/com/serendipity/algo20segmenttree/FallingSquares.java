@@ -1,4 +1,4 @@
-package com.serendipity.algo19segmenttree;
+package com.serendipity.algo20segmenttree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
