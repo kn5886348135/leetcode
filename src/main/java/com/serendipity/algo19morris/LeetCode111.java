@@ -1,7 +1,5 @@
 package com.serendipity.algo19morris;
 
-import com.serendipity.common.BinaryNode;
-
 /**
  * @author jack
  * @version 1.0
@@ -15,19 +13,29 @@ public class LeetCode111 {
         // TODO 对数器
     }
 
+    public static class TreeNode {
+        public int value;
+        public TreeNode left;
+        public TreeNode right;
+
+        public TreeNode(int value) {
+            this.value = value;
+        }
+    }
+
     // 常规解法
-    public static int minDepth1(BinaryNode node) {
+    public static int minDepth1(TreeNode node) {
         if (node == null) {
             return 0;
         }
         return process(node);
     }
 
-    public static int process(BinaryNode node) {
+    public static int process(TreeNode node) {
         if (node.left == null && node.right == null) {
             return 1;
         }
-
+        // 左右子树起码有一个不为空
         int leftDepth = Integer.MAX_VALUE;
         if (node.left != null) {
             leftDepth = process(node.left);
@@ -39,13 +47,13 @@ public class LeetCode111 {
         return 1 + Math.min(leftDepth, rightDepth);
     }
 
-    public static int minDepth2(BinaryNode node) {
+    public static int minDepth2(TreeNode node) {
         if (node == null) {
             return 0;
         }
 
-        BinaryNode cur = node;
-        BinaryNode mostRight = null;
+        TreeNode cur = node;
+        TreeNode mostRight = null;
         int curLevel = 0;
         int minHeight = Integer.MAX_VALUE;
         while (cur != null) {
@@ -66,6 +74,7 @@ public class LeetCode111 {
                     cur = cur.left;
                     continue;
                 } else {
+                    // 第二次到达
                     if (mostRight.left == null) {
                         minHeight = Math.min(minHeight, curLevel);
                     }
@@ -74,6 +83,7 @@ public class LeetCode111 {
                     mostRight.right = null;
                 }
             } else {
+                // 只有一次到达
                 curLevel++;
             }
             // 没有左节点或者最右节点遍历完成

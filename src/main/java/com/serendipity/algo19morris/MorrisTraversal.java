@@ -11,6 +11,7 @@ import com.serendipity.common.BinaryNode;
 public class MorrisTraversal {
 
     public static void main(String[] args) {
+        // TODO 对数器
         BinaryNode head = new BinaryNode(4);
         head.left = new BinaryNode(2);
         head.right = new BinaryNode(6);
