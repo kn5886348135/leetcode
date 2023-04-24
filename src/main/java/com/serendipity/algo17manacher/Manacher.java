@@ -71,8 +71,8 @@ public class Manacher {
         int max = Integer.MIN_VALUE;
         // 0 1 2
         for (int i = 0; i < chs.length; i++) {
-            // right第一个违规的位置，i>= right
-            // i位置扩出来的答案，i位置扩的区域，至少是多大。
+            // i >= right，朴素算法
+            // i < right，可以利用上一个最右回文半径
             arr[i] = right > i ? Math.min(arr[2 * c - i], right - i) : 1;
             while (i + arr[i] < chs.length && i - arr[i] > -1) {
                 if (chs[i + arr[i]] == chs[i - arr[i]]) {
