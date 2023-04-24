@@ -19,11 +19,11 @@ import java.util.Arrays;
 public class MaxTopK {
 
     public static void main(String[] args) {
-        int testTime = 500000;
         int maxSize = 100;
         int maxValue = 100;
+        int testTimes = 500000;
         boolean success = true;
-        for (int i = 0; i < testTime; i++) {
+        for (int i = 0; i < testTimes; i++) {
             int k = (int) (Math.random() * maxSize) + 1;
             int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
 
@@ -77,6 +77,7 @@ public class MaxTopK {
         k = Math.min(len, k);
 
         // 从底向上建堆，时间复杂度O(N)
+        // 整个数组最大值放到堆顶
         for (int i = len - 1; i >= 0; i--) {
             heapify(arr, i, len);
         }
@@ -95,13 +96,6 @@ public class MaxTopK {
             ans[j] = arr[i];
         }
         return ans;
-    }
-
-    public static void heapInsert(int[] arr, int index) {
-        while (arr[index] > arr[(index - 1) / 2]) {
-            CommonUtil.swap(arr, index, (index - 1) / 2);
-            index = (index - 1) / 2;
-        }
     }
 
     public static void heapify(int[] arr, int index, int heapSize) {
@@ -136,6 +130,7 @@ public class MaxTopK {
                 ans[index++] = arr[i];
             }
         }
+        // 等于部分
         for (; index < k; index++) {
             ans[index] = num;
         }
