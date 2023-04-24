@@ -1,5 +1,7 @@
 package com.serendipity.algo19morris;
 
+import com.serendipity.common.BinaryNode;
+
 /**
  * @author jack
  * @version 1.0
@@ -10,28 +12,18 @@ package com.serendipity.algo19morris;
 public class LeetCode111 {
 
     public static void main(String[] args) {
-
-    }
-
-    public static class TreeNode {
-        public int value;
-        public TreeNode left;
-        public TreeNode right;
-
-        public TreeNode(int value) {
-            this.value = value;
-        }
+        // TODO 对数器
     }
 
     // 常规解法
-    public static int minDepth1(TreeNode node) {
+    public static int minDepth1(BinaryNode node) {
         if (node == null) {
             return 0;
         }
         return process(node);
     }
 
-    public static int process(TreeNode node) {
+    public static int process(BinaryNode node) {
         if (node.left == null && node.right == null) {
             return 1;
         }
@@ -47,13 +39,13 @@ public class LeetCode111 {
         return 1 + Math.min(leftDepth, rightDepth);
     }
 
-    public static int minDepth2(TreeNode node) {
+    public static int minDepth2(BinaryNode node) {
         if (node == null) {
             return 0;
         }
 
-        TreeNode cur = node;
-        TreeNode mostRight = null;
+        BinaryNode cur = node;
+        BinaryNode mostRight = null;
         int curLevel = 0;
         int minHeight = Integer.MAX_VALUE;
         while (cur != null) {

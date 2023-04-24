@@ -1,5 +1,7 @@
 package com.serendipity.algo19morris;
 
+import com.serendipity.common.BinaryNode;
+
 /**
  * @author jack
  * @version 1.0
@@ -9,13 +11,13 @@ package com.serendipity.algo19morris;
 public class MorrisTraversal {
 
     public static void main(String[] args) {
-        Node head = new Node(4);
-        head.left = new Node(2);
-        head.right = new Node(6);
-        head.left.left = new Node(1);
-        head.left.right = new Node(3);
-        head.right.left = new Node(5);
-        head.right.right = new Node(7);
+        BinaryNode head = new BinaryNode(4);
+        head.left = new BinaryNode(2);
+        head.right = new BinaryNode(6);
+        head.left.left = new BinaryNode(1);
+        head.left.right = new BinaryNode(3);
+        head.right.left = new BinaryNode(5);
+        head.right.right = new BinaryNode(7);
         printTree(head);
         morrisIn(head);
         morrisPre(head);
@@ -23,17 +25,7 @@ public class MorrisTraversal {
         printTree(head);
     }
 
-    public static class Node {
-        public int value;
-        public Node left;
-        public Node right;
-
-        public Node(int value) {
-            this.value = value;
-        }
-    }
-
-    public static void process(Node root) {
+    public static void process(BinaryNode root) {
         if (root == null) {
             return;
         }
@@ -52,12 +44,12 @@ public class MorrisTraversal {
     //	    b.如果mostRight的右指针指向cur，让其指向null，
     //	      然后cur向右移动(cur = cur.right)
     //3）cur为空时遍历停止
-    public static void morrisTraversal(Node head) {
+    public static void morrisTraversal(BinaryNode head) {
         if (head == null) {
             return;
         }
-        Node cur = head;
-        Node mostRight = null;
+        BinaryNode cur = head;
+        BinaryNode mostRight = null;
         while (cur != null) {
             mostRight = cur.left;
             // 有左节点
@@ -83,12 +75,12 @@ public class MorrisTraversal {
     }
 
     // morris先序遍历
-    public static void morrisPre(Node head) {
+    public static void morrisPre(BinaryNode head) {
         if (head == null) {
             return;
         }
-        Node cur = head;
-        Node mostRight = null;
+        BinaryNode cur = head;
+        BinaryNode mostRight = null;
         while (cur != null) {
             mostRight = cur.left;
             // 有左节点
@@ -99,7 +91,7 @@ public class MorrisTraversal {
                 }
                 // 最右节点为空，第一次遍历到最右节点
                 if (mostRight.right == null) {
-                    System.out.print(cur.value + " ");
+                    System.out.print(cur.value + "\t");
                     // 指向cur
                     mostRight.right = cur;
                     cur = cur.left;
@@ -109,7 +101,7 @@ public class MorrisTraversal {
                     mostRight.right = null;
                 }
             } else {
-                System.out.print(cur.value + " ");
+                System.out.print(cur.value + "\t");
             }
             // 没有左节点或者右节点遍历完成
             cur = cur.right;
@@ -118,12 +110,12 @@ public class MorrisTraversal {
     }
 
     // morris中序
-    public static void morrisIn(Node head) {
+    public static void morrisIn(BinaryNode head) {
         if (head == null) {
             return;
         }
-        Node cur = head;
-        Node mostRight = null;
+        BinaryNode cur = head;
+        BinaryNode mostRight = null;
         while (cur != null) {
             mostRight = cur.left;
             // 有左节点
@@ -151,12 +143,12 @@ public class MorrisTraversal {
     }
 
     // morris后序
-    public static void morrisPos(Node head) {
+    public static void morrisPos(BinaryNode head) {
         if (head == null) {
             return;
         }
-        Node cur = head;
-        Node mostRight = null;
+        BinaryNode cur = head;
+        BinaryNode mostRight = null;
         while (cur != null) {
             mostRight = cur.left;
             // 有左节点
@@ -184,10 +176,10 @@ public class MorrisTraversal {
         System.out.println();
     }
 
-    public static void printEdge(Node head) {
+    public static void printEdge(BinaryNode head) {
         // 翻转链表
-        Node tail = reverseEdge(head);
-        Node cur = tail;
+        BinaryNode tail = reverseEdge(head);
+        BinaryNode cur = tail;
         while (cur != null) {
             System.out.print(cur.value + " ");
             cur = cur.right;
@@ -197,9 +189,9 @@ public class MorrisTraversal {
     }
 
     // 翻转链表
-    public static Node reverseEdge(Node from) {
-        Node pre = null;
-        Node next = null;
+    public static BinaryNode reverseEdge(BinaryNode from) {
+        BinaryNode pre = null;
+        BinaryNode next = null;
         while (from != null) {
             next = from.right;
             from.right = pre;
@@ -209,13 +201,13 @@ public class MorrisTraversal {
         return pre;
     }
 
-    public static void printTree(Node head) {
+    public static void printTree(BinaryNode head) {
         System.out.println("Binary Tree");
         printInOrder(head, 0, "H", 17);
         System.out.println();
     }
 
-    public static void printInOrder(Node head, int height, String to, int len) {
+    public static void printInOrder(BinaryNode head, int height, String to, int len) {
         if (head == null) {
             return;
         }
@@ -239,13 +231,13 @@ public class MorrisTraversal {
         return buf.toString();
     }
 
-    // 判断是否平衡二叉树
-    public static boolean isBST(Node head) {
+    // 判断是否搜索二叉树
+    public static boolean isBST(BinaryNode head) {
         if (head == null) {
             return true;
         }
-        Node cur = head;
-        Node mostRight = null;
+        BinaryNode<Integer> cur = head;
+        BinaryNode mostRight = null;
         Integer pre = null;
         boolean ans = true;
         while (cur != null) {
