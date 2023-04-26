@@ -1,4 +1,4 @@
-package com.serendipity.algo22suffixarray;
+package com.serendipity.algo24suffixarray;
 
 /**
  * @author jack
