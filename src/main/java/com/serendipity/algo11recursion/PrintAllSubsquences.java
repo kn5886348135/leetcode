@@ -14,6 +14,17 @@ import java.util.stream.Collectors;
  */
 public class PrintAllSubsquences {
 
+    public static void main(String[] args) {
+        String test = "acccc";
+        List<String> result1 = subs(test);
+        List<String> result2 = subsNoRepeat(test);
+        String str1 = result1.stream().collect(Collectors.joining(""));
+        System.out.println(str1);
+        System.out.println("=================");
+        String str2 = result2.stream().collect(Collectors.joining(""));
+        System.out.println(str2);
+    }
+
     // 字符串的全部子序列，非连续
     public static List<String> subs(String str) {
         char[] chs = str.toCharArray();
@@ -55,16 +66,5 @@ public class PrintAllSubsquences {
         }
         process2(chs, index + 1, set, path);
         process2(chs, index + 1, set, path + chs[index]);
-    }
-
-    public static void main(String[] args) {
-        String test = "acccc";
-        List<String> result1 = subs(test);
-        List<String> result2 = subsNoRepeat(test);
-        String str1 = result1.stream().collect(Collectors.joining(""));
-        System.out.println(str1);
-        System.out.println("=================");
-        String str2 = result2.stream().collect(Collectors.joining(""));
-        System.out.println(str2);
     }
 }

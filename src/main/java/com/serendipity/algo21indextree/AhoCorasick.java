@@ -1,4 +1,4 @@
-package com.serendipity.algo20indextree;
+package com.serendipity.algo21indextree;
 
 import java.util.LinkedList;
 import java.util.Queue;
