@@ -11,26 +11,6 @@ package com.serendipity.algo21indextree;
  */
 public class IndexTree {
 
-    public static void main(String[] args) {
-        int len = 100;
-        int value = 100;
-        int testTime = 2000000;
-        IndexTree tree = new IndexTree(len);
-        Verify test = new Verify(len);
-        for (int i = 0; i < testTime; i++) {
-            int index = (int) (Math.random() * len) + 1;
-            if (Math.random() <= 0.5) {
-                int add = (int) (Math.random() * value);
-                tree.add(index, add);
-                test.add(index, add);
-            } else {
-                if (tree.sum(index) != test.sum(index)) {
-                    System.out.println("Oops!");
-                }
-            }
-        }
-    }
-
     private int[] tree;
     private int len;
 
@@ -56,28 +36,6 @@ public class IndexTree {
         while (index <= len) {
             tree[index] += target;
             index += index & -index;
-        }
-    }
-
-    public static class Verify {
-        private int[] nums;
-        private int len;
-
-        public Verify(int len) {
-            this.len = len + 1;
-            this.nums = new int[this.len + 1];
-        }
-
-        public int sum(int index) {
-            int res = 0;
-            for (int i = 1; i <= index; i++) {
-                res += nums[i];
-            }
-            return res;
-        }
-
-        public void add(int index, int target) {
-            nums[index] += target;
         }
     }
 }

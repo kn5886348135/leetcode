@@ -4,15 +4,9 @@ package com.serendipity.algo21indextree;
  * @author jack
  * @version 1.0
  * @description 二维indexTree
- *              https://leetcode.com/problems/range-sum-query-2d-mutable
- *              付费题目
  * @date 2023/03/19/21:44
  */
 public class IndexTree2D {
-
-    public static void main(String[] args) {
-
-    }
 
     private int[][] tree;
     private int[][] nums;
