@@ -1,5 +1,7 @@
 package com.serendipity.algo23sortedlist;
 
+import org.springframework.util.StopWatch;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -11,71 +13,68 @@ import java.util.LinkedList;
  *              people[i] = [hi, ki] 表示第 i 个人的身高为 hi ，前面 正好 有 ki个身高大于或等于 hi 的人。
  *              请你重新构造并返回输入数组 people 所表示的队列。返回的队列应该格式化为数组 queue ，其中
  *              queue[j] = [hj, kj] 是队列中第 j 个人的属性（queue[0] 是排在队列前面的人）。
+ *              https://leetcode.com/problems/queue-reconstruction-by-height/
  * @date 2023/03/23/19:55
  */
 public class LeetCode406 {
 
+    // LinkedList的插入和get效率不如SBTree
+    // LinkedList需要找到index所在的位置之后才能插入或者读取，时间复杂度O(N)
+    // SBTree是平衡搜索二叉树，所以插入或者读取时间复杂度都是O(logN)
     public static void main(String[] args) {
-        // 功能测试
-        int test = 10000;
         int max = 1000000;
-        boolean pass = true;
+        int testTimes = 10000;
+        boolean success = true;
         LinkedList<Integer> list = new LinkedList<>();
         SBTree sbtree = new SBTree();
-        for (int i = 0; i < test; i++) {
+        for (int i = 0; i < testTimes; i++) {
             int randomIndex = (int) (Math.random() * (i + 1));
             int randomValue = (int) (Math.random() * (max + 1));
             list.add(randomIndex, randomValue);
             sbtree.insert(randomIndex, randomValue);
         }
-        for (int i = 0; i < test; i++) {
+        for (int i = 0; i < testTimes; i++) {
             if (list.get(i) != sbtree.get(i)) {
-                pass = false;
+                System.out.println("size balanced tree failed");
+                success = false;
                 break;
             }
         }
-        System.out.println("功能测试是否通过 : " + pass);
+        System.out.println(success ? "success" : "failed");
 
         // 性能测试
-        test = 50000;
+        testTimes = 50000;
         list = new LinkedList<>();
         sbtree = new SBTree();
-        long start = 0;
-        long end = 0;
 
-        start = System.currentTimeMillis();
-        for (int i = 0; i < test; i++) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start("LinkedList insert");
+        for (int i = 0; i < testTimes; i++) {
             int randomIndex = (int) (Math.random() * (i + 1));
             int randomValue = (int) (Math.random() * (max + 1));
             list.add(randomIndex, randomValue);
         }
-        end = System.currentTimeMillis();
-        System.out.println("LinkedList插入总时长(毫秒) ： " + (end - start));
-
-        start = System.currentTimeMillis();
-        for (int i = 0; i < test; i++) {
+        stopWatch.stop();
+        stopWatch.start("LinkedList get");
+        for (int i = 0; i < testTimes; i++) {
             int randomIndex = (int) (Math.random() * (i + 1));
             list.get(randomIndex);
         }
-        end = System.currentTimeMillis();
-        System.out.println("LinkedList读取总时长(毫秒) : " + (end - start));
-
-        start = System.currentTimeMillis();
-        for (int i = 0; i < test; i++) {
+        stopWatch.stop();
+        stopWatch.start("size balanced tree insert");
+        for (int i = 0; i < testTimes; i++) {
             int randomIndex = (int) (Math.random() * (i + 1));
             int randomValue = (int) (Math.random() * (max + 1));
             sbtree.insert(randomIndex, randomValue);
         }
-        end = System.currentTimeMillis();
-        System.out.println("SBTree插入总时长(毫秒) : " + (end - start));
-
-        start = System.currentTimeMillis();
-        for (int i = 0; i < test; i++) {
+        stopWatch.stop();
+        stopWatch.start("size balanced tree get");
+        for (int i = 0; i < testTimes; i++) {
             int randomIndex = (int) (Math.random() * (i + 1));
             sbtree.get(randomIndex);
         }
-        end = System.currentTimeMillis();
-        System.out.println("SBTree读取总时长(毫秒) :  " + (end - start));
+        stopWatch.stop();
+        System.out.println(stopWatch.prettyPrint());
     }
 
     public static int[][] reconstructQueue1(int[][] people) {
@@ -84,16 +83,16 @@ public class LeetCode406 {
         for (int i = 0; i < len; i++) {
             units[i] = new Unit(people[i][0], people[i][1]);
         }
-        Arrays.sort(units, (o1, o2) -> (o1.h != o2.h ? o2.h - o1.h : o1.k - o2.k));
+        Arrays.sort(units, (o1, o2) -> o1.height != o2.height ? o2.height - o1.height : o1.greater - o2.greater);
         ArrayList<Unit> arrayList = new ArrayList<>();
         for (Unit unit : units) {
-            arrayList.add(unit.k, unit);
+            arrayList.add(unit.greater, unit);
         }
         int[][] ans = new int[len][2];
         int index = 0;
         for (Unit unit : arrayList) {
-            ans[index][0] = unit.h;
-            ans[index++][1] = unit.k;
+            ans[index][0] = unit.height;
+            ans[index++][1] = unit.greater;
         }
         return ans;
     }
@@ -104,28 +103,28 @@ public class LeetCode406 {
         for (int i = 0; i < len; i++) {
             units[i] = new Unit(people[i][0], people[i][1]);
         }
-        Arrays.sort(units, (o1, o2) -> (o1.h != o2.h ? o2.h - o1.h : o1.k - o2.k));
+        Arrays.sort(units, (o1, o2) -> o1.height != o2.height ? o2.height - o1.height : o1.greater - o2.greater);
         SBTree tree = new SBTree();
         for (int i = 0; i < len; i++) {
-            tree.insert(units[i].k, i);
+            tree.insert(units[i].greater, i);
         }
         LinkedList<Integer> allIndexes = tree.allIndexes();
         int[][] ans = new int[len][2];
         int index = 0;
         for (Integer arri : allIndexes) {
-            ans[index][0] = units[arri].h;
-            ans[index++][1] = units[arri].k;
+            ans[index][0] = units[arri].height;
+            ans[index++][1] = units[arri].greater;
         }
         return ans;
     }
 
     public static class Unit {
-        public int h;
-        public int k;
+        public int height;
+        public int greater;
 
         public Unit(int height, int greater) {
-            h = height;
-            k = greater;
+            this.height = height;
+            this.greater = greater;
         }
     }
 
@@ -237,8 +236,8 @@ public class LeetCode406 {
             if (this.root == null) {
                 this.root = cur;
             } else {
-                if (index <= root.size) {
-                    root = insert(root, index, cur);
+                if (index <= this.root.size) {
+                    this.root = insert(this.root, index, cur);
                 }
             }
         }
@@ -250,9 +249,8 @@ public class LeetCode406 {
 
         public LinkedList<Integer> allIndexes() {
             LinkedList<Integer> indexes = new LinkedList<>();
-            process(root, indexes);
+            process(this.root, indexes);
             return indexes;
         }
     }
-
 }

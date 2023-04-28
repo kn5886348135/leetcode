@@ -1,7 +1,9 @@
 package com.serendipity.algo23sortedlist;
 
+import org.springframework.util.StopWatch;
+
+import java.text.MessageFormat;
 import java.util.TreeMap;
-import java.util.UUID;
 
 /**
  * @author jack
@@ -12,399 +14,311 @@ import java.util.UUID;
 public class Test {
 
     public static void main(String[] args) {
-        System.out.println(UUID.randomUUID().toString().replace("-", ""));
-//        functionTest();
-//        System.out.println("======");
-//        performanceTest();
+        functionTest();
+        performanceTest();
     }
 
     public static void functionTest() {
-        System.out.println("功能测试开始");
         TreeMap<Integer, Integer> treeMap = new TreeMap<>();
         AVLTree.AVLTreeMap<Integer, Integer> avl = new AVLTree.AVLTreeMap<>();
         SizeBalancedTree.SizeBalancedTreeMap<Integer, Integer> sbt = new SizeBalancedTree.SizeBalancedTreeMap<>();
         SkipList.SkipListMap<Integer, Integer> skip = new SkipList.SkipListMap<>();
-        int maxK = 500;
-        int maxV = 50000;
-        int testTime = 1000000;
-        for (int i = 0; i < testTime; i++) {
-            int addK = (int) (Math.random() * maxK);
-            int addV = (int) (Math.random() * maxV);
+        int maxKey = 500;
+        int maxValue = 50000;
+        int testTimes = 1000000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            int addK = (int) (Math.random() * maxKey);
+            int addV = (int) (Math.random() * maxValue);
             treeMap.put(addK, addV);
             avl.put(addK, addV);
             sbt.put(addK, addV);
             skip.put(addK, addV);
 
-            int removeK = (int) (Math.random() * maxK);
+            int removeK = (int) (Math.random() * maxKey);
             treeMap.remove(removeK);
             avl.remove(removeK);
             sbt.remove(removeK);
             skip.remove(removeK);
 
-            int querryK = (int) (Math.random() * maxK);
-            if (treeMap.containsKey(querryK) != avl.containsKey(querryK)
-                    || sbt.containsKey(querryK) != skip.containsKey(querryK)
-                    || treeMap.containsKey(querryK) != sbt.containsKey(querryK)) {
-                System.out.println("containsKey Oops");
-                System.out.println(treeMap.containsKey(querryK));
-                System.out.println(avl.containsKey(querryK));
-                System.out.println(sbt.containsKey(querryK));
-                System.out.println(skip.containsKey(querryK));
+            int queryKey = (int) (Math.random() * maxKey);
+            boolean ans1 = treeMap.containsKey(queryKey);
+            boolean ans2 = avl.containsKey(queryKey);
+            boolean ans3 = sbt.containsKey(queryKey);
+            boolean ans4 = skip.containsKey(queryKey);
+            if (ans1 != ans2 || ans1 != ans3 || ans1 != ans4) {
+                System.out.println(MessageFormat.format("containsKey failed, query key {0}, treeMap {1}, avl {2}, sbt" +
+                        " {3}, skipList {4}", new String[]{String.valueOf(queryKey), String.valueOf(ans1),
+                        String.valueOf(ans2), String.valueOf(ans3), String.valueOf(ans4)}));
+                success = false;
                 break;
             }
 
-            if (treeMap.containsKey(querryK)) {
-                int v1 = treeMap.get(querryK);
-                int v2 = avl.get(querryK);
-                int v3 = sbt.get(querryK);
-                int v4 = skip.get(querryK);
-                if (v1 != v2 || v3 != v4 || v1 != v3) {
-                    System.out.println("get Oops");
-                    System.out.println(treeMap.get(querryK));
-                    System.out.println(avl.get(querryK));
-                    System.out.println(sbt.get(querryK));
-                    System.out.println(skip.get(querryK));
+            if (ans1) {
+                int get1 = treeMap.get(queryKey);
+                int get2 = avl.get(queryKey);
+                int get3 = sbt.get(queryKey);
+                int get4 = skip.get(queryKey);
+                if (get1 != get2 || get1 != get3 || get1 != get4) {
+                    System.out.println(MessageFormat.format("get failed, query key {0}, treeMap {1}, avl {2}, sbt " +
+                            "{3}, skipList {4}", new String[]{String.valueOf(queryKey), String.valueOf(get1),
+                            String.valueOf(get2), String.valueOf(get3), String.valueOf(get4)}));
+                    success = false;
                     break;
                 }
-                Integer f1 = treeMap.floorKey(querryK);
-                Integer f2 = avl.floorKey(querryK);
-                Integer f3 = sbt.floorKey(querryK);
-                Integer f4 = skip.floorKey(querryK);
-                if (f1 == null && (f2 != null || f3 != null || f4 != null)) {
-                    System.out.println("floorKey Oops");
-                    System.out.println(treeMap.floorKey(querryK));
-                    System.out.println(avl.floorKey(querryK));
-                    System.out.println(sbt.floorKey(querryK));
-                    System.out.println(skip.floorKey(querryK));
+                Integer floorKey1 = treeMap.floorKey(queryKey);
+                Integer floorKey2 = avl.floorKey(queryKey);
+                Integer floorKey3 = sbt.floorKey(queryKey);
+                Integer floorKey4 = skip.floorKey(queryKey);
+                if (floorKey1 == null && (floorKey2 != null || floorKey3 != null || floorKey4 != null)) {
+                    System.out.println(MessageFormat.format("floorKey failed, query key {0}, treeMap {1}, avl {2}, " +
+                            "sbt {3}, skipList {4}", new String[]{String.valueOf(queryKey), String.valueOf(floorKey1)
+                            , String.valueOf(floorKey2), String.valueOf(floorKey3), String.valueOf(floorKey4)}));
+                    success = false;
                     break;
                 }
-                if (f1 != null && (f2 == null || f3 == null || f4 == null)) {
-                    System.out.println("floorKey Oops");
-                    System.out.println(treeMap.floorKey(querryK));
-                    System.out.println(avl.floorKey(querryK));
-                    System.out.println(sbt.floorKey(querryK));
-                    System.out.println(skip.floorKey(querryK));
+                if (floorKey1 != null && (floorKey2 == null || floorKey3 == null || floorKey4 == null)) {
+                    System.out.println(MessageFormat.format("floorKey failed, query key {0}, treeMap {1}, avl {2}, sbt " +
+                            "{3}, skipList {4}", new String[]{String.valueOf(queryKey), String.valueOf(floorKey1),
+                            String.valueOf(floorKey2), String.valueOf(floorKey3), String.valueOf(floorKey4)}));
+                    success = false;
                     break;
                 }
-                if (f1 != null) {
-                    int ans1 = f1;
-                    int ans2 = f2;
-                    int ans3 = f3;
-                    int ans4 = f4;
-                    if (ans1 != ans2 || ans3 != ans4 || ans1 != ans3) {
-                        System.out.println("floorKey Oops");
-                        System.out.println(treeMap.floorKey(querryK));
-                        System.out.println(avl.floorKey(querryK));
-                        System.out.println(sbt.floorKey(querryK));
-                        System.out.println(skip.floorKey(querryK));
+                if (floorKey1 != null) {
+                    if (!floorKey1.equals(floorKey2) || !floorKey1.equals(floorKey3) || !floorKey1.equals(floorKey4)) {
+                        System.out.println(MessageFormat.format("floorKey failed, query key {0}, treeMap {1}, avl " +
+                                "{2}, sbt {3}, skipList {4}", new String[]{String.valueOf(queryKey),
+                                String.valueOf(floorKey1), String.valueOf(floorKey2), String.valueOf(floorKey3),
+                                String.valueOf(floorKey4)}));
+                        success = false;
                         break;
                     }
                 }
-                f1 = treeMap.ceilingKey(querryK);
-                f2 = avl.ceilingKey(querryK);
-                f3 = sbt.ceilingKey(querryK);
-                f4 = skip.ceilingKey(querryK);
-                if (f1 == null && (f2 != null || f3 != null || f4 != null)) {
-                    System.out.println("ceilingKey Oops");
-                    System.out.println(treeMap.ceilingKey(querryK));
-                    System.out.println(avl.ceilingKey(querryK));
-                    System.out.println(sbt.ceilingKey(querryK));
-                    System.out.println(skip.ceilingKey(querryK));
+                Integer ceilingKey1 = treeMap.ceilingKey(queryKey);
+                Integer ceilingKey2 = avl.ceilingKey(queryKey);
+                Integer ceilingKey3 = sbt.ceilingKey(queryKey);
+                Integer ceilingKey4 = skip.ceilingKey(queryKey);
+                if (ceilingKey1 == null && (ceilingKey2 != null || ceilingKey3 != null || ceilingKey4 != null)) {
+                    System.out.println(MessageFormat.format("ceilingKey failed, query key {0}, treeMap {1}, avl {2}, " +
+                            "sbt {3}, skipList {4}", new String[]{String.valueOf(queryKey),
+                            String.valueOf(ceilingKey1), String.valueOf(ceilingKey2), String.valueOf(ceilingKey3),
+                            String.valueOf(ceilingKey4)}));
+                    success = false;
                     break;
                 }
-                if (f1 != null && (f2 == null || f3 == null || f4 == null)) {
-                    System.out.println("ceilingKey Oops");
-                    System.out.println(treeMap.ceilingKey(querryK));
-                    System.out.println(avl.ceilingKey(querryK));
-                    System.out.println(sbt.ceilingKey(querryK));
-                    System.out.println(skip.ceilingKey(querryK));
+                if (ceilingKey1 != null && (ceilingKey2 == null || ceilingKey3 == null || ceilingKey4 == null)) {
+                    System.out.println(MessageFormat.format("ceilingKey failed, query key {0}, treeMap {1}, avl {2}, " +
+                            "sbt {3}, skipList {4}", new String[]{String.valueOf(queryKey),
+                            String.valueOf(ceilingKey1), String.valueOf(ceilingKey2), String.valueOf(ceilingKey3),
+                            String.valueOf(ceilingKey4)}));
+                    success = false;
                     break;
                 }
-                if (f1 != null) {
-                    int ans1 = f1;
-                    int ans2 = f2;
-                    int ans3 = f3;
-                    int ans4 = f4;
-                    if (ans1 != ans2 || ans3 != ans4 || ans1 != ans3) {
-                        System.out.println("ceilingKey Oops");
-                        System.out.println(treeMap.ceilingKey(querryK));
-                        System.out.println(avl.ceilingKey(querryK));
-                        System.out.println(sbt.ceilingKey(querryK));
-                        System.out.println(skip.ceilingKey(querryK));
+                if (ceilingKey1 != null) {
+                    if (!ceilingKey1.equals(ceilingKey2) || !ceilingKey1.equals(ceilingKey3) || !ceilingKey1.equals(ceilingKey4)) {
+                        System.out.println(MessageFormat.format("ceilingKey failed, query key {0}, treeMap {1}, avl " +
+                                "{2}, sbt {3}, skipList {4}", new String[]{String.valueOf(queryKey),
+                                String.valueOf(ceilingKey1), String.valueOf(ceilingKey2), String.valueOf(ceilingKey3)
+                                , String.valueOf(ceilingKey4)}));
+                        success = false;
                         break;
                     }
                 }
-
             }
 
-            Integer f1 = treeMap.firstKey();
-            Integer f2 = avl.firstKey();
-            Integer f3 = sbt.firstKey();
-            Integer f4 = skip.firstKey();
-            if (f1 == null && (f2 != null || f3 != null || f4 != null)) {
-                System.out.println("firstKey Oops");
-                System.out.println(treeMap.firstKey());
-                System.out.println(avl.firstKey());
-                System.out.println(sbt.firstKey());
-                System.out.println(skip.firstKey());
+            Integer firstKey1 = treeMap.firstKey();
+            Integer firstKey2 = avl.firstKey();
+            Integer firstKey3 = sbt.firstKey();
+            Integer firstKey4 = skip.firstKey();
+            if (firstKey1 == null && (firstKey2 != null || firstKey3 != null || firstKey4 != null)) {
+                System.out.println(MessageFormat.format("firstKey failed, query key {0}, treeMap {1}, avl {2}, sbt " +
+                        "{3}, skipList {4}", new String[]{String.valueOf(queryKey), String.valueOf(firstKey1),
+                        String.valueOf(firstKey2), String.valueOf(firstKey3), String.valueOf(firstKey4)}));
+                success = false;
                 break;
             }
-            if (f1 != null && (f2 == null || f3 == null || f4 == null)) {
-                System.out.println("firstKey Oops");
-                System.out.println(treeMap.firstKey());
-                System.out.println(avl.firstKey());
-                System.out.println(sbt.firstKey());
-                System.out.println(skip.firstKey());
+            if (firstKey1 != null && (firstKey2 == null || firstKey3 == null || firstKey4 == null)) {
+                System.out.println(MessageFormat.format("firstKey failed, query key {0}, treeMap {1}, avl {2}, sbt " +
+                        "{3}, skipList {4}", new String[]{String.valueOf(queryKey), String.valueOf(firstKey1),
+                        String.valueOf(firstKey2), String.valueOf(firstKey3), String.valueOf(firstKey4)}));
+                success = false;
                 break;
             }
-            if (f1 != null) {
-                int ans1 = f1;
-                int ans2 = f2;
-                int ans3 = f3;
-                int ans4 = f4;
-                if (ans1 != ans2 || ans3 != ans4 || ans1 != ans3) {
-                    System.out.println("firstKey Oops");
-                    System.out.println(treeMap.firstKey());
-                    System.out.println(avl.firstKey());
-                    System.out.println(sbt.firstKey());
-                    System.out.println(skip.firstKey());
+            if (firstKey1 != null) {
+                if (!firstKey1.equals(firstKey2) || !firstKey1.equals(firstKey3) || !firstKey1.equals(firstKey4)) {
+                    System.out.println(MessageFormat.format("firstKey failed, query key {0}, treeMap {1}, avl {2}, sbt " +
+                            "{3}, skipList {4}", new String[]{String.valueOf(queryKey), String.valueOf(firstKey1),
+                            String.valueOf(firstKey2), String.valueOf(firstKey3), String.valueOf(firstKey4)}));
+                    success = false;
                     break;
                 }
             }
 
-            f1 = treeMap.lastKey();
-            f2 = avl.lastKey();
-            f3 = sbt.lastKey();
-            f4 = skip.lastKey();
-            if (f1 == null && (f2 != null || f3 != null || f4 != null)) {
-                System.out.println("lastKey Oops");
-                System.out.println(treeMap.lastKey());
-                System.out.println(avl.lastKey());
-                System.out.println(sbt.lastKey());
-                System.out.println(skip.lastKey());
+            Integer lastKey1 = treeMap.lastKey();
+            Integer lastKey2 = avl.lastKey();
+            Integer lastKey3 = sbt.lastKey();
+            Integer lastKey4 = skip.lastKey();
+            if (lastKey1 == null && (lastKey2 != null || lastKey3 != null || lastKey4 != null)) {
+                System.out.println(MessageFormat.format("lastKey failed, query key {0}, treeMap {1}, avl {2}, sbt " +
+                        "{3}, skipList {4}", new String[]{String.valueOf(queryKey), String.valueOf(lastKey1),
+                        String.valueOf(lastKey2), String.valueOf(lastKey3), String.valueOf(lastKey4)}));
+                success = false;
                 break;
             }
-            if (f1 != null && (f2 == null || f3 == null || f4 == null)) {
-                System.out.println("firstKey Oops");
-                System.out.println(treeMap.lastKey());
-                System.out.println(avl.lastKey());
-                System.out.println(sbt.lastKey());
-                System.out.println(skip.lastKey());
+            if (lastKey1 != null && (lastKey2 == null || lastKey3 == null || lastKey4 == null)) {
+                System.out.println(MessageFormat.format("lastKey failed, query key {0}, treeMap {1}, avl {2}, sbt " +
+                        "{3}, skipList {4}", new String[]{String.valueOf(queryKey), String.valueOf(lastKey1),
+                        String.valueOf(lastKey2), String.valueOf(lastKey3), String.valueOf(lastKey4)}));
+                success = false;
                 break;
             }
-            if (f1 != null) {
-                int ans1 = f1;
-                int ans2 = f2;
-                int ans3 = f3;
-                int ans4 = f4;
-                if (ans1 != ans2 || ans3 != ans4 || ans1 != ans3) {
-                    System.out.println("lastKey Oops");
-                    System.out.println(treeMap.lastKey());
-                    System.out.println(avl.lastKey());
-                    System.out.println(sbt.lastKey());
-                    System.out.println(skip.lastKey());
+            if (lastKey1 != null) {
+                if (!lastKey1.equals(lastKey2) || !lastKey1.equals(lastKey3) || !lastKey1.equals(lastKey4)) {
+                    System.out.println(MessageFormat.format("lastKey failed, query key {0}, treeMap {1}, avl {2}, sbt " +
+                            "{3}, skipList {4}", new String[]{String.valueOf(queryKey), String.valueOf(lastKey1),
+                            String.valueOf(lastKey2), String.valueOf(lastKey3), String.valueOf(lastKey4)}));
+                    success = false;
                     break;
                 }
             }
             if (treeMap.size() != avl.size() || sbt.size() != skip.size() || treeMap.size() != sbt.size()) {
-                System.out.println("size Oops");
-                System.out.println(treeMap.size());
-                System.out.println(avl.size());
-                System.out.println(sbt.size());
-                System.out.println(skip.size());
+                System.out.println(MessageFormat.format("size failed, treeMap {0}, avl {1}, sbt {2}, skipList {3}",
+                        new String[]{String.valueOf(treeMap.size()), String.valueOf(avl.size()),
+                                String.valueOf(sbt.size()), String.valueOf(skip.size())}));
+                success = false;
                 break;
             }
         }
-        System.out.println("功能测试结束");
+        System.out.println(success ? "success" : "failed");
     }
 
     public static void performanceTest() {
-        System.out.println("性能测试开始");
-        TreeMap<Integer, Integer> treeMap;
-        AVLTree.AVLTreeMap<Integer, Integer> avl;
-        SizeBalancedTree.SizeBalancedTreeMap<Integer, Integer> sbt;
-        SkipList.SkipListMap<Integer, Integer> skip;
-        long start;
-        long end;
+        TreeMap<Integer, Integer> treeMap = new TreeMap<>();
+        AVLTree.AVLTreeMap<Integer, Integer> avl = new AVLTree.AVLTreeMap<>();
+        SizeBalancedTree.SizeBalancedTreeMap<Integer, Integer> sbt = new SizeBalancedTree.SizeBalancedTreeMap<>();
+        SkipList.SkipListMap<Integer, Integer> skip = new SkipList.SkipListMap<>();
         int max = 1000000;
-        treeMap = new TreeMap<>();
-        avl = new AVLTree.AVLTreeMap<>();
-        sbt = new SizeBalancedTree.SizeBalancedTreeMap<>();
-        skip = new SkipList.SkipListMap<>();
-        System.out.println("顺序递增加入测试，数据规模 : " + max);
-        start = System.currentTimeMillis();
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start("tree map put");
         for (int i = 0; i < max; i++) {
             treeMap.put(i, i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("treeMap 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("avl put");
         for (int i = 0; i < max; i++) {
             avl.put(i, i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("avl 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("sbt put");
         for (int i = 0; i < max; i++) {
             sbt.put(i, i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("sbt 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("skip list put");
         for (int i = 0; i < max; i++) {
             skip.put(i, i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("skip 运行时间 : " + (end - start) + "ms");
-
-        System.out.println("顺序递增删除测试，数据规模 : " + max);
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("tree map remove");
         for (int i = 0; i < max; i++) {
             treeMap.remove(i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("treeMap 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("avl remove");
         for (int i = 0; i < max; i++) {
             avl.remove(i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("avl 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("sbt remove");
         for (int i = 0; i < max; i++) {
             sbt.remove(i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("sbt 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("skip list remove");
         for (int i = 0; i < max; i++) {
             skip.remove(i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("skip 运行时间 : " + (end - start) + "ms");
-
-        System.out.println("顺序递减加入测试，数据规模 : " + max);
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("tree map desc put");
         for (int i = max; i >= 0; i--) {
             treeMap.put(i, i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("treeMap 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("avl desc put");
         for (int i = max; i >= 0; i--) {
             avl.put(i, i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("avl 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("sbt desc put");
         for (int i = max; i >= 0; i--) {
             sbt.put(i, i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("sbt 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("skip list desc put");
         for (int i = max; i >= 0; i--) {
             skip.put(i, i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("skip 运行时间 : " + (end - start) + "ms");
-
-        System.out.println("顺序递减删除测试，数据规模 : " + max);
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("tree map desc remove");
         for (int i = max; i >= 0; i--) {
             treeMap.remove(i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("treeMap 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("avl desc remove");
         for (int i = max; i >= 0; i--) {
             avl.remove(i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("avl 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("sbt desc remove");
         for (int i = max; i >= 0; i--) {
             sbt.remove(i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("sbt 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("skip list desc remove");
         for (int i = max; i >= 0; i--) {
             skip.remove(i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("skip 运行时间 : " + (end - start) + "ms");
-
-        System.out.println("随机加入测试，数据规模 : " + max);
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("tree map random put");
         for (int i = 0; i < max; i++) {
             treeMap.put((int) (Math.random() * i), i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("treeMap 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("avl random put");
         for (int i = max; i >= 0; i--) {
             avl.put((int) (Math.random() * i), i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("avl 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("sbt random put");
         for (int i = max; i >= 0; i--) {
             sbt.put((int) (Math.random() * i), i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("sbt 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("skip list random put");
         for (int i = max; i >= 0; i--) {
             skip.put((int) (Math.random() * i), i);
         }
-        end = System.currentTimeMillis();
-        System.out.println("skip 运行时间 : " + (end - start) + "ms");
-
-        System.out.println("随机删除测试，数据规模 : " + max);
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("tree map random remove");
         for (int i = 0; i < max; i++) {
             treeMap.remove((int) (Math.random() * i));
         }
-        end = System.currentTimeMillis();
-        System.out.println("treeMap 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("avl random remove");
         for (int i = max; i >= 0; i--) {
             avl.remove((int) (Math.random() * i));
         }
-        end = System.currentTimeMillis();
-        System.out.println("avl 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("sbt random remove");
         for (int i = max; i >= 0; i--) {
             sbt.remove((int) (Math.random() * i));
         }
-        end = System.currentTimeMillis();
-        System.out.println("sbt 运行时间 : " + (end - start) + "ms");
-
-        start = System.currentTimeMillis();
+        stopWatch.stop();
+        stopWatch.start("skip list random remove");
         for (int i = max; i >= 0; i--) {
             skip.remove((int) (Math.random() * i));
         }
-        end = System.currentTimeMillis();
-        System.out.println("skip 运行时间 : " + (end - start) + "ms");
-
-        System.out.println("性能测试结束");
+        stopWatch.stop();
+        System.out.println(stopWatch.prettyPrint());
     }
 }

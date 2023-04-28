@@ -9,10 +9,6 @@ package com.serendipity.algo23sortedlist;
  */
 public class AVLTree {
 
-    public static void main(String[] args) {
-
-    }
-
     public static class AVLNode<K extends Comparable<K>, V> {
         public K key;
         public V value;
@@ -331,7 +327,5 @@ public class AVLTree {
             AVLNode<K, V> lastNoSmallNode = findLastNoSmallIndex(key);
             return lastNoSmallNode == null ? null : lastNoSmallNode.key;
         }
-
     }
-
 }

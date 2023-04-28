@@ -1,5 +1,8 @@
 package com.serendipity.algo23sortedlist;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
 import java.util.HashSet;
 
 /**
@@ -16,20 +19,22 @@ public class CountofRangeSum {
     public static void main(String[] args) {
         int len = 200;
         int varible = 50;
+        boolean success = true;
         for (int i = 0; i < 10000; i++) {
-            int[] test = generateArray(len, varible);
+            int[] test = CommonUtil.generateRandomArray(len, varible, true);
             int lower = (int) (Math.random() * varible) - (int) (Math.random() * varible);
             int upper = lower + (int) (Math.random() * varible);
             int ans1 = countRangeSum1(test, lower, upper);
             int ans2 = countRangeSum2(test, lower, upper);
             if (ans1 != ans2) {
-                printArray(test);
-                System.out.println(lower);
-                System.out.println(upper);
-                System.out.println(ans1);
-                System.out.println(ans2);
+                System.out.println(MessageFormat.format("count range sum failed, lower {0}, upper {1}, ans1 {2}, ans2 {3}",
+                        new String[]{String.valueOf(lower), String.valueOf(upper), String.valueOf(ans1), String.valueOf(ans2)}));
+                CommonUtil.printArray(test);
+                success = false;
+                break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 改写归并排序
@@ -154,6 +159,7 @@ public class CountofRangeSum {
                 if (key == cur.key) {
                     return cur;
                 } else {
+                    // 还在左滑或者右滑
                     if (!contains) {
                         cur.size++;
                     }
@@ -213,20 +219,5 @@ public class CountofRangeSum {
             variantSBT.add(sum);
         }
         return ans;
-    }
-
-    public static void printArray(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
-    }
-
-    public static int[] generateArray(int len, int varible) {
-        int[] arr = new int[len];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) (Math.random() * varible);
-        }
-        return arr;
     }
 }

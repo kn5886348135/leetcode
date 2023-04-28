@@ -10,38 +10,7 @@ import java.util.ArrayList;
  */
 public class SkipList {
 
-    public static void main(String[] args) {
-        SkipListMap<String, String> test = new SkipListMap<>();
-        printAll(test);
-        System.out.println("======================");
-        test.put("A", "10");
-        printAll(test);
-        System.out.println("======================");
-        test.remove("A");
-        printAll(test);
-        System.out.println("======================");
-        test.put("E", "E");
-        test.put("B", "B");
-        test.put("A", "A");
-        test.put("F", "F");
-        test.put("C", "C");
-        test.put("D", "D");
-        printAll(test);
-        System.out.println("======================");
-        System.out.println(test.containsKey("B"));
-        System.out.println(test.containsKey("Z"));
-        System.out.println(test.firstKey());
-        System.out.println(test.lastKey());
-        System.out.println(test.floorKey("D"));
-        System.out.println(test.ceilingKey("D"));
-        System.out.println("======================");
-        test.remove("D");
-        printAll(test);
-        System.out.println("======================");
-        System.out.println(test.floorKey("D"));
-        System.out.println(test.ceilingKey("D"));
-    }
-
+    // 跳表的节点定义
     public static class SkipListNode<K extends Comparable<K>, V> {
         public K key;
         public V value;
@@ -53,8 +22,12 @@ public class SkipList {
             this.nextNodes = new ArrayList<>();
         }
 
-        // 返回当前节点key是否小于otherKey
+        // 遍历的时候，如果是往右遍历到的null(next == null), 遍历结束
+        // 头(null), 头节点的null，认为最小
+        // node  -> 头，node(null, "")  node.isKeyLess(!null)  true
+        // node里面的key是否比otherKey小，true，不是false
         public boolean isKeyLess(K otherKey) {
+            //  otherKey == null -> false
             return otherKey != null && (this.key == null || this.key.compareTo(otherKey) < 0);
         }
 
@@ -65,6 +38,7 @@ public class SkipList {
     }
 
     public static class SkipListMap<K extends Comparable<K>, V> {
+        // 抛硬币 < 0.5 新节点往上升，>=0.5 停
         private static final double PROBABILITY = 0.5;
         private SkipListNode<K, V> head;
         private int size;
@@ -84,6 +58,7 @@ public class SkipList {
             }
             int level = this.maxLevel;
             SkipListNode<K, V> cur = this.head;
+            // 从最高层往下递减
             while (level >= 0) {
                 cur = mostRightLessNodeInLevel(key, cur, level--);
             }
@@ -128,6 +103,7 @@ public class SkipList {
                 while (Math.random() < PROBABILITY) {
                     newNodeLevel++;
                 }
+                // 用新节点的高度更新maxLevel
                 while (newNodeLevel > maxLevel) {
                     // 头结点往上增加空节点并更新maxLevel
                     head.nextNodes.add(null);

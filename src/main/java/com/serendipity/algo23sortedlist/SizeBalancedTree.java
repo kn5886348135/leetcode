@@ -4,52 +4,18 @@ package com.serendipity.algo23sortedlist;
  * @author jack
  * @version 1.0
  * @description 任何一个叔叔节点的个数不小于这个子树的个数
- * @ size(T.left) >= size(T.right.left), size(T.right.right)
- * size(T.right) >= size(T.left.left), size(T.left.right)
+ *              size(T.left) >= size(T.right.left), size(T.right.right)
+ *              size(T.right) >= size(T.left.left), size(T.left.right)
  * @date 2023/03/21/0:20
  */
 public class SizeBalancedTree {
-
-    public static void main(String[] args) {
-        SizeBalancedTreeMap<String, Integer> sbt = new SizeBalancedTreeMap<>();
-        sbt.put("d", 4);
-        sbt.put("c", 3);
-        sbt.put("a", 1);
-        sbt.put("b", 2);
-        // sbt.put("e", 5);
-        sbt.put("g", 7);
-        sbt.put("f", 6);
-        sbt.put("h", 8);
-        sbt.put("i", 9);
-        sbt.put("a", 111);
-        System.out.println(sbt.get("a"));
-        sbt.put("a", 1);
-        System.out.println(sbt.get("a"));
-        for (int i = 0; i < sbt.size(); i++) {
-            System.out.println(sbt.getIndexKey(i) + " , " + sbt.getIndexValue(i));
-        }
-        printAll(sbt.root);
-        System.out.println(sbt.firstKey());
-        System.out.println(sbt.lastKey());
-        System.out.println(sbt.floorKey("g"));
-        System.out.println(sbt.ceilingKey("g"));
-        System.out.println(sbt.floorKey("e"));
-        System.out.println(sbt.ceilingKey("e"));
-        System.out.println(sbt.floorKey(""));
-        System.out.println(sbt.ceilingKey(""));
-        System.out.println(sbt.floorKey("j"));
-        System.out.println(sbt.ceilingKey("j"));
-        sbt.remove("d");
-        printAll(sbt.root);
-        sbt.remove("f");
-        printAll(sbt.root);
-    }
 
     public static class SBTNode<K extends Comparable<K>, V> {
         public K key;
         public V value;
         public SBTNode<K, V> left;
         public SBTNode<K, V> right;
+        // 不同的key的数量
         public int size;
 
         public SBTNode(K key, V value) {
@@ -331,7 +297,7 @@ public class SizeBalancedTree {
 
         public K floorKey(K key) {
             if (key == null) {
-                throw new RuntimeException("invalid parameter.");
+                throw new RuntimeException("invalid parameter");
             }
             SBTNode<K, V> lastNoBigNode = findLastNoBigIndex(key);
             return lastNoBigNode == null ? null : lastNoBigNode.key;
@@ -339,7 +305,7 @@ public class SizeBalancedTree {
 
         public K ceilingKey(K key) {
             if (key == null) {
-                throw new RuntimeException("invalid parameter.");
+                throw new RuntimeException("invalid parameter");
             }
             SBTNode<K, V> lastNoSmallNode = findLastNoSmallIndex(key);
             return lastNoSmallNode == null ? null : lastNoSmallNode.key;
@@ -374,5 +340,4 @@ public class SizeBalancedTree {
         }
         return buf.toString();
     }
-
 }
