@@ -20,7 +20,7 @@ import com.serendipity.common.CommonUtil;
 public class LeetCode97 {
 
     public static void main(String[] args) {
-        int maxLen = 100;
+        int maxLen = 200;
         int testTimes = 100000;
         int possibilities = 26;
         boolean success = true;
@@ -29,7 +29,9 @@ public class LeetCode97 {
             String str2 = CommonUtil.generateRandomString(possibilities, maxLen);
             String str3 = CommonUtil.generateRandomString(possibilities, maxLen);
             if (validateIsInterleave(str1, str2, str3) != isInterleave(str1, str2, str3) ||
-                    validateIsInterleave(str1, str2, str3) != isInterleaveDFS(str1, str2, str3)) {
+                    validateIsInterleave(str1, str2, str3) != isInterleaveDFS(str1, str2, str3) ||
+                    validateIsInterleave(str1, str2, str3) != isInterleaveDP1(str1, str2, str3) ||
+                    validateIsInterleave(str1, str2, str3) != isInterleaveDP2(str1, str2, str3)) {
                 System.out.println("isInterleave failed");
                 success = false;
                 break;
@@ -97,6 +99,54 @@ public class LeetCode97 {
         return dp[n][m];
     }
 
+    // 将动态规划数组的第一维从n降至2
+    public static boolean isInterleaveDP1(String s1, String s2, String s3) {
+        int n = s1.length();
+        int m = s2.length();
+        int t = s3.length();
+        if (n + m != t) {
+            return false;
+        }
+        boolean[][] dp = new boolean[2][m + 1];
+        dp[0][0] = true;
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= m; j++) {
+                int p = i + j - 1;
+                if (i > 0) {
+                    dp[i & 1][j] = (dp[(i - 1) & 1][j] && s1.charAt(i - 1) == s3.charAt(p));
+                }
+                if (j>0) {
+                    dp[i & 1][j] = dp[i & 1][j] || (dp[i & 1][j - 1] && s2.charAt(j - 1) == s3.charAt(p));
+                }
+            }
+        }
+        return dp[n & 1][m];
+    }
+
+    // 将动态规划改为一维
+    public static boolean isInterleaveDP2(String s1, String s2, String s3) {
+        int n = s1.length();
+        int m = s2.length();
+        int t = s3.length();
+        if (n + m != t) {
+            return false;
+        }
+        boolean[] dp = new boolean[m + 1];
+        dp[0] = true;
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= m; j++) {
+                int p = i + j - 1;
+                if (i > 0) {
+                    dp[j] = (dp[j] && s1.charAt(i - 1) == s3.charAt(p));
+                }
+                if (j>0) {
+                    dp[j] = dp[j] || (dp[j - 1] && s2.charAt(j - 1) == s3.charAt(p));
+                }
+            }
+        }
+        return dp[m];
+    }
+
     // DFS + 缓存
     // 尝试每一个分支，在失败的时候回到分支并重新选择
     public static boolean isInterleaveDFS(String s1, String s2, String s3) {
@@ -106,7 +156,7 @@ public class LeetCode97 {
         if (n + m != t) {
             return false;
         }
-        boolean[][] visited = new boolean[n][m];
+        boolean[][] visited = new boolean[n + 1][m + 1];
         return dfs(s1, s2, s3, 0, 0, 0, visited);
     }
 
@@ -120,6 +170,7 @@ public class LeetCode97 {
         if (visited[i][j]) {
             return false;
         }
+
         visited[i][j] = true;
         // i、k右移并且进行dfs
         if (i < s1.length() && s1.charAt(i) == s3.charAt(k) && dfs(s1, s2, s3, i + 1, j, k + 1, visited)) {
