@@ -30,7 +30,7 @@ public class LeetCode56 {
     // interval[i][1] < interval[j][0] 不相交，则后续任意interval[k]也不和interval[i]相交
     // interval[i][1] >= interval[j][0] 相交，合并取interval[i][1]、interval[j][1]较大值
     public int[][] merge(int[][] intervals) {
-        PriorityQueue<int[]> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(o -> o[1]));
+        PriorityQueue<int[]> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(o -> o[0]));
         for (int[] interval : intervals) {
             priorityQueue.add(interval);
         }
