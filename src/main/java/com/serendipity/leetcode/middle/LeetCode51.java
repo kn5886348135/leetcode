@@ -38,7 +38,7 @@ public class LeetCode51 {
             }
             List<List<String>> ans1 = solveNQueens1(n);
             List<List<String>> ans2 = solveNQueens2(n);
-            List<List<String>> ans3 = solveNQueens2(n);
+            List<List<String>> ans3 = solveNQueens3(n);
             List<String> res1 = new ArrayList<>();
             for (List<String> list : ans1) {
                 Collections.sort(list, Comparator.naturalOrder());
@@ -193,6 +193,7 @@ public class LeetCode51 {
                 // diagonals1是左上到右下的斜线(diagonals1 | pos) << 1 不影响低位
                 // diagonals2是右上到左下的斜线(diagonals2 | pos) >> 1 不影响高位
                 backtrack(ans, queens, n, row + 1, columns | pos, (diagonals1 | pos) << 1, (diagonals2 | pos) >> 1);
+                // 可以不清除，下一列可以放皇后的位置可以覆盖并且不读取这个数据
                 queens[row] = -1;
             }
         }
