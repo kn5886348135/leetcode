@@ -64,29 +64,28 @@ public class LeetCode216 {
         List<List<Integer>> ans = new ArrayList<>();
         List<Integer> temp = new ArrayList<>();
         dfs(1, k, n, temp, ans);
-        ans = ans.stream().distinct().collect(Collectors.toList());
         return ans;
     }
 
-    private static void dfs(int cur, int k, int n, List<Integer> temp, List<List<Integer>> ans) {
-        if (temp.size() + (10 - cur) < k || cur > k) {
+    private static void dfs(int cur, int k, int sum, List<Integer> temp, List<List<Integer>> ans) {
+        if (temp.size() + (10 - cur) < k || temp.size() > k) {
             return;
         }
 
         if (temp.size() == k) {
-            int sum = 0;
+            int total = 0;
             for (Integer item : temp) {
-                sum += item;
+                total += item;
             }
-            if (sum == n) {
+            if (total == sum) {
                 ans.add(new ArrayList<>(temp));
                 return;
             }
         }
 
         temp.add(cur);
-        dfs(cur + 1, k, n, temp, ans);
+        dfs(cur + 1, k, sum, temp, ans);
         temp.remove(temp.size() - 1);
-        dfs(cur + 1, k, n, temp, ans);
+        dfs(cur + 1, k, sum, temp, ans);
     }
 }
