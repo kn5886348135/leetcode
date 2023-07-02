@@ -52,7 +52,7 @@ public class LeetCode2 {
 
             Node<Integer> node3 = CommonLinkedListUtil.copySingleNode(node1);
             Node<Integer> node4 = CommonLinkedListUtil.copySingleNode(node2);
-            Node<Integer> ans1 = addTwoNumbers(node1, node2);
+            Node<Integer> ans1 = addTwoNumbers1(node1, node2);
 
             Node<Integer> ans2 = verifyAddTwoNumbers(node3, node4);
             if (!CommonLinkedListUtil.sameSingleNode(ans1, ans2)) {
@@ -74,7 +74,7 @@ public class LeetCode2 {
 
     // 获取两个链表长度
     // 先处理短链表，再处理长链表剩余部分，最后处理进位
-    public static Node<Integer> addTwoNumbers(Node<Integer> head1, Node<Integer> head2) {
+    public static Node<Integer> addTwoNumbers1(Node<Integer> head1, Node<Integer> head2) {
         int len1 = getListNodeLength(head1);
         int len2 = getListNodeLength(head2);
         Node<Integer> longList = len1 > len2 ? head1 : head2;
@@ -113,6 +113,64 @@ public class LeetCode2 {
             node = node.next;
         }
         return ans;
+    }
+
+    public Node addTwoNumbers2(Node<Integer> l1, Node<Integer> l2) {
+        Node pre = new Node(0);
+        Node cur = pre;
+        int carry = 0;
+        while(l1 != null || l2 != null) {
+            int x = l1 == null ? 0 : l1.value;
+            int y = l2 == null ? 0 : l2.value;
+            int sum = x + y + carry;
+
+            carry = sum / 10;
+            sum = sum % 10;
+            cur.next = new Node(sum);
+
+            cur = cur.next;
+            if (l1 != null) {
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                l2 = l2.next;
+            }
+        }
+        if(carry == 1) {
+            cur.next = new Node(carry);
+        }
+        return pre.next;
+    }
+
+    // 递归
+    public Node addTwoNumbers3(Node<Integer> l1, Node<Integer> l2) {
+        // 哨兵节点
+        Node dummy = new Node(0);
+        Node cur = dummy;
+        int carry = 0;
+        // 有一个不是空节点，或者还有进位，就继续迭代
+        while (l1 != null || l2 != null || carry != 0) {
+            if (l1 != null) {
+                // 节点值和进位加在一起
+                carry += l1.value;
+            }
+            if (l2 != null) {
+                // 节点值和进位加在一起
+                carry += l2.value;
+            }
+            // 每个节点保存一个数位
+            cur = cur.next = new Node(carry % 10);
+            // 新的进位
+            carry /= 10;
+            if (l1 != null) {
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                l2 = l2.next;
+            }
+        }
+        // 哨兵节点的下一个节点就是头节点
+        return dummy.next;
     }
 
     // 对数器
