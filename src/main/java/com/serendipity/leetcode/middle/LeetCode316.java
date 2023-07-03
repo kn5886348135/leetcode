@@ -1,8 +1,5 @@
 package com.serendipity.leetcode.middle;
 
-import java.util.Deque;
-import java.util.LinkedList;
-
 /**
  * @author jack
  * @version 1.0
