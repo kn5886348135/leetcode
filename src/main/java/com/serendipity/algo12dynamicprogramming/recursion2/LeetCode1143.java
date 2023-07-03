@@ -19,6 +19,7 @@ public class LeetCode1143 {
     public static void main(String[] args) {
         // TODO 对数器 其他的解法，比如后缀数组(DC3)？
     }
+
     // 暴力递归
     public static int longestCommonSubsequence1(String str1, String str2) {
         if (str1 == null || str2 == null || str1.length() == 0 || str2.length() == 0) {
@@ -56,7 +57,7 @@ public class LeetCode1143 {
     // 所以a)一定小于c)
     // 所以，当str1[i] == str2[j]时，b)、c)、d)中选出最大值
     // 当str1[i] != str2[j]时，b)、c)中选出最大值
-    public static int process1(char[] chs1, char[] chs2, int i, int j) {
+    private static int process1(char[] chs1, char[] chs2, int i, int j) {
         // str1、str2都只有一个字符
         if (i == 0 && j == 0) {
             return chs1[i] == chs2[j] ? 1 : 0;
@@ -68,7 +69,7 @@ public class LeetCode1143 {
                 return process1(chs1, chs2, i, j - 1);
             }
         } else if (j == 0) {
-           // str2只有一个字符
+            // str2只有一个字符
             if (chs1[i] == chs2[j]) {
                 return 1;
             } else {
