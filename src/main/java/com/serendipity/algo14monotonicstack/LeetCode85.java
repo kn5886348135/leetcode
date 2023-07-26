@@ -1,7 +1,5 @@
 package com.serendipity.algo14monotonicstack;
 
-import com.serendipity.common.CommonUtil;
-
 import java.text.MessageFormat;
 import java.util.Stack;
 
@@ -27,10 +25,10 @@ public class LeetCode85 {
             char[][] height = generateRandomMatrix(row, col);
             char[][] height1 = copyMatrix(height);
             char[][] height2 = copyMatrix(height);
-//            char[][] height3 = copyMatrix(height);
+            // char[][] height3 = copyMatrix(height);
             int ans1 = maximalRectangle1(height1);
             int ans2 = maximalRectangle2(height2);
-//            int ans3 = maxRecFromBottom(height3);
+            // int ans3 = maxRecFromBottom(height3);
             if (ans1 != ans2) {
                 System.out.println(MessageFormat.format("largestRectangleArea failed, ans1 {0}, ans2 {1}",
                         new String[]{String.valueOf(ans1), String.valueOf(ans2)}));

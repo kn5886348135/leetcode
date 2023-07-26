@@ -24,7 +24,7 @@ import java.util.Map;
 public class LeetCode890 {
 
     public static void main(String[] args) {
-        
+
     }
 
     public List<String> findAndReplacePattern(String[] words, String pattern) {

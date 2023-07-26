@@ -1,53 +1,72 @@
 package com.serendipity.algo24suffixarray;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
  * @description 最长公共子串问题
+ *              LeetCode1143
  * @date 2023/03/28/17:49
  */
 public class LongestCommonSubstringConquerByHeight {
 
     public static void main(String[] args) {
-        int len = 30;
-        int range = 5;
+        functionTest();
+        performanceTest();
+    }
+
+    private static void functionTest() {
+        int maxSize = 30;
+        int possibilities = 5;
         int testTime = 100000;
-        System.out.println("功能测试开始");
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int N1 = (int) (Math.random() * len);
-            int N2 = (int) (Math.random() * len);
-            String str1 = randomNumberString(N1, range);
-            String str2 = randomNumberString(N2, range);
+            String str1 = CommonUtil.generateRandomString(possibilities, maxSize);
+            String str2 = CommonUtil.generateRandomString(possibilities, maxSize);
             int ans1 = lcs1(str1, str2);
             int ans2 = lcs2(str1, str2);
             if (ans1 != ans2) {
-                System.out.println("Oops!");
+                System.out.println("longest common sub string failed!");
+                success = false;
+                break;
             }
         }
-        System.out.println("功能测试结束");
-        System.out.println("==========");
 
-        System.out.println("性能测试开始");
-        len = 80000;
-        range = 26;
-        long start;
-        long end;
-
-        String str1 = randomNumberString(len, range);
-        String str2 = randomNumberString(len, range);
-
-        start = System.currentTimeMillis();
-        int ans1 = lcs1(str1, str2);
-        end = System.currentTimeMillis();
-        System.out.println("方法1结果 : " + ans1 + " , 运行时间 : " + (end - start) + " ms");
-
-        start = System.currentTimeMillis();
-        int ans2 = lcs2(str1, str2);
-        end = System.currentTimeMillis();
-        System.out.println("方法2结果 : " + ans2 + " , 运行时间 : " + (end - start) + " ms");
-
-        System.out.println("性能测试结束");
+        System.out.println(success ? "success" : "failed");
     }
+
+    private static void performanceTest() {
+        int maxSize = 80000;
+        int possibilities = 26;
+        int testTime = 10000;
+        long total1 = 0;
+        long total2 = 0;
+        for (int i = 0; i < testTime; i++) {
+            String str1 = CommonUtil.generateRandomString(possibilities, maxSize);
+            String str2 = CommonUtil.generateRandomString(possibilities, maxSize);
+            long start = System.currentTimeMillis();
+            int ans1 = lcs1(str1, str2);
+            long end = System.currentTimeMillis();
+            total1 += end - start;
+
+            start = System.currentTimeMillis();
+            int ans2 = lcs1(str1, str2);
+            end = System.currentTimeMillis();
+            total2 += end - start;
+            if (ans1 != ans2) {
+                System.out.println("lcs performance test failed");
+                break;
+            }
+        }
+        System.out.println(MessageFormat.format("lcs1 cost {0}, lcs2 cost {1}",
+                new String[]{String.valueOf(total1), String.valueOf(total2)}));
+
+    }
+
+
 
     // 动态规划 时间复杂度O(N * M)
     // 后缀数组 DC3算法 不回退优化O(N)
@@ -275,14 +294,6 @@ public class LongestCommonSubstringConquerByHeight {
             }
             return ans;
         }
-    }
-
-    public static String randomNumberString(int len, int range) {
-        char[] str = new char[len];
-        for (int i = 0; i < len; i++) {
-            str[i] = (char) ((int) (Math.random() * range) + 'a');
-        }
-        return String.valueOf(str);
     }
 
 }
