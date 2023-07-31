@@ -15,13 +15,13 @@ public class Test {
 
     public static void main(String[] args) {
         functionTest();
-//        performanceTest();
+        performanceTest();
     }
 
     public static void functionTest() {
         TreeMap<Integer, Integer> treeMap = new TreeMap<>();
         AVLTree<Integer, Integer> avl = new AVLTree<>();
-        SizeBalancedTree.SizeBalancedTreeMap<Integer, Integer> sbt = new SizeBalancedTree.SizeBalancedTreeMap<>();
+        SizeBalancedTree<Integer, Integer> sbt = new SizeBalancedTree<>();
         SkipList.SkipListMap<Integer, Integer> skip = new SkipList.SkipListMap<>();
         int maxKey = 500;
         int maxValue = 50000;
@@ -195,7 +195,7 @@ public class Test {
     public static void performanceTest() {
         TreeMap<Integer, Integer> treeMap = new TreeMap<>();
         AVLTree<Integer, Integer> avl = new AVLTree<>();
-        SizeBalancedTree.SizeBalancedTreeMap<Integer, Integer> sbt = new SizeBalancedTree.SizeBalancedTreeMap<>();
+        SizeBalancedTree<Integer, Integer> sbt = new SizeBalancedTree<>();
         SkipList.SkipListMap<Integer, Integer> skip = new SkipList.SkipListMap<>();
         int max = 1000000;
         StopWatch stopWatch = new StopWatch();
