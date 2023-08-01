@@ -9,11 +9,16 @@ package com.serendipity.algo23sortedlist;
 public class SortedListNode <K extends Comparable<K>, V> {
 
     public K key;
+
     public V value;
+
     public SortedListNode<K, V> left;
+
     public SortedListNode<K, V> right;
+
     // 不同的key的数量，Size-Balanced Tree
     public int size;
+
     // 节点高度 AVL Tree
     public int height;
 

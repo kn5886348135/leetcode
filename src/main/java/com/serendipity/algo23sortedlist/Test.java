@@ -22,7 +22,9 @@ public class Test {
         TreeMap<Integer, Integer> treeMap = new TreeMap<>();
         AVLTree<Integer, Integer> avl = new AVLTree<>();
         SizeBalancedTree<Integer, Integer> sbt = new SizeBalancedTree<>();
-        SkipList.SkipListMap<Integer, Integer> skip = new SkipList.SkipListMap<>();
+        SkipListVertically<Integer, Integer> skip = new SkipListVertically<>();
+        // TODO 验证SkipListDirectiions
+        // SkipListDirectiions<Integer, Integer> skipDirect = new SkipListDirectiions<>();
         int maxKey = 500;
         int maxValue = 50000;
         int testTimes = 1000000;
@@ -196,7 +198,7 @@ public class Test {
         TreeMap<Integer, Integer> treeMap = new TreeMap<>();
         AVLTree<Integer, Integer> avl = new AVLTree<>();
         SizeBalancedTree<Integer, Integer> sbt = new SizeBalancedTree<>();
-        SkipList.SkipListMap<Integer, Integer> skip = new SkipList.SkipListMap<>();
+        SkipListVertically<Integer, Integer> skip = new SkipListVertically<>();
         int max = 1000000;
         StopWatch stopWatch = new StopWatch();
         stopWatch.start("tree map put");
