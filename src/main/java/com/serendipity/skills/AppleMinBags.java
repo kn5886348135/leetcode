@@ -24,7 +24,7 @@ public class AppleMinBags {
             int ans2 = minBags2(num);
             if (ans1 != ans2) {
                 System.out.println(MessageFormat.format("minBags failes, num {0}, ans1 {1}, ans2 {2}",
-                        new String[]{String.valueOf(ans1), String.valueOf(ans2)}));
+                        new String[]{String.valueOf(num), String.valueOf(ans1), String.valueOf(ans2)}));
                 success = false;
                 break;
             }

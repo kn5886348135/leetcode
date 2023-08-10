@@ -1,5 +1,7 @@
 package com.serendipity.skills;
 
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -15,15 +17,22 @@ package com.serendipity.skills;
 public class MSumToN {
 
     public static void main(String[] args) {
-        for (int num = 1; num < 200; num++) {
-            System.out.println(num + " " + isMSum1(num));
-            System.out.println(num + " " + isMSum2(num));
-        }
-        for (int num = 1; num < 5000; num++) {
-            if (isMSum1(num) != isMSum2(num)) {
-                System.out.println("Oops!");
+        int maxValue = 100;
+        int testTimes = 2000000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            int num = ((int) Math.random() * maxValue) + 1;
+            boolean ans1 = isMSum1(num);
+            boolean ans2 = isMSum2(num);
+            if (ans1 != ans2) {
+                System.out.println(
+                        MessageFormat.format("consecutive positive integers failes, num {0}, ans1 {1}, ans2 {2}",
+                        new String[]{String.valueOf(num), String.valueOf(ans1), String.valueOf(ans2)}));
+                success = false;
+                break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     public static boolean isMSum1(int num) {
@@ -42,9 +51,8 @@ public class MSumToN {
         return false;
     }
 
-    // 观察isMSum1的输出结果，归纳得出2的指数幂
     public static boolean isMSum2(int num) {
-        // return num == (num & (~num + 1));
+		// return num == (num & (~num + 1));
         // return num == (num & (-num));
         return (num & (num - 1)) != 0;
     }

@@ -27,7 +27,7 @@ public class EatGrass {
             String ans3 = winner2(num);
             if (!ans1.equals(ans2) || !ans1.equals(ans3)) {
                 System.out.println(MessageFormat.format("winner failes, num {0}, ans1 {1}, ans2 {2}, ans3 {3}",
-                        (Object) new String[]{ans1, ans2, ans3}));
+                        new String[]{String.valueOf(num), ans1, ans2, ans3}));
                 success = false;
                 break;
             }
