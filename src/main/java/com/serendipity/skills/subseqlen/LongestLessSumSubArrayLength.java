@@ -1,5 +1,9 @@
 package com.serendipity.skills.subseqlen;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -12,13 +16,24 @@ package com.serendipity.skills.subseqlen;
 public class LongestLessSumSubArrayLength {
 
     public static void main(String[] args) {
-        for (int i = 0; i < 10000000; i++) {
-            int[] arr = generateRandomArray(10, 20);
-            int k = (int) (Math.random() * 20) - 5;
-            if (maxLengthAwesome(arr, k) != maxLength(arr, k)) {
-                System.out.println("Oops!");
+        int maxSize = 50;
+        int maxValue = 100;
+        int testTime = 500000;
+        boolean success = true;
+        for (int i = 0; i < testTime; i++) {
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            int k = (int) (Math.random() * maxValue) + 1;
+            int ans1 = maxLengthAwesome(arr, k);
+            int ans2 = maxLength(arr, k);
+            if (ans1 != ans2) {
+                CommonUtil.printArray(arr);
+                System.out.println(MessageFormat.format("longest sub sequence failed, k {0}, ans1 {1}, ans2 {2}",
+                        new String[]{String.valueOf(k), String.valueOf(ans1), String.valueOf(ans2)}));
+                success = false;
+                break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     public static int maxLengthAwesome(int[] arr, int k) {
@@ -100,14 +115,6 @@ public class LongestLessSumSubArrayLength {
             } else {
                 low = mid + 1;
             }
-        }
-        return res;
-    }
-
-    public static int[] generateRandomArray(int len, int maxValue) {
-        int[] res = new int[len];
-        for (int i = 0; i != res.length; i++) {
-            res[i] = (int) (Math.random() * maxValue) - (maxValue / 3);
         }
         return res;
     }

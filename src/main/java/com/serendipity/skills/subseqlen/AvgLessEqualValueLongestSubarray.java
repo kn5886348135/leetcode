@@ -1,5 +1,8 @@
 package com.serendipity.skills.subseqlen;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
 import java.util.TreeMap;
 
 /**
@@ -12,11 +15,12 @@ import java.util.TreeMap;
 public class AvgLessEqualValueLongestSubarray {
 
     public static void main(String[] args) {
-        int maxLen = 20;
+        int maxSize = 20;
         int maxValue = 100;
         int testTime = 500000;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int[] arr = randomArray(maxLen, maxValue);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
             int value = (int) (Math.random() * maxValue);
             int[] arr1 = new int[arr.length];
             System.arraycopy(arr, 0, arr1, 0, arr.length);
@@ -28,18 +32,18 @@ public class AvgLessEqualValueLongestSubarray {
             int ans2 = ways2(arr2, value);
             int ans3 = ways3(arr3, value);
             if (ans1 != ans2 || ans1 != ans3) {
-                System.out.println("测试出错");
-                printArray(arr);
-                System.out.println("子数组平均值不小于 " + value);
-                System.out.println("方法1得到的最大长度 " + ans1);
-                System.out.println("方法2得到的最大长度 " + ans2);
-                System.out.println("方法3得到的最大长度 " + ans3);
-                System.out.println("=========================");
+                CommonUtil.printArray(arr);
+                System.out.println(
+                        MessageFormat.format("longest sub sequence failed, avg value {0}, ans1 {1}, ans2 {2}, ans3 {3}",
+                                new String[]{String.valueOf(value), String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3)}));
+                success = false;
+                break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
-    // 对数器 时间复杂度O(N3)
+    // 对数器 时间复杂度O(N^3)
     public static int ways1(int[] arr, int v) {
         int ans = 0;
         for (int i = 0; i < arr.length; i++) {
@@ -127,21 +131,5 @@ public class AvgLessEqualValueLongestSubarray {
             }
         }
         return ans;
-    }
-
-    public static int[] randomArray(int maxLen, int maxValue) {
-        int len = (int) (Math.random() * maxLen) + 1;
-        int[] ans = new int[len];
-        for (int i = 0; i < len; i++) {
-            ans[i] = (int) (Math.random() * maxValue);
-        }
-        return ans;
-    }
-
-    public static void printArray(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
     }
 }
