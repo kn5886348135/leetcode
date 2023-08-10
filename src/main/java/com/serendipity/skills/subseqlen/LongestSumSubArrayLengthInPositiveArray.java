@@ -1,5 +1,9 @@
 package com.serendipity.skills.subseqlen;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -11,26 +15,27 @@ package com.serendipity.skills.subseqlen;
 public class LongestSumSubArrayLengthInPositiveArray {
 
     public static void main(String[] args) {
-        int len = 50;
-        int value = 100;
+        int maxSize = 50;
+        int maxValue = 100;
         int testTime = 500000;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int[] arr = generatePositiveArray(len, value);
-            int k = (int) (Math.random() * value) + 1;
-            int ans1 = getMaxLength(arr, k);
-            int ans2 = right(arr, k);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            int k = (int) (Math.random() * maxValue) + 1;
+            int ans1 = maxLength(arr, k);
+            int ans2 = validator(arr, k);
             if (ans1 != ans2) {
-                System.out.println("Oops!");
-                printArray(arr);
-                System.out.println("k " + k);
-                System.out.println(ans1);
-                System.out.println(ans2);
+                CommonUtil.printArray(arr);
+                System.out.println(MessageFormat.format("longest sub sequence failed, k {0}, ans1 {1}, ans2 {2}",
+                        new String[]{String.valueOf(k), String.valueOf(ans1), String.valueOf(ans2)}));
+                success = false;
                 break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
-    public static int getMaxLength(int[] arr, int k) {
+    public static int maxLength(int[] arr, int k) {
         if (arr == null || arr.length == 0 || k <= 0) {
             return 0;
         }
@@ -56,7 +61,7 @@ public class LongestSumSubArrayLengthInPositiveArray {
     }
 
     // 对数器
-    public static int right(int[] arr, int k) {
+    public static int validator(int[] arr, int k) {
         int max = 0;
         for (int i = 0; i < arr.length; i++) {
             for (int j = i; j < arr.length; j++) {
@@ -74,20 +79,5 @@ public class LongestSumSubArrayLengthInPositiveArray {
             sum += arr[i];
         }
         return sum == k;
-    }
-
-    public static int[] generatePositiveArray(int size, int value) {
-        int[] ans = new int[size];
-        for (int i = 0; i != size; i++) {
-            ans[i] = (int) (Math.random() * value) + 1;
-        }
-        return ans;
-    }
-
-    public static void printArray(int[] arr) {
-        for (int i = 0; i != arr.length; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
     }
 }

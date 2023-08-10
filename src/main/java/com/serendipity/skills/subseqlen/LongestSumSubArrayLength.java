@@ -1,5 +1,7 @@
 package com.serendipity.skills.subseqlen;
 
+import com.serendipity.common.CommonUtil;
+
 import java.util.HashMap;
 
 /**
@@ -14,24 +16,22 @@ import java.util.HashMap;
 public class LongestSumSubArrayLength {
 
     public static void main(String[] args) {
-        int len = 50;
-        int value = 100;
+        int maxSize = 50;
+        int maxValue = 100;
         int testTime = 500000;
-
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int[] arr = generateRandomArray(len, value);
-            int k = (int) (Math.random() * value) - (int) (Math.random() * value);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, false);
+            int k = (int) (Math.random() * maxValue) - (int) (Math.random() * maxValue);
             int ans1 = maxLength(arr, k);
             int ans2 = right(arr, k);
             if (ans1 != ans2) {
-                System.out.println("Oops!");
-                printArray(arr);
-                System.out.println("k " + k);
-                System.out.println(ans1);
-                System.out.println(ans2);
+                CommonUtil.printArray(arr);
+                success = false;
                 break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     public static int maxLength(int[] arr, int k) {
@@ -75,20 +75,5 @@ public class LongestSumSubArrayLength {
             sum += arr[i];
         }
         return sum == K;
-    }
-
-    public static int[] generateRandomArray(int size, int value) {
-        int[] ans = new int[(int) (Math.random() * size) + 1];
-        for (int i = 0; i < ans.length; i++) {
-            ans[i] = (int) (Math.random() * value) - (int) (Math.random() * value);
-        }
-        return ans;
-    }
-
-    public static void printArray(int[] arr) {
-        for (int i = 0; i != arr.length; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
     }
 }
