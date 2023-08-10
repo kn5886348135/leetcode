@@ -1,4 +1,4 @@
-package com.serendipity.skills;
+package com.serendipity.skills.guess;
 
 import java.text.MessageFormat;
 

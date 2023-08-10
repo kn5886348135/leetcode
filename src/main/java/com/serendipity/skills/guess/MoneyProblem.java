@@ -1,4 +1,4 @@
-package com.serendipity.skills;
+package com.serendipity.skills.guess;
 
 import java.text.MessageFormat;
 
@@ -31,7 +31,7 @@ public class MoneyProblem {
             long ans3 = minMoney3(d, p);
             long ans4 = minMoney4(d,p);
             if (ans1 != ans2 || ans2 != ans3 || ans1 != ans4) {
-                System.out.println(MessageFormat.format("winner failes, ans1 {1}, ans2 {2}, ans3 {3}, ans4 {4}",
+                System.out.println(MessageFormat.format("winner failes, ans1 {0}, ans2 {1}, ans3 {2}, ans4 {3}",
                         new String[]{String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3), String.valueOf(ans4)}));
                 success = false;
                 break;

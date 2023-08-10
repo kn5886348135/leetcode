@@ -1,5 +1,8 @@
-package com.serendipity.skills.guess2;
+package com.serendipity.skills.divide_conquer;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.TreeSet;
 
@@ -13,20 +16,28 @@ import java.util.TreeSet;
 public class SubsquenceMaxModM {
 
     public static void main(String[] args) {
-        int len = 10;
-        int value = 100;
-        int m = 76;
+        int maxSize = 10;
+        int maxValue = 100;
+        int maxMod = 76;
         int testTime = 500000;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int[] arr = generateRandomArray(len, value);
-            int ans1 = max1(arr, m);
-            int ans2 = max2(arr, m);
-            int ans3 = max3(arr, m);
-            int ans4 = max4(arr, m);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            int mod = ((int) Math.random() * maxMod) + 1;
+            int ans1 = max1(arr, mod);
+            int ans2 = max2(arr, mod);
+            int ans3 = max3(arr, mod);
+            int ans4 = max4(arr, mod);
             if (ans1 != ans2 || ans2 != ans3 || ans3 != ans4) {
                 System.out.println("Oops!");
+                System.out.println(
+                        MessageFormat.format("subsquence sum mod failes, mod {0}, ans1 {1}, ans2 {2}, ans3 {3}, ans4 {4}",
+                                new String[]{String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3), String.valueOf(ans4)}));
+                success = false;
+                break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     public static int max1(int[] arr, int m) {
@@ -133,11 +144,4 @@ public class SubsquenceMaxModM {
         }
     }
 
-    public static int[] generateRandomArray(int len, int value) {
-        int[] ans = new int[(int) (Math.random() * len) + 1];
-        for (int i = 0; i < ans.length; i++) {
-            ans[i] = (int) (Math.random() * value);
-        }
-        return ans;
-    }
 }
