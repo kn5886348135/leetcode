@@ -1,4 +1,6 @@
-package com.serendipity.skills.guess2;
+package com.serendipity.skills.catalan;
+
+import java.text.MessageFormat;
 
 /**
  * @author jack
@@ -10,13 +12,21 @@ package com.serendipity.skills.guess2;
 public class DifferentBTNum {
 
     public static void main(String[] args) {
-        for (int i = 0; i < 15; i++) {
-            long ans1 = num1(i);
-            long ans2 = num2(i);
+        int maxValue = 20;
+        int testTime = 500000;
+        boolean success = true;
+        for (int i = 0; i < testTime; i++) {
+            int num = ((int) Math.random() * maxValue) + 1;
+            long ans1 = num1(num);
+            long ans2 = num2(num);
             if (ans1 != ans2) {
-                System.out.println("Oops!");
+                System.out.println(MessageFormat.format("seq num failes, num {0}, ans1 {1}, ans2 {2}",
+                        new String[]{String.valueOf(num), String.valueOf(ans1), String.valueOf(ans2)}));
+                success = false;
+                break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     //	k(0) = 1, k(1) = 1
