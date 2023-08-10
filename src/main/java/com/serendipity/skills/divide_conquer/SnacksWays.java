@@ -1,5 +1,8 @@
-package com.serendipity.skills.guess2;
+package com.serendipity.skills.divide_conquer;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -16,12 +19,28 @@ import java.util.TreeMap;
 public class SnacksWays {
 
     public static void main(String[] args) {
-        int[] arr = { 4, 3, 2, 9 };
-        int w = 8;
-        System.out.println(ways1(arr, w));
-        System.out.println(ways2(arr, w));
-        System.out.println(ways3(arr, w));
-        System.out.println(ways4(arr, w));
+        int maxSize = 10;
+        int maxValue = 100;
+        int maxWeight = 76;
+        int testTime = 500000;
+        boolean success = true;
+        for (int i = 0; i < testTime; i++) {
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            int weight = ((int) Math.random() * maxWeight) + 1;
+            int ans1 = ways1(arr, weight);
+            int ans2 = ways2(arr, weight);
+            int ans3 = ways3(arr, weight);
+            long ans4 = ways4(arr, weight);
+            if (ans1 != ans2 || ans2 != ans3 || ans3 != ans4) {
+                System.out.println(
+                        MessageFormat.format("snacks way failes, weight {0}, ans1 {1}, ans2 {2}, ans3 {3}, ans4 {4}",
+                                new String[]{String.valueOf(weight), String.valueOf(ans1), String.valueOf(ans2),
+                                        String.valueOf(ans3), String.valueOf(ans4)}));
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
     }
 
     public static int ways1(int[] arr, int w) {

@@ -29,7 +29,6 @@ public class SubsquenceMaxModM {
             int ans3 = max3(arr, mod);
             int ans4 = max4(arr, mod);
             if (ans1 != ans2 || ans2 != ans3 || ans3 != ans4) {
-                System.out.println("Oops!");
                 System.out.println(
                         MessageFormat.format("subsquence sum mod failes, mod {0}, ans1 {1}, ans2 {2}, ans3 {3}, ans4 {4}",
                                 new String[]{String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3), String.valueOf(ans4)}));
