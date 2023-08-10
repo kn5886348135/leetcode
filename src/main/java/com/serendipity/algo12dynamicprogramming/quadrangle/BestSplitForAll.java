@@ -1,5 +1,9 @@
 package com.serendipity.algo12dynamicprogramming.quadrangle;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -13,20 +17,23 @@ package com.serendipity.algo12dynamicprogramming.quadrangle;
 public class BestSplitForAll {
 
     public static void main(String[] args) {
-        int n = 20;
-        int max = 30;
+        int maxSize = 100;
+        int maxValue = 200;
         int testTime = 1000000;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int len = (int) (Math.random() * n);
-            int[] arr = randomArray(len, max);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
             int ans1 = bestSplit1(arr);
             int ans2 = bestSplit2(arr);
             if (ans1 != ans2) {
-                System.out.println(ans1);
-                System.out.println(ans2);
-                System.out.println("Oops!");
+                CommonUtil.printArray(arr);
+                System.out.println(MessageFormat.format("best split failed, ans1 {0}, ans2 {1}",
+                        new String[]{String.valueOf(ans1), String.valueOf(ans2)}));
+                success = false;
+                break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 对数器
@@ -62,6 +69,7 @@ public class BestSplitForAll {
         }
         int ans = 0;
         int sumL = 0;
+        // [0...s]  [s+1...N-1]
         for (int s = 0; s < len - 1; s++) {
             sumL += arr[s];
             int sumR = sumAll - sumL;

@@ -1,5 +1,11 @@
 package com.serendipity.algo12dynamicprogramming.quadrangle;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 /**
  * @author jack
  * @version 1.0
@@ -16,19 +22,33 @@ package com.serendipity.algo12dynamicprogramming.quadrangle;
 public class BestSplitForEveryPosition {
 
     public static void main(String[] args) {
-        int n = 20;
-        int max = 30;
+        int maxSize = 100;
+        int maxValue = 300;
         int testTime = 1000000;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int len = (int) (Math.random() * n);
-            int[] arr = randomArray(len, max);
-            int[] ans1 = bestSplit1(arr);
-            int[] ans2 = bestSplit2(arr);
-            int[] ans3 = bestSplit3(arr);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            int[] arr1 = new int[arr.length];
+            System.arraycopy(arr, 0, arr1, 0, arr.length);
+            int[] arr2 = new int[arr.length];
+            System.arraycopy(arr, 0, arr2, 0, arr.length);
+            int[] arr3 = new int[arr.length];
+            System.arraycopy(arr, 0, arr3, 0, arr.length);
+
+            int[] ans1 = bestSplit1(arr1);
+            int[] ans2 = bestSplit2(arr2);
+            int[] ans3 = bestSplit3(arr3);
             if (!isSameArray(ans1, ans2) || !isSameArray(ans1, ans3)) {
-                System.out.println("Oops!");
+                System.out.println(MessageFormat.format("best split failed, arr {0} ,\r\n ans1 {1},\r\n ans2 {2},\r\n ans3 {3}",
+                        new String[]{Arrays.stream(arr).boxed().map(String::valueOf).collect(Collectors.joining(", ")),
+                                Arrays.stream(ans1).boxed().map(String::valueOf).collect(Collectors.joining(", ")),
+                                Arrays.stream(ans2).boxed().map(String::valueOf).collect(Collectors.joining(", ")),
+                                Arrays.stream(ans3).boxed().map(String::valueOf).collect(Collectors.joining(", "))}));
+                success = false;
+                break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 对数器 时间复杂度O(N3)
@@ -103,7 +123,7 @@ public class BestSplitForEveryPosition {
             sum[i + 1] = sum[i] + arr[i];
         }
 
-        // 0~range-1上，最优化分是左边0~best，右边best+1~range-1
+        // 0~range-1上，最优划分是左边0~best，右边best+1~range-1
         int best = 0;
         for (int range = 1; range < len; range++) {
             // best不回退
