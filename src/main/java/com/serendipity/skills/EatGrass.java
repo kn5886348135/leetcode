@@ -1,5 +1,7 @@
 package com.serendipity.skills;
 
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -15,11 +17,22 @@ package com.serendipity.skills;
 public class EatGrass {
 
     public static void main(String[] args) {
-        for (int i = 0; i <= 50; i++) {
-            System.out.println(i + " " + whoWin(i));
-            System.out.println(i + " " + winner1(i));
-            System.out.println(i + " " + winner2(i));
+        int maxValue = 100;
+        int testTimes = 2000000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            int num = ((int) Math.random() * maxValue) + 1;
+            String ans1 = whoWin(num);
+            String ans2 = winner1(num);
+            String ans3 = winner2(num);
+            if (!ans1.equals(ans2) || !ans1.equals(ans3)) {
+                System.out.println(MessageFormat.format("winner failes, num {0}, ans1 {1}, ans2 {2}, ans3 {3}",
+                        (Object) new String[]{ans1, ans2, ans3}));
+                success = false;
+                break;
+            }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 如果n份草，最终先手赢，返回"先手"
@@ -52,6 +65,7 @@ public class EatGrass {
             if (winner1(n - base).equals("后手")) {
                 return "先手";
             }
+            // 防止base*4之后溢出
             if (base > n / 4) {
                 break;
             }

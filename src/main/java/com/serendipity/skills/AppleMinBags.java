@@ -1,5 +1,7 @@
 package com.serendipity.skills;
 
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -13,10 +15,21 @@ package com.serendipity.skills;
 public class AppleMinBags {
 
     public static void main(String[] args) {
-        for (int apple = 1; apple < 200; apple++) {
-            System.out.println(apple + " " + minBags1(apple));
-            System.out.println(apple + " " + minBags2(apple));
+        int maxValue = 100;
+        int testTimes = 2000000;
+        boolean success = true;
+        for (int i = 0; i < testTimes; i++) {
+            int num = ((int) Math.random() * maxValue) + 1;
+            int ans1 = minBags1(num);
+            int ans2 = minBags2(num);
+            if (ans1 != ans2) {
+                System.out.println(MessageFormat.format("minBags failes, num {0}, ans1 {1}, ans2 {2}",
+                        new String[]{String.valueOf(ans1), String.valueOf(ans2)}));
+                success = false;
+                break;
+            }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     public static int minBags1(int apple) {
@@ -26,6 +39,7 @@ public class AppleMinBags {
         int bag8 = (apple >> 3);
         int rest = apple - (bag8 << 3);
         while (bag8 >= 0) {
+            // rest 个
             if (rest % 6 == 0) {
                 return bag8 + (rest / 6);
             } else {
@@ -38,7 +52,7 @@ public class AppleMinBags {
 
     // 通过观察minBags1的结果归纳出来
     public static int minBags2(int apple) {
-        // 奇数个
+        // 如果是奇数，返回-1
         if ((apple & 1) != 0) {
             return -1;
         }
