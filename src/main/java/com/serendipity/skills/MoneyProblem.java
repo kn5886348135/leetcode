@@ -1,5 +1,7 @@
 package com.serendipity.skills;
 
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -19,18 +21,23 @@ public class MoneyProblem {
         int len = 10;
         int value = 20;
         int testTimes = 10000;
+        boolean success = true;
         for (int i = 0; i < testTimes; i++) {
             int[][] arrs = generateTwoRandomArray(len, value);
             int[] d = arrs[0];
             int[] p = arrs[1];
-            long ans1 = func1(d, p);
-            long ans2 = func2(d, p);
-            long ans3 = func3(d, p);
-            long ans4 = minMoney2(d,p);
+            long ans1 = minMoney1(d, p);
+            long ans2 = minMoney2(d, p);
+            long ans3 = minMoney3(d, p);
+            long ans4 = minMoney4(d,p);
             if (ans1 != ans2 || ans2 != ans3 || ans1 != ans4) {
-                System.out.println("oops!");
+                System.out.println(MessageFormat.format("winner failes, ans1 {1}, ans2 {2}, ans3 {3}, ans4 {4}",
+                        new String[]{String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3), String.valueOf(ans4)}));
+                success = false;
+                break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     // int[] d d[i]：i号怪兽的武力
@@ -54,7 +61,7 @@ public class MoneyProblem {
         }
     }
 
-    public static long func1(int[] d, int[] p) {
+    public static long minMoney1(int[] d, int[] p) {
         return process1(d, p, 0, 0);
     }
 
@@ -83,7 +90,7 @@ public class MoneyProblem {
     }
 
     // 暴力递归2
-    public static int minMoney2(int[] d, int[] p) {
+    public static int minMoney4(int[] d, int[] p) {
         int allMoney = 0;
         for (int i = 0; i < p.length; i++) {
             allMoney += p[i];
@@ -97,7 +104,7 @@ public class MoneyProblem {
         return allMoney;
     }
 
-    public static long func2(int[] d, int[] p) {
+    public static long minMoney2(int[] d, int[] p) {
         int sum = 0;
         for (int num : d) {
             sum += num;
@@ -124,7 +131,7 @@ public class MoneyProblem {
     }
 
     // 如果d[index]特别大，比如10的8次方，动态规划的列就特别多
-    public static long func3(int[] d, int[] p) {
+    public static long minMoney3(int[] d, int[] p) {
         int sum = 0;
         for (int num : p) {
             sum += num;
