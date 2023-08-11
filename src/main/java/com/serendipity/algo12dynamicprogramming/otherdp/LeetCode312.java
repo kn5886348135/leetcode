@@ -1,5 +1,11 @@
 package com.serendipity.algo12dynamicprogramming.otherdp;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 /**
  * @author jack
  * @version 1.0
@@ -26,7 +32,30 @@ package com.serendipity.algo12dynamicprogramming.otherdp;
 public class LeetCode312 {
 
     public static void main(String[] args) {
-
+        int maxSize = 20;
+        int maxValue = 300;
+        int testTime = 1000;
+        boolean success = true;
+        for (int i = 0; i < testTime; i++) {
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            int[] arr1 = new int[arr.length];
+            System.arraycopy(arr, 0, arr1, 0, arr.length);
+            int[] arr2 = new int[arr.length];
+            System.arraycopy(arr, 0, arr2, 0, arr.length);
+            int[] arr3 = new int[arr.length];
+            System.arraycopy(arr, 0, arr3, 0, arr.length);
+            int ans1 = maxCoins1(arr1);
+            int ans2 = maxCoins2(arr2);
+            int ans3 = maxCoins3(arr3);
+            if (ans1 != ans2 || ans1 != ans3) {
+                System.out.println(MessageFormat.format("burst balloons failed, arr {0}, ans1 {1}, ans2 {2}, ans3 {3}",
+                        new String[]{Arrays.stream(arr).boxed().map(String::valueOf).collect(Collectors.joining(" ")),
+                                String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3)}));
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 暴力递归
@@ -40,25 +69,25 @@ public class LeetCode312 {
         }
         help[0] = 1;
         help[len + 1] = 1;
-        return func(help, 1, len);
+        return process1(help, 1, len);
     }
 
     // left-1和right+1位置不越界并且不会被打爆
     // 返回，arr[L...R]打爆所有气球，最大得分是什么
-    public static int func(int[] arr, int left, int right) {
+    public static int process1(int[] arr, int left, int right) {
         // 递归终止条件
         if (left == right) {
             return arr[left - 1] * arr[left] * arr[right + 1];
         }
         // left位置最后打爆
-        int max = func(arr, left + 1, right) + arr[left - 1] * arr[left] * arr[right + 1];
+        int max = process1(arr, left + 1, right) + arr[left - 1] * arr[left] * arr[right + 1];
         // right位置最后打爆
-        max = Math.max(max, func(arr, left, right - 1) + arr[left - 1] * arr[right] * arr[right + 1]);
+        max = Math.max(max, process1(arr, left, right - 1) + arr[left - 1] * arr[right] * arr[right + 1]);
         // left...right中间某一个位置最后打爆
         for (int i = left + 1; i < right; i++) {
             // i位置的气球最后打爆
-            int leftCoins = func(arr, left, i - 1);
-            int rightCoins = func(arr, i + 1, right);
+            int leftCoins = process1(arr, left, i - 1);
+            int rightCoins = process1(arr, i + 1, right);
             int iCoins = arr[left - 1] * arr[i] * arr[right + 1];
             int cur = leftCoins + rightCoins + iCoins;
             max = Math.max(max, cur);
@@ -80,22 +109,22 @@ public class LeetCode312 {
         }
         help[0] = 1;
         help[len + 1] = 1;
-        return process(help, 1, len);
+        return process2(help, 1, len);
     }
 
     // 打爆arr[left..right]范围上的所有气球，返回最大的分数
     // 假设arr[left-1]和arr[right+1]一定没有被打爆
-    public static int process(int[] arr, int left, int right) {
+    public static int process2(int[] arr, int left, int right) {
         // 递归终止条件
         if (left == right) {
             return arr[left - 1] * arr[left] * arr[right + 1];
         }
         // left、right位置最后打爆的得分，取最大值
-        int max = Math.max(arr[left - 1] * arr[left] * arr[right + 1] + process(arr, left + 1, right),
-                arr[left - 1] * arr[right] * arr[right + 1] + process(arr, left, right - 1));
+        int max = Math.max(arr[left - 1] * arr[left] * arr[right + 1] + process2(arr, left + 1, right),
+                arr[left - 1] * arr[right] * arr[right + 1] + process2(arr, left, right - 1));
         // left...right中间某一个位置最后打爆
         for (int i = left + 1; i < right; i++) {
-            max = Math.max(max, arr[left - 1] * arr[i] * arr[right + 1] + process(arr, left, i - 1) + process(arr, i + 1, right));
+            max = Math.max(max, arr[left - 1] * arr[i] * arr[right + 1] + process2(arr, left, i - 1) + process2(arr, i + 1, right));
         }
         return max;
     }
