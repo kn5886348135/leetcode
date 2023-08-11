@@ -1,5 +1,9 @@
 package com.serendipity.algo24suffixarray;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -12,40 +16,26 @@ package com.serendipity.algo24suffixarray;
 public class InsertS2MakeMostAlphabeticalOrder {
 
     public static void main(String[] args) {
-        int range = 10;
-        int len = 50;
+        int possibilities = 26;
+        int maxSize = 5000;
         int testTime = 100000;
-        System.out.println("功能测试开始");
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int s1Len = (int) (Math.random() * len);
-            int s2Len = (int) (Math.random() * len);
-            String s1 = randomNumberString(s1Len, range);
-            String s2 = randomNumberString(s2Len, range);
+            int len1 = (int) (Math.random() * maxSize);
+            int len2 = (int) (Math.random() * maxSize);
+            String s1 = CommonUtil.generateRandomString(possibilities, len1);
+            String s2 = CommonUtil.generateRandomString(possibilities, len2);
             String ans1 = maxCombine1(s1, s2);
             String ans2 = maxCombine2(s1, s2);
             if (!ans1.equals(ans2)) {
-                System.out.println("Oops!");
-                System.out.println(s1);
-                System.out.println(s2);
-                System.out.println(ans1);
-                System.out.println(ans2);
+                System.out.println(MessageFormat.format("maxCombine failes, s1 {0}, s2 {1}, ans1 {2}, ans2 {3}",
+                        new String[]{s1, s2, ans1, ans2}));
+                success = false;
                 break;
             }
         }
-        System.out.println("功能测试结束");
-
-        System.out.println("==========");
-
-        System.out.println("性能测试开始");
-        int s1Len = 1000000;
-        int s2Len = 500;
-        String s1 = randomNumberString(s1Len, range);
-        String s2 = randomNumberString(s2Len, range);
-        long start = System.currentTimeMillis();
-        maxCombine2(s1, s2);
-        long end = System.currentTimeMillis();
-        System.out.println("运行时间 : " + (end - start) + " ms");
-        System.out.println("性能测试结束");
+        System.out.println(success ? "success" : "failed");
+        // TODO 性能测试
     }
 
     // 暴力方法
@@ -68,7 +58,7 @@ public class InsertS2MakeMostAlphabeticalOrder {
         return ans;
     }
 
-    // 利用DC3生成后缀数组
+    // 利用DC3生成后缀数组，时间复杂度 O(N+M) + O(M^2)
     public static String maxCombine2(String str1, String str2) {
         if (str1 == null || str1.length() == 0) {
             return str2;
@@ -258,13 +248,5 @@ public class InsertS2MakeMostAlphabeticalOrder {
             }
             return ans;
         }
-    }
-
-    public static String randomNumberString(int len, int range) {
-        char[] str = new char[len];
-        for (int i = 0; i < len; i++) {
-            str[i] = (char) ((int) (Math.random() * range) + '0');
-        }
-        return String.valueOf(str);
     }
 }
