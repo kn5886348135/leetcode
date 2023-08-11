@@ -31,6 +31,8 @@ public class LeetCode312 {
 
     // 暴力递归
     public static int maxCoins1(int[] nums) {
+        // [3,2,1,3]
+        // [1,3,2,1,3,1]
         int len = nums.length;
         int[] help = new int[len + 2];
         for (int i = 0; i < len; i++) {
@@ -42,6 +44,7 @@ public class LeetCode312 {
     }
 
     // left-1和right+1位置不越界并且不会被打爆
+    // 返回，arr[L...R]打爆所有气球，最大得分是什么
     public static int func(int[] arr, int left, int right) {
         // 递归终止条件
         if (left == right) {
@@ -80,13 +83,14 @@ public class LeetCode312 {
         return process(help, 1, len);
     }
 
+    // 打爆arr[left..right]范围上的所有气球，返回最大的分数
     // 假设arr[left-1]和arr[right+1]一定没有被打爆
     public static int process(int[] arr, int left, int right) {
         // 递归终止条件
         if (left == right) {
             return arr[left - 1] * arr[left] * arr[right + 1];
         }
-        // left、right位置最后打爆的得分，去最大值
+        // left、right位置最后打爆的得分，取最大值
         int max = Math.max(arr[left - 1] * arr[left] * arr[right + 1] + process(arr, left + 1, right),
                 arr[left - 1] * arr[right] * arr[right + 1] + process(arr, left, right - 1));
         // left...right中间某一个位置最后打爆
