@@ -9,6 +9,11 @@ import java.text.MessageFormat;
  * @version 1.0
  * @description 最长公共子串问题
  *              LeetCode1143
+ *              假设str1长度N，str2长度M，求str1和str2的最长公共子串。
+ *              动态规划的时间复杂度O(N*M)
+ *              最优解是后缀数组加height数组，可以达到O(N+M)
+ *              首先需要用到DC3算法得到后缀数组(sa)
+ *              然后用sa数组去生成height数组，并且在生成的时候，还有一个不回退的优化
  * @date 2023/03/28/17:49
  */
 public class LongestCommonSubstringConquerByHeight {
@@ -29,12 +34,12 @@ public class LongestCommonSubstringConquerByHeight {
             int ans1 = lcs1(str1, str2);
             int ans2 = lcs2(str1, str2);
             if (ans1 != ans2) {
-                System.out.println("longest common sub string failed!");
+                System.out.println(MessageFormat.format("lsc failed, str1 {0}, str2 {1}, ans1 {2} , ans2 {3}",
+                        new String[]{str1, str2, String.valueOf(ans1), String.valueOf(ans2)}));
                 success = false;
                 break;
             }
         }
-
         System.out.println(success ? "success" : "failed");
     }
 
@@ -48,25 +53,18 @@ public class LongestCommonSubstringConquerByHeight {
             String str1 = CommonUtil.generateRandomString(possibilities, maxSize);
             String str2 = CommonUtil.generateRandomString(possibilities, maxSize);
             long start = System.currentTimeMillis();
-            int ans1 = lcs1(str1, str2);
+            lcs1(str1, str2);
             long end = System.currentTimeMillis();
             total1 += end - start;
 
             start = System.currentTimeMillis();
-            int ans2 = lcs1(str1, str2);
+            lcs2(str1, str2);
             end = System.currentTimeMillis();
             total2 += end - start;
-            if (ans1 != ans2) {
-                System.out.println("lcs performance test failed");
-                break;
-            }
         }
         System.out.println(MessageFormat.format("lcs1 cost {0}, lcs2 cost {1}",
                 new String[]{String.valueOf(total1), String.valueOf(total2)}));
-
     }
-
-
 
     // 动态规划 时间复杂度O(N * M)
     // 后缀数组 DC3算法 不回退优化O(N)
@@ -133,7 +131,6 @@ public class LongestCommonSubstringConquerByHeight {
         for (int i = 0; i < m; i++) {
             all[index++] = chs2[i] - min + 2;
         }
-
         DC3 dc3 = new DC3(all, max - min + 2);
         int len = all.length;
         int[] sa = dc3.sa;
@@ -295,5 +292,4 @@ public class LongestCommonSubstringConquerByHeight {
             return ans;
         }
     }
-
 }
