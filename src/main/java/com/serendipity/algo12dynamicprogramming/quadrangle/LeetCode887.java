@@ -1,5 +1,7 @@
 package com.serendipity.algo12dynamicprogramming.quadrangle;
 
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -31,17 +33,22 @@ public class LeetCode887 {
         int maxN = 500;
         int maxK = 30;
         int testTime = 1000;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int N = (int) (Math.random() * maxN) + 1;
-            int K = (int) (Math.random() * maxK) + 1;
-            int ans2 = superEggDrop2(K, N);
-            int ans3 = superEggDrop3(K, N);
-            int ans4 = superEggDrop4(K, N);
-            int ans5 = superEggDrop5(K, N);
+            int n = (int) (Math.random() * maxN) + 1;
+            int k = (int) (Math.random() * maxK) + 1;
+            int ans2 = superEggDrop2(k, n);
+            int ans3 = superEggDrop3(k, n);
+            int ans4 = superEggDrop4(k, n);
+            int ans5 = superEggDrop5(k, n);
             if (ans2 != ans3 || ans4 != ans5 || ans2 != ans4) {
-                System.out.println("出错了!");
+                System.out.println(MessageFormat.format("k eggs failed, k {0}, n {1}",
+                        new String[]{String.valueOf(k), String.valueOf(n)}));
+                success = false;
+                break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 对数器 暴力递归 会超时
