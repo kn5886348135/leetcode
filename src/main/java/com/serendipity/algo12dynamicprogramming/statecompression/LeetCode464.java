@@ -21,6 +21,7 @@ public class LeetCode464 {
         int maxTotal = 300;
         int testTime = 1000;
         boolean success = true;
+        // TODO 验证
         for (int i = 0; i < testTime; i++) {
             int choose = (int) (Math.random() * maxChoose) + 1;
             int total = (int) (Math.random() * maxTotal) + 1;

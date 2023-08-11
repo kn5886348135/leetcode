@@ -1,7 +1,12 @@
 package com.serendipity.algo12dynamicprogramming.statecompression;
 
+import org.springframework.util.StopWatch;
+
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author jack
@@ -18,37 +23,60 @@ public class TSP {
     public static void main(String[] args) {
         int len = 10;
         int value = 100;
-        System.out.println("功能测试开始");
-        for (int i = 0; i < 20000; i++) {
+        int testTimes = 20;
+        boolean success = true;
+        long total1 = 0;
+        long total2 = 0;
+        long total3 = 0;
+        long total4 = 0;
+        long total5 = 0;
+        long total6 = 0;
+        Map<String, Long> map = new TreeMap<>();
+        for (int i = 0; i < testTimes; i++) {
             int[][] matrix = generateGraph(len, value);
             int origin = (int) (Math.random() * matrix.length);
-            int ans1 = min3(matrix);
-            int ans2 = min4(matrix);
-            int ans3 = tsp2(matrix, origin);
-            if (ans1 != ans2 || ans1 != ans3) {
-                System.out.println("fuck");
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start("min1");
+            int ans1 = min1(matrix);
+            stopWatch.stop();
+            stopWatch.start("min2");
+            int ans2 = min2(matrix);
+            stopWatch.stop();
+            stopWatch.start("min3");
+            int ans3 = min3(matrix);
+            stopWatch.stop();
+            stopWatch.start("min4");
+            int ans4 = min4(matrix);
+            stopWatch.stop();
+            stopWatch.start("tsp1");
+            int ans5 = tsp1(matrix, origin);
+            stopWatch.stop();
+            stopWatch.start("tsp2");
+            int ans6 = tsp2(matrix, origin);
+            stopWatch.stop();
+            StopWatch.TaskInfo[] taskInfos = stopWatch.getTaskInfo();
+            for (StopWatch.TaskInfo taskInfo : taskInfos) {
+                String taskName = taskInfo.getTaskName();
+                Long cost = taskInfo.getTimeMillis();
+                if (map.containsKey(taskName)) {
+                    map.put(taskName, map.get(taskName) + cost);
+                } else {
+                    map.put(taskName, cost);
+                }
+            }
+            if (ans1 != ans2 || ans1 != ans3 || ans1 != ans4 || ans1 != ans5 || ans1 != ans6) {
+                System.out.println(
+                        MessageFormat.format("tsp failed, ans1 {0}, ans2 {1}, ans3 {2}, ans4 {3},  ans5 {4}, ans6 {5}",
+                                new String[]{String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3),
+                                        String.valueOf(ans4), String.valueOf(ans5), String.valueOf(ans6),}));
+                success = false;
+                break;
             }
         }
-        System.out.println("功能测试结束");
-
-        len = 22;
-        System.out.println("性能测试开始，数据规模 " + len);
-        int[][] matrix = new int[len][len];
-        for (int i = 0; i < len; i++) {
-            for (int j = 0; j < len; j++) {
-                matrix[i][j] = (int) (Math.random() * value) + 1;
-            }
-        }
-        for (int i = 0; i < len; i++) {
-            matrix[i][i] = 0;
-        }
-        long start;
-        long end;
-        start = System.currentTimeMillis();
-        min4(matrix);
-        end = System.currentTimeMillis();
-        System.out.println("运行时间 " + (end - start) + " 毫秒");
-        System.out.println("性能测试结束");
+        System.out.println(success ? "success" : "failed");
+        StringBuilder sb = new StringBuilder();
+        map.entrySet().stream().forEach(entry -> sb.append(entry.getKey()).append("\t\t").append(entry.getValue()).append("\r\n"));
+        System.out.println(sb);
     }
 
     public static int min1(int[][] matrix) {
@@ -104,7 +132,7 @@ public class TSP {
     // start这座城一定在set里，
     // 从start出发，要把set中所有的城市过一遍，最终回到0这座城市，最小距离是多少
     public static int func2(int[][] matrix, int cityStatus, int start) {
-        // cityStatus的二进制只有一个1
+        // cityStatus == cityStatux & (~cityStaus + 1)
         if (cityStatus == (cityStatus & (~cityStatus + 1))) {
             return matrix[start][0];
         }
@@ -267,7 +295,8 @@ public class TSP {
             dp[0][i] = matrix[icity][origin];
         }
         for (int status = 1; status < s; status++) {
-            // 尝试每一种状态
+            // 尝试每一种状态 status = 0 0 1 0 0 0 0 0 0
+            // 下标 8 7 6 5 4 3 2 1 0
             for (int i = 0; i < len; i++) {
                 // i 枚举的出发城市
                 dp[status][i] = Integer.MAX_VALUE;
