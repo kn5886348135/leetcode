@@ -1,6 +1,10 @@
 package com.serendipity.algo12dynamicprogramming.quadrangle;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * @author jack
@@ -19,26 +23,36 @@ import java.util.Arrays;
 public class PostOfficeProblem {
 
     public static void main(String[] args) {
-        int n = 30;
+        int max = 30;
+        int maxSize = 30;
         int maxValue = 100;
         int testTime = 10000;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int len = (int) (Math.random() * n) + 1;
-            int[] arr = randomSortedArray(len, maxValue);
-            int num = (int) (Math.random() * n) + 1;
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue,true);
+            Arrays.sort(arr);
+            int[] arr1 = new int[arr.length];
+            System.arraycopy(arr, 0, arr1, 0, arr.length);
+            int[] arr2 = new int[arr.length];
+            System.arraycopy(arr, 0, arr2, 0, arr.length);
+            int num = (int) (Math.random() * max) + 1;
+            while (num > arr.length) {
+                num = (int) (Math.random() * max) + 1;
+            }
             int ans1 = min1(arr, num);
             int ans2 = min2(arr, num);
             if (ans1 != ans2) {
-                printArray(arr);
-                System.out.println(num);
-                System.out.println(ans1);
-                System.out.println(ans2);
-                System.out.println("Oops!");
+                System.out.println(MessageFormat.format("post office failed, arr {0} ,\r\n ans1 {1}, ans2 {2}, num {3}",
+                        new String[]{Arrays.stream(arr).boxed().map(String::valueOf).collect(Collectors.joining(", ")),
+                                String.valueOf(ans1), String.valueOf(ans2), String.valueOf(num)}));
+                success = false;
+                break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
-    // 没有优化的递归 时间复杂度O(N3)
+    // 没有优化的递归 时间复杂度O(N^3)
     public static int min1(int[] arr, int num) {
         if (arr == null || num < 1 || arr.length < num) {
             return 0;
@@ -106,19 +120,4 @@ public class PostOfficeProblem {
         return dp[len - 1][num];
     }
 
-    public static int[] randomSortedArray(int len, int range) {
-        int[] arr = new int[len];
-        for (int i = 0; i != len; i++) {
-            arr[i] = (int) (Math.random() * range);
-        }
-        Arrays.sort(arr);
-        return arr;
-    }
-
-    public static void printArray(int[] arr) {
-        for (int i = 0; i != arr.length; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
-    }
 }
