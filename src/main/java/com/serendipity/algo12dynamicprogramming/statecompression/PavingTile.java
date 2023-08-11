@@ -1,5 +1,7 @@
 package com.serendipity.algo12dynamicprogramming.statecompression;
 
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -10,20 +12,32 @@ package com.serendipity.algo12dynamicprogramming.statecompression;
 public class PavingTile {
 
     public static void main(String[] args) {
-        int n = 8;
-        int m = 6;
-        System.out.println(ways1(n, m));
-        System.out.println(ways2(n, m));
-        System.out.println(ways3(n, m));
-        System.out.println(ways4(n, m));
-
-        n = 10;
-        m = 10;
-        System.out.println("=========");
-        System.out.println(ways3(n, m));
-        System.out.println(ways4(n, m));
+        int maxN = 20;
+        int maxM = 300;
+        int testTime = 1000;
+        boolean success = true;
+        // TODO 验证
+        for (int i = 0; i < testTime; i++) {
+            int n = (int) (Math.random() * maxN) + 1;
+            int m = (int) (Math.random() * maxM) + 1;
+            int ans1 = ways1(m, n);
+            int ans2 = ways2(m, n);
+            int ans3 = ways3(m, n);
+            int ans4 = ways4(m, n);
+            if (ans1 != ans2 || ans1 != ans3 || ans1 != ans4) {
+                System.out.println(MessageFormat.format("paving tile failed, n {0}, m {1}, ans1 {2}, ans2 {3}, ans3 {4}, ans4 {5}",
+                        new String[]{String.valueOf(n), String.valueOf(m), String.valueOf(ans1), String.valueOf(ans2),
+                                String.valueOf(ans3), String.valueOf(ans4)}));
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
     }
 
+    /*
+     * 2 * M 铺地的问题非常简单，这个是解决 N * M 铺地的问题
+     */
     public static int ways1(int n, int m) {
         if (n < 1 || m < 1 || ((n * m) & 1) != 0) {
             return 0;
