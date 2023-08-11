@@ -1,5 +1,7 @@
 package com.serendipity.algo12dynamicprogramming.statecompression;
 
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -9,12 +11,30 @@ package com.serendipity.algo12dynamicprogramming.statecompression;
  *              例如，两个玩家可以轮流从公共整数池中抽取从 1 到 15 的整数（不放回），直到累计整数和 >= 100。
  *              给定两个整数maxChoosableInteger（整数池中可选择的最大数）和desiredTotal（累计和），若先出手的
  *              玩家能稳赢则返回 true，否则返回 false 。假设两位玩家游戏时都表现 最佳 。
+ *              https://leetcode.cn/problems/can-i-win/
  * @date 2023/03/26/20:55
  */
 public class LeetCode464 {
 
     public static void main(String[] args) {
-
+        int maxChoose = 20;
+        int maxTotal = 300;
+        int testTime = 1000;
+        boolean success = true;
+        for (int i = 0; i < testTime; i++) {
+            int choose = (int) (Math.random() * maxChoose) + 1;
+            int total = (int) (Math.random() * maxTotal) + 1;
+            boolean ans1 = canIWin1(total, choose);
+            boolean ans2 = canIWin2(total, choose);
+            boolean ans3 = canIWin3(total, choose);
+            if (ans1 != ans2 || ans1 != ans3) {
+                System.out.println(MessageFormat.format("can i win failed, choose {0}, total {1}",
+                        new String[]{String.valueOf(total), String.valueOf(choose)}));
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 时间复杂度O(N!)
@@ -129,6 +149,14 @@ public class LeetCode464 {
         }
         dp[status] = ans ? 1 : -1;
         return ans;
+    }
+
+    public int sum(int n) {
+        int sum = 0;
+        for (int i = 0; i < n; i++) {
+            sum += i;
+        }
+        return sum;
     }
 
 }
