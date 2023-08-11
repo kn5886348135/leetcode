@@ -1,5 +1,11 @@
 package com.serendipity.algo12dynamicprogramming.quadrangle;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 /**
  * @author jack
  * @version 1.0
@@ -12,19 +18,30 @@ package com.serendipity.algo12dynamicprogramming.quadrangle;
 public class StoneMerge {
 
     public static void main(String[] args) {
-        int n = 15;
-        int maxValue = 100;
+        int maxSize = 15;
+        int maxValue = 500;
         int testTime = 1000;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int len = (int) (Math.random() * n);
-            int[] arr = randomArray(len, maxValue);
-            int ans1 = min1(arr);
-            int ans2 = min2(arr);
-            int ans3 = min3(arr);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            int[] arr1 = new int[arr.length];
+            System.arraycopy(arr, 0, arr1, 0, arr.length);
+            int[] arr2 = new int[arr.length];
+            System.arraycopy(arr, 0, arr2, 0, arr.length);
+            int[] arr3 = new int[arr.length];
+            System.arraycopy(arr, 0, arr3, 0, arr.length);
+            int ans1 = min1(arr1);
+            int ans2 = min2(arr2);
+            int ans3 = min3(arr3);
             if (ans1 != ans2 || ans1 != ans3) {
-                System.out.println("Oops!");
+                System.out.println(MessageFormat.format("best split failed, arr {0} ,\r\n ans1 {1}, ans2 {2}, ans3 {3}",
+                        new String[]{Arrays.stream(arr).boxed().map(String::valueOf).collect(Collectors.joining(", ")),
+                                String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3)}));
+                success = false;
+                break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     public static int[] sum(int[] arr) {
@@ -126,11 +143,4 @@ public class StoneMerge {
         return dp[0][len - 1];
     }
 
-    public static int[] randomArray(int len, int maxValue) {
-        int[] arr = new int[len];
-        for (int i = 0; i < len; i++) {
-            arr[i] = (int) (Math.random() * maxValue);
-        }
-        return arr;
-    }
 }

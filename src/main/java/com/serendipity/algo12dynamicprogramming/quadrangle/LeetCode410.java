@@ -1,5 +1,11 @@
 package com.serendipity.algo12dynamicprogramming.quadrangle;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 /**
  * @author jack
  * @version 1.0
@@ -19,34 +25,43 @@ package com.serendipity.algo12dynamicprogramming.quadrangle;
 public class LeetCode410 {
 
     public static void main(String[] args) {
-        int n = 100;
+        int maxSize = 100;
         int maxValue = 100;
+        int max = 50;
         int testTime = 10000;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int len = (int) (Math.random() * n) + 1;
-            int m = (int) (Math.random() * n) + 1;
-            int[] arr = randomArray(len, maxValue);
-            int ans1 = splitArray1(arr, m);
-            int ans2 = splitArray2(arr, m);
-            int ans3 = splitArray3(arr, m);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            int k = (int) (Math.random() * max) + 1;
+            while (k > arr.length) {
+                k = (int) (Math.random() * maxSize) + 1;
+            }
+            int[] arr1 = new int[arr.length];
+            System.arraycopy(arr, 0, arr1, 0, arr.length);
+            int[] arr2 = new int[arr.length];
+            System.arraycopy(arr, 0, arr2, 0, arr.length);
+            int[] arr3 = new int[arr.length];
+            System.arraycopy(arr, 0, arr3, 0, arr.length);
+            int ans1 = splitArray1(arr1, k);
+            int ans2 = splitArray2(arr2, k);
+            int ans3 = splitArray3(arr3, k);
             if (ans1 != ans2 || ans1 != ans3) {
-                System.out.print("arr ");
-                printArray(arr);
-                System.out.println("m " + m);
-                System.out.println("ans1 " + ans1);
-                System.out.println("ans2 " + ans2);
-                System.out.println("ans3 " + ans3);
-                System.out.println("Oops");
+                System.out.println(MessageFormat.format("split array failed, arr {0} ,\r\n ans1 {1}, ans2 {2}, ans3 {3}, k {4}",
+                        new String[]{Arrays.stream(arr).boxed().map(String::valueOf).collect(Collectors.joining(", ")),
+                                String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3), String.valueOf(k)}));
+                success = false;
                 break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
+    // 求原数组arr[left...right]的累加和
     public static int sum(int[] sum, int left, int right) {
         return sum[right + 1] - sum[left];
     }
 
-    // 不优化枚举的动态规划，时间复杂度O(N2 * k)
+    // 不优化枚举的动态规划，时间复杂度O(N^2 * k)
     public static int splitArray1(int[] nums, int k) {
         int len = nums.length;
         int[] sum = new int[len + 1];
