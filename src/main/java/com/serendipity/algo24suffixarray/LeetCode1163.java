@@ -4,12 +4,13 @@ package com.serendipity.algo24suffixarray;
  * @author jack
  * @version 1.0
  * @description 给你一个字符串 s ，找出它的所有子串并按字典序排列，返回排在最后的那个子串。
+ *              https://leetcode.com/problems/last-substring-in-lexicographical-order/
  * @date 2023/03/28/14:13
  */
 public class LeetCode1163 {
 
     public static void main(String[] args) {
-
+        // TODO 对数器
     }
 
     public static String lastSubString(String str) {

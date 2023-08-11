@@ -39,15 +39,6 @@ public class DC3 {
         this.height = height(nums);
     }
 
-    public static void main(String[] args) {
-        int len = 100000;
-        int maxValue = 100;
-        long start = System.currentTimeMillis();
-        new DC3(randomArray(len, maxValue), maxValue);
-        long end = System.currentTimeMillis();
-        System.out.println("数据量 " + len + ", 运行时间 " + (end - start) + " ms");
-    }
-
     private int[] sa(int[] nums, int max) {
         int len = nums.length;
         // nums长度可能小于3
@@ -181,13 +172,5 @@ public class DC3 {
             }
         }
         return ans;
-    }
-
-    public static int[] randomArray(int len, int maxValue) {
-        int[] arr = new int[len];
-        for (int i = 0; i < len; i++) {
-            arr[i] = (int) (Math.random() * maxValue) + 1;
-        }
-        return arr;
     }
 }
