@@ -1,5 +1,9 @@
 package com.serendipity.algo12dynamicprogramming.otherdp;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -18,26 +22,30 @@ package com.serendipity.algo12dynamicprogramming.otherdp;
 public class DeleteAdjacentSameCharacter {
 
     public static void main(String[] args) {
-        int maxLen = 16;
-        int variety = 3;
+        int maxSize = 16;
+        int possibilities = 3;
         int testTime = 100000;
-        System.out.println("测试开始");
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int len = (int) (Math.random() * maxLen);
-            String str = randomString(len, variety);
-            int ans1 = restMin1(str);
-            int ans2 = restMin2(str);
-            int ans3 = restMin3(str);
+            String str = CommonUtil.generateRandomString(possibilities, maxSize);
+            String str1 = str;
+            String str2 = str;
+            String str3 = str;
+            int ans1 = restMin1(str1);
+            int ans2 = restMin2(str2);
+            int ans3 = restMin3(str3);
             if (ans1 != ans2 || ans1 != ans3) {
                 System.out.println(str);
                 System.out.println(ans1);
                 System.out.println(ans2);
                 System.out.println(ans3);
-                System.out.println("出错了！");
+                System.out.println(MessageFormat.format("delete char failed, str {0}, ans1 {1}, ans2 {2}, ans3 {3}",
+                        new String[]{str, String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3)}));
+                success = false;
                 break;
             }
         }
-        System.out.println("测试结束");
+        System.out.println(success ? "success" : "failed");
     }
 
     // 暴力递归
@@ -69,6 +77,7 @@ public class DeleteAdjacentSameCharacter {
         return true;
     }
 
+    // 优良尝试的暴力递归版本
     public static int restMin2(String str) {
         if (str == null) {
             return 0;
@@ -109,6 +118,7 @@ public class DeleteAdjacentSameCharacter {
         return Math.min(ans1, ans2);
     }
 
+    // 优良尝试的动态规划版本
     public static int restMin3(String str) {
         if (str == null) {
             return 0;
