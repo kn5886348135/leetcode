@@ -1,5 +1,9 @@
-package com.serendipity.algo12dynamicprogramming.otherdp;
+package com.serendipity.algo25huffmantree;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -7,7 +11,7 @@ import java.util.PriorityQueue;
 /**
  * @author jack
  * @version 1.0
- * @description 哈夫曼编码，没有处理字节转换、边界
+ * @description 哈夫曼编码，没有处理字节转换、边界(字符串为空)
  * @date 2023/03/28/22:02
  */
 public class HuffmanTree {
@@ -28,41 +32,41 @@ public class HuffmanTree {
         }
         System.out.println("====================");
         // str是原始字符串
-        String str = "CBBBAABBACAABDDEFBA";
-        System.out.println(str);
+        String original = "CBBBAABBACAABDDEFBA";
+        System.out.println(original);
         // countMap是根据str建立的词频表
-        HashMap<Character, Integer> countMap = countMap(str);
+        HashMap<Character, Integer> countMap = countMap(original);
         // hf是根据countMap生成的哈夫曼编码表
         HashMap<Character, String> hf = huffmanForm(countMap);
         // huffmanEncode是原始字符串转译后的哈夫曼编码
-        String huffmanEncode = huffmanEncode(str, hf);
+        String huffmanEncode = huffmanEncode(original, hf);
         System.out.println(huffmanEncode);
         // huffmanDecode是哈夫曼编码还原成的原始字符串
         String huffmanDecode = huffmanDecode(huffmanEncode, hf);
         System.out.println(huffmanDecode);
         System.out.println("====================");
         System.out.println("大样本随机测试开始");
-        // 字符串最大长度
-        int len = 500;
         // 所含字符种类
-        int range = 26;
+        int possibilities = 26;
+        // 字符串最大长度
+        int maxSize = 500;
         // 随机测试进行的次数
         int testTime = 100000;
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int N = (int) (Math.random() * len) + 1;
-            String test = randomNumberString(N, range);
-            HashMap<Character, Integer> counts = countMap(test);
+            String str = CommonUtil.generateRandomString(possibilities, maxSize);
+            HashMap<Character, Integer> counts = countMap(str);
             HashMap<Character, String> form = huffmanForm(counts);
-            String encode = huffmanEncode(test, form);
+            String encode = huffmanEncode(str, form);
             String decode = huffmanDecode(encode, form);
-            if (!test.equals(decode)) {
-                System.out.println(test);
-                System.out.println(encode);
-                System.out.println(decode);
-                System.out.println("出错了!");
+            if (!str.equals(decode)) {
+                System.out.println(MessageFormat.format("huffman code failed, str {0}, encode {1}, decode {2}",
+                        new String[]{str, encode, decode}));
+                success = false;
+                break;
             }
         }
-        System.out.println("大样本随机测试结束");
+        System.out.println(success ? "success" : "failed");
     }
 
     // 根据str生成词频统计表
@@ -109,7 +113,7 @@ public class HuffmanTree {
             return ans;
         }
         HashMap<Node, Character> nodes = new HashMap<>();
-        PriorityQueue<Node> heap = new PriorityQueue<>((o1, o2) -> o1.count - o2.count);
+        PriorityQueue<Node> heap = new PriorityQueue<>(Comparator.comparingInt(o -> o.count));
         for (Map.Entry<Character, Integer> entry : countMap.entrySet()) {
             Node cur = new Node(entry.getValue());
             char ch = entry.getKey();
@@ -192,11 +196,4 @@ public class HuffmanTree {
         }
     }
 
-    public static String randomNumberString(int len, int range) {
-        char[] str = new char[len];
-        for (int i = 0; i < len; i++) {
-            str[i] = (char) ((int) (Math.random() * range) + 'a');
-        }
-        return String.valueOf(str);
-    }
 }
