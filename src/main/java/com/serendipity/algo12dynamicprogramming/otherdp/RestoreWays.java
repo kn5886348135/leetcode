@@ -1,12 +1,16 @@
 package com.serendipity.algo12dynamicprogramming.otherdp;
 
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 /**
  * @author jack
  * @version 1.0
  * @description 整型数组arr长度为n(3 < = n < = 10 ^ 4)，最初每个数字是<=200的正数且满足如下条件：
  *
  *              1. arr[0] <= arr[1]
- *              2.arr[n-1] <= arr[n-2]
+ *              2. arr[n-1] <= arr[n-2]
  *              3. arr[i] <= max(arr[i-1], arr[i+1])
  *              但是在arr有些数字丢失了，比如k位置的数字之前是正数，丢失之后k位置的数字为0。
  *              请你根据上述条件， 计算可能有多少种不同的arr可以满足以上条件。
@@ -16,28 +20,38 @@ package com.serendipity.algo12dynamicprogramming.otherdp;
 public class RestoreWays {
 
     public static void main(String[] args) {
-        int len = 4;
+        int maxSize = 20;
         int testTime = 15;
-        System.out.println("功能测试开始");
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int N = (int) (Math.random() * len) + 2;
-            int[] arr = generateRandomArray(N);
-            int ans0 = ways0(arr);
-            int ans1 = ways1(arr);
-            int ans2 = ways2(arr);
-            int ans3 = ways3(arr);
+            int size = (int) (Math.random() * maxSize) + 2;
+            int[] arr = generateRandomArray(size);
+            int[] arr0 = new int[arr.length];
+            System.arraycopy(arr, 0, arr0, 0, arr.length);
+            int[] arr1 = new int[arr.length];
+            System.arraycopy(arr, 0, arr1, 0, arr.length);
+            int[] arr2 = new int[arr.length];
+            System.arraycopy(arr, 0, arr2, 0, arr.length);
+            int[] arr3 = new int[arr.length];
+            System.arraycopy(arr, 0, arr3, 0, arr.length);
+            int ans0 = ways0(arr0);
+            int ans1 = ways1(arr1);
+            int ans2 = ways2(arr2);
+            int ans3 = ways3(arr3);
             if (ans0 != ans1 || ans2 != ans3 || ans0 != ans2) {
-                System.out.println("Oops!");
+                System.out.println(MessageFormat.format("restore array failed, arr {0}, ans0 {1}, ans1 {2}, ans2 {3}, ans3 {4}",
+                        new String[]{Arrays.stream(arr).boxed().map(String::valueOf).collect(Collectors.joining(" ")),
+                                String.valueOf(ans0), String.valueOf(ans1), String.valueOf(ans2),
+                                String.valueOf(ans3)}));
+                success = false;
+                break;
             }
         }
-        System.out.println("功能测试结束");
-        System.out.println("===========");
-        int N = 100000;
-        int[] arr = generateRandomArray(N);
-        long begin = System.currentTimeMillis();
-        ways3(arr);
-        long end = System.currentTimeMillis();
-        System.out.println("run time : " + (end - begin) + " ms");
+        System.out.println(success ? "success" : "failed");
+    }
+
+    private static void performanceTest() {
+        // TODO 性能测试
     }
 
     public static int ways0(int[] arr) {
@@ -242,13 +256,5 @@ public class RestoreWays {
             }
         }
         return ans;
-    }
-
-    public static void printArray(int[] arr) {
-        System.out.println("arr size : " + arr.length);
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
     }
 }
