@@ -35,10 +35,6 @@ public class DeleteAdjacentSameCharacter {
             int ans2 = restMin2(str2);
             int ans3 = restMin3(str3);
             if (ans1 != ans2 || ans1 != ans3) {
-                System.out.println(str);
-                System.out.println(ans1);
-                System.out.println(ans2);
-                System.out.println(ans3);
                 System.out.println(MessageFormat.format("delete char failed, str {0}, ans1 {1}, ans2 {2}, ans3 {3}",
                         new String[]{str, String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3)}));
                 success = false;

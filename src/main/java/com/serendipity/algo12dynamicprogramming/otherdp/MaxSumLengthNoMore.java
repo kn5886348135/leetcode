@@ -1,6 +1,11 @@
 package com.serendipity.algo12dynamicprogramming.otherdp;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 /**
  * @author jack
@@ -12,26 +17,35 @@ import java.util.LinkedList;
 public class MaxSumLengthNoMore {
 
     public static void main(String[] args) {
-        int maxN = 50;
+        int max = 50;
+        int maxSize = 20;
         int maxValue = 100;
         int testTime = 1000000;
-        System.out.println("测试开始");
+        boolean success = true;
         for (int i = 0; i < testTime; i++) {
-            int N = (int) (Math.random() * maxN);
-            int M = (int) (Math.random() * maxN);
-            int[] arr = randomArray(N, maxValue);
-            int ans1 = maxSum1(arr, M);
-            int ans2 = maxSum2(arr, M);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, false);
+            int[] arr1 = new int[arr.length];
+            System.arraycopy(arr, 0, arr1, 0, arr.length);
+            int[] arr2 = new int[arr.length];
+            System.arraycopy(arr, 0, arr2, 0, arr.length);
+            int m = ((int) Math.random() * max) + 1;
+            while (m > arr.length) {
+                m = ((int) Math.random() * max) + 1;
+            }
+            int ans1 = maxSum1(arr1, m);
+            int ans2 = maxSum2(arr2, m);
             if (ans1 != ans2) {
-                System.out.println(ans1);
-                System.out.println(ans2);
-                System.out.println("Oops!");
+                System.out.println(MessageFormat.format("max sum failed, arr {0}, ans1 {1}, ans2 {2}, m {3}",
+                        new String[]{Arrays.stream(arr).boxed().map(String::valueOf).collect(Collectors.joining(" ")),
+                                String.valueOf(ans1), String.valueOf(ans2), String.valueOf(m)}));
+                success = false;
+                break;
             }
         }
-        System.out.println("测试结束");
+        System.out.println(success ? "success" : "failed");
     }
 
-    // 对数器 时间复杂度O(N2)
+    // 对数器 时间复杂度O(N^2)
     public static int maxSum1(int[] arr, int m) {
         if (arr == null || arr.length == 0 || m < 1) {
             return 0;
@@ -90,13 +104,5 @@ public class MaxSumLengthNoMore {
             max = Math.max(max, sum[qmax.peekFirst()] - sum[left]);
         }
         return max;
-    }
-
-    public static int[] randomArray(int len, int max) {
-        int[] arr = new int[len];
-        for (int i = 0; i < len; i++) {
-            arr[i] = (int) (Math.random() * max) - (int) (Math.random() * max);
-        }
-        return arr;
     }
 }
