@@ -1,5 +1,11 @@
 package com.serendipity.algo12dynamicprogramming.otherdp;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 /**
  * @author jack
  * @version 1.0
@@ -12,7 +18,31 @@ package com.serendipity.algo12dynamicprogramming.otherdp;
 public class LeetCode546 {
 
     public static void main(String[] args) {
-
+        int maxSize = 50;
+        int maxValue = 300;
+        int testTime = 1000;
+        boolean success = true;
+        for (int i = 0; i < testTime; i++) {
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            int[] arr1 = new int[arr.length];
+            System.arraycopy(arr, 0, arr1, 0, arr.length);
+            int[] arr2 = new int[arr.length];
+            System.arraycopy(arr, 0, arr2, 0, arr.length);
+            int[] arr3 = new int[arr.length];
+            System.arraycopy(arr, 0, arr3, 0, arr.length);
+            // int ans1 = func1(arr1, 0, arr.length, k);
+            // TODO func1在哪儿被调用
+            int ans2 = removeBoxes1(arr2);
+            int ans3 = removeBoxes2(arr3);
+            if (ans2 != ans3) {
+                System.out.println(MessageFormat.format("remove boxed failed, arr {0}, ans2 {2}, ans3 {3}",
+                        new String[]{Arrays.stream(arr).boxed().map(String::valueOf).collect(Collectors.joining(" ")),
+                                String.valueOf(ans2), String.valueOf(ans3)}));
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 消除arr[left...right]并且前面有连续k个arr[left]
@@ -90,5 +120,4 @@ public class LeetCode546 {
         dp[left][right][k] = ans;
         return ans;
     }
-
 }
