@@ -1,4 +1,4 @@
-package com.serendipity.skills.guess2;
+package com.serendipity.skills.divide_conquer;
 
 import com.serendipity.common.CommonUtil;
 
@@ -23,7 +23,6 @@ public class IsSum {
         int maxValue = 100;
         int testTime = 100000;
         boolean success = true;
-        System.out.println("测试开始");
         for (int i = 0; i < testTime; i++) {
             int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, false);
             int sum = (int) (Math.random() * ((maxValue << 1) + 1)) - maxValue;
