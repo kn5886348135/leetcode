@@ -1,5 +1,9 @@
 package com.serendipity.algo24suffixarray;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -11,7 +15,37 @@ package com.serendipity.algo24suffixarray;
 public class LeetCode321 {
 
     public static void main(String[] args) {
+        int maxSize = 10;
+        int maxValue = 9;
+        int max = 20;
+        int testTime = 100000;
+        boolean success = true;
+        for (int i = 0; i < testTime; i++) {
+            int[] nums1 = CommonUtil.generateRandomArray(maxSize, maxValue, true);
+            int[] nums2 = CommonUtil.generateRandomArray(maxSize, maxValue, true);
 
+            int[] arr1 = new int[nums1.length];
+            System.arraycopy(nums1, 0, arr1, 0, nums1.length);
+            int[] arr2 = new int[nums2.length];
+            System.arraycopy(nums2, 0, arr2, 0, nums2.length);
+            int[] arr3 = new int[nums1.length];
+            System.arraycopy(nums1, 0, arr3, 0, nums1.length);
+            int[] arr4 = new int[nums2.length];
+            System.arraycopy(nums2, 0, arr4, 0, nums2.length);
+            int k = ((int) Math.random() * max) + 1;
+            while (k > nums1.length + nums2.length) {
+                k = ((int) Math.random() * max) + 1;
+            }
+            int[] ans1 = maxNumber1(arr1, arr2, k);
+            int[] ans2 = maxNumber2(arr3, arr4, k);
+            if (!CommonUtil.isEqual(ans1, ans2)) {
+                System.out.println(MessageFormat.format("create max num failed, k {0}, nums1 {1}, nums2 {2}, ans1 {3}, ans2 {4}",
+                        new String[]{String.valueOf(k), String.valueOf(nums1), String.valueOf(nums2), String.valueOf(ans1), String.valueOf(ans2)}));
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
     }
 
     public static int[] maxNumber1(int[] nums1, int[] nums2, int k) {

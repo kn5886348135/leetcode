@@ -14,7 +14,7 @@ public class CommonUtil {
     // 二进制交换数组的两个位置
     public static void swap(int[] arr, int i, int j) {
         // i == j时，异或结果为0
-        if (i == j) {
+        if (i == j || arr[i] == arr[j]) {
             return;
         }
         arr[i] = arr[i] ^ arr[j];
@@ -24,6 +24,9 @@ public class CommonUtil {
 
     // 二进制交换整数
     public static void swap(int a, int b) {
+        if (a == b) {
+            return;
+        }
         a = a ^ b;
         b = a ^ b;
         a = a ^ b;
