@@ -1,5 +1,9 @@
 package com.serendipity.algo12dynamicprogramming.otherdp;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+
 /**
  * @author jack
  * @version 1.0
@@ -12,7 +16,26 @@ package com.serendipity.algo12dynamicprogramming.otherdp;
 public class LeetCode664 {
 
     public static void main(String[] args) {
-
+        int maxSize = 200;
+        int possibilities = 26;
+        int testTime = 1000;
+        boolean success = true;
+        for (int i = 0; i < testTime; i++) {
+            String str = CommonUtil.generateRandomString(possibilities, maxSize);
+            String str1 = str;
+            String str2 = str;
+            String str3 = str;
+            int ans1 = strangePrinter1(str1);
+            int ans2 = strangePrinter1(str2);
+            int ans3 = strangePrinter1(str3);
+            if (ans1 != ans2 || ans1 != ans3) {
+                System.out.println(MessageFormat.format("strange printer failed, str {0}, ans1 {1}, ans2 {2}, ans3 {3}",
+                        new String[]{str, String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3)}));
+                success = false;
+                break;
+            }
+        }
+        System.out.println(success ? "success" : "failed");
     }
 
     public static int strangePrinter1(String str) {
@@ -29,7 +52,7 @@ public class LeetCode664 {
         if (left == right) {
             return 1;
         }
-        // L...R
+        // left...right
         int ans = right - left + 1;
         for (int i = left + 1; i <= right; i++) {
             // L...k-1 k....R
