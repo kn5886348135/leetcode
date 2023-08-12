@@ -1,4 +1,4 @@
-package com.serendipity.algo12dynamicprogramming.otherdp;
+package com.serendipity.algo26dinic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
