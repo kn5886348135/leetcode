@@ -1,7 +1,12 @@
 package com.serendipity.skills.guess2;
 
+import com.serendipity.common.CommonUtil;
+
+import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 /**
  * @author jack
@@ -12,33 +17,37 @@ import java.util.HashSet;
  */
 public class IsSum {
 
+    // 对数器验证所有方法
     public static void main(String[] args) {
-        int n = 20;
-        int m = 100;
+        int maxSize = 20;
+        int maxValue = 100;
         int testTime = 100000;
+        boolean success = true;
+        System.out.println("测试开始");
         for (int i = 0; i < testTime; i++) {
-            int size = (int) (Math.random() * (n + 1));
-            int[] arr = randomArray(size, m);
-            int sum = (int) (Math.random() * ((m << 1) + 1)) - m;
-            boolean ans1 = isSum1(arr, sum);
-            boolean ans2 = isSum2(arr, sum);
-            boolean ans3 = isSum3(arr, sum);
-            boolean ans4 = isSum4(arr, sum);
+            int[] arr = CommonUtil.generateRandomArray(maxSize, maxValue, false);
+            int sum = (int) (Math.random() * ((maxValue << 1) + 1)) - maxValue;
+            int[] arr1 = new int[arr.length];
+            System.arraycopy(arr, 0, arr1, 0, arr.length);
+            int[] arr2 = new int[arr.length];
+            System.arraycopy(arr, 0, arr2, 0, arr.length);
+            int[] arr3 = new int[arr.length];
+            System.arraycopy(arr, 0, arr3, 0, arr.length);
+            int[] arr4 = new int[arr.length];
+            System.arraycopy(arr, 0, arr4, 0, arr.length);
+            boolean ans1 = isSum1(arr1, sum);
+            boolean ans2 = isSum2(arr2, sum);
+            boolean ans3 = isSum3(arr3, sum);
+            boolean ans4 = isSum4(arr4, sum);
             if (ans1 ^ ans2 || ans3 ^ ans4 || ans1 ^ ans3) {
-                System.out.println("出错了！");
-                System.out.print("arr : ");
-                for (int num : arr) {
-                    System.out.print(num + " ");
-                }
-                System.out.println();
-                System.out.println("sum : " + sum);
-                System.out.println("方法一答案 " + ans1);
-                System.out.println("方法二答案 " + ans2);
-                System.out.println("方法三答案 " + ans3);
-                System.out.println("方法四答案 " + ans4);
+                System.out.println(MessageFormat.format("sum failed, arr {0},\r\n ans1 {1}, ans2 {2}, ans3 {3}, ans4 {4}, sum {5}",
+                        new String[]{Arrays.stream(arr).boxed().map(String::valueOf).collect(Collectors.joining(" ")),
+                                String.valueOf(ans1), String.valueOf(ans2), String.valueOf(ans3), String.valueOf(ans4), String.valueOf(sum)}));
+                success = false;
                 break;
             }
         }
+        System.out.println(success ? "success" : "failed");
     }
 
     // 暴力递归
@@ -52,6 +61,7 @@ public class IsSum {
         return process1(arr, arr.length - 1, sum);
     }
 
+    // 可以自由使用arr[0...i]上的数字，能不能累加得到sum
     public static boolean process1(int[] arr, int i, int sum) {
         if (sum == 0) {
             return true;
@@ -121,6 +131,7 @@ public class IsSum {
         return dp[len - 1][sum - min];
     }
 
+    // 分治的方法
     // 如果arr[i]的值特别大，则动态规划依然会很慢
     // 如果arr的长度不大，比如小于40，即使arr[i]特别大，分治才是最优解
     public static boolean isSum4(int[] arr, int sum) {
@@ -156,11 +167,4 @@ public class IsSum {
         }
     }
 
-    public static int[] randomArray(int len, int max) {
-        int[] arr = new int[len];
-        for (int i = 0; i < len; i++) {
-            arr[i] = (int) (Math.random() * ((max << 1) + 1)) - max;
-        }
-        return arr;
-    }
 }
